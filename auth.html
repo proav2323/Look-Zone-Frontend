@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Look Zone</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="icon" type="image/x-icon" href="icon.svg" />
+  </head>
+  <body>
+    <!-- loading -->
+    <div class="loader-block">
+      <div class="loader"></div>
+    </div>
+    <!-- sign/login form -->
+    <main class="authentication content-show">
+      <div class="authentication-block">
+        <div class="user-icon">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <span class="greeting">Welcome Back</span>
+        <form
+          class="form"
+          onsubmit="
+            event.preventDefault();
+            if (isUserLoggingIn === true) {
+              login();
+            } else {
+              signUp();
+            }
+            return false;
+          "
+        >
+          <span class="error main">You enetered wrong password</span>
+          <div class="field-block">
+            <div class="input-block name">
+              <i class="fa-solid fa-address-card username"></i>
+              <input
+                placeholder="Name"
+                type="text"
+                class="input"
+                id="name"
+                oninput="validateName()"
+              />
+            </div>
+            <span class="error error-name">Please enter your name</span>
+          </div>
+          <div class="field-block">
+            <div class="input-block email">
+              <i class="fa-solid fa-user username"></i>
+              <input
+                placeholder="Email"
+                type="email"
+                class="input"
+                id="email"
+                oninput="validateEmail()"
+              />
+            </div>
+            <span class="error error-email">Please enter your email</span>
+          </div>
+          <div class="field-block">
+            <div class="input-block password">
+              <i class="fa-solid fa-lock username"></i>
+              <input
+                placeholder="Password"
+                type="password"
+                class="input password"
+                id="password"
+                oninput="validatePassword()"
+              />
+              <i
+                class="fa-solid fa-eye username show"
+                onclick="togglePassword()"
+              ></i>
+              <i
+                class="fa-solid fa-ban username hide"
+                onclick="togglePassword()"
+              ></i>
+            </div>
+            <span class="error error-password">Please enter your password</span>
+          </div>
+          <div class="actions">
+            <span class="form-change text-action" onclick="changeForm()"
+              >new? Create Account</span
+            >
+            <span class="forgot-password text-action">Forgot Password?</span>
+          </div>
+          <button type="submit" class="submit-button" value="Login">
+            <!-- loading -->
+            <div class="loader-block short">
+              <div class="loader short-loader"></div>
+            </div>
+            <span class="login-text text">Login</span>
+          </button>
+        </form>
+      </div>
+    </main>
+
+    <!--my javascript file -->
+    <script src="/script.js"></script>
+
+    <!-- font awesome -->
+    <script
+      src="https://kit.fontawesome.com/eac59c5379.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

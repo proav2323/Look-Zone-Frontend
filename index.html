@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Look Zone</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="icon" type="image/x-icon" href="icon.svg" />
+  </head>
+  <body>
+    <!-- loading -->
+    <div class="loader-block">
+      <div class="loader"></div>
+    </div>
+
+    <div class="content-show content">
+      <!-- Navbar -->
+      <header class="header">
+        <nav class="nav">
+          <div class="logo-block">
+            <i class="fa-solid fa-bag-shopping logo"></i>
+            <span class="logo-text">Look Zone</span>
+          </div>
+          <div class="search-block">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input
+              class="search"
+              type="search"
+              placeholder="Search"
+              onsubmit=""
+            />
+          </div>
+          <div class="auth">
+            <button class="auth-button" onclick="goToLogin()">
+              <i class="fa-solid fa-user"></i> Login In
+            </button>
+          </div>
+          <div class="user-info">
+            <button class="user-button cart">
+              <i class="fa-solid fa-cart-shopping"></i>
+              <span class="cart-item"></span>
+            </button>
+            <button class="user-button user" onclick="dropdown('dropdown')">
+              <i class="fa-solid fa-user"></i>
+            </button>
+            <div class="dropdown">
+              <button class="dropdown-button admin">
+                <i class="fa-solid fa-gear"></i>
+                <span class="dropdown-text">Dashboard</span>
+              </button>
+              <button class="dropdown-button">
+                <i class="fa-solid fa-wallet"></i>
+                <span class="dropdown-text">Your Orders</span>
+              </button>
+              <button class="dropdown-button">
+                <i class="fa-solid fa-gear"></i>
+                <span class="dropdown-text">Settings</span>
+              </button>
+              <button class="dropdown-button logout">
+                <i class="fa-solid fa-right-from-bracket logout-icon"></i>
+                <span class="dropdown-text">Logout</span>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <main></main>
+
+      <footer></footer>
+    </div>
+
+    <!--my javascript file -->
+    <script src="/script.js"></script>
+
+    <!-- font awesome -->
+    <script
+      src="https://kit.fontawesome.com/eac59c5379.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
