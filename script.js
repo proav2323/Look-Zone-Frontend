@@ -19,7 +19,7 @@ let admins = [
     canEdit: true,
   },
 ];
-const DOMAIN = "http://127.0.0.1:5500";
+const DOMAIN = window.location.origin;
 
 // variables
 let isLoggedIn = false; // varaible to see is user logged in
