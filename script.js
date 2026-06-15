@@ -208,7 +208,7 @@ function signUp() {
   if (
     validateEmail() !== true ||
     validatePassword() !== true ||
-    validateName !== true
+    validateName() !== true
   ) {
     validateEmail();
     validateName();
@@ -237,8 +237,7 @@ function signUp() {
   users.push(newUser); // ading new user
   localStorage.setItem("token", newUser.id); //  setting it to local storage
   hideButtonLoader("short", "text"); // hiding loader
-  window.location.href = `${DOMAIN}/`; // redirectiong to home page
-  console.log("fnfjnfsjn");
+  window.location.href = `${DOMAIN}/`; // redirctiong to home page
 }
 
 // validate email
