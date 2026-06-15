@@ -74,6 +74,7 @@ function showUi() {
     }
   }
 
+  showProducts();
   document.getElementsByClassName("loader-block")[0].style.display = "none"; // making loader disappear
   document.getElementsByClassName("content-show")[0].style.display = "flex"; // making content appear
 
@@ -173,6 +174,7 @@ function login() {
   showButtonLoader("short", "text"); // showing loader on button
   let user = users.find((element) => element.email === email.value); // finding user
   let mainError = document.getElementsByClassName("main")[0]; // main error of form
+  mainError.style.display = "none"; // removing error
   // is no user found showing no user found error
   if (user == null || user == undefined) {
     mainError.textContent = "No user found with this email";
@@ -215,6 +217,7 @@ function signUp() {
   }
   let user = users.find((element) => element.email === email.value); // findind user
   let mainError = document.getElementsByClassName("main")[0]; // main form error
+  mainError.style.display = "none"; // removing error
   // checking if user found with this email
   if (user !== null && user !== undefined) {
     mainError.textContent = "user found with this email. Login"; // main error
@@ -332,3 +335,6 @@ function generateId(length) {
   }
   return result;
 }
+
+// showing products in content
+function showProducts() {}
