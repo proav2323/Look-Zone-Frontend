@@ -238,6 +238,7 @@ function signUp() {
   localStorage.setItem("token", newUser.id); //  setting it to local storage
   hideButtonLoader("short", "text"); // hiding loader
   window.location.href = `${DOMAIN}/`; // redirectiong to home page
+  console.log("fnfjnfsjn");
 }
 
 // validate email
