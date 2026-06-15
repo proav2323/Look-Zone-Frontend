@@ -219,7 +219,7 @@ function signUp() {
   let mainError = document.getElementsByClassName("main")[0]; // main form error
   mainError.style.display = "none"; // removing error
   // checking if user found with this email
-  if (user !== null && user !== undefined) {
+  if (user != null && user != undefined) {
     mainError.textContent = "user found with this email. Login"; // main error
     mainError.style.display = "block"; // main error styling
     return;
