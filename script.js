@@ -428,7 +428,7 @@ function showCoursels() {
 
     let subTextTrim = element.subText.slice(0, 40);
     if (element.subText.length > 40) {
-      subTextTrim = element.subText.slice(0, 40) + "...";
+      subTextTrim = element.subText.slice(0, 40) + "....";
     }
     let courselSubText = document.createElement("span");
     courselSubText.textContent = subTextTrim;
