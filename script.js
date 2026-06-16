@@ -18,6 +18,7 @@ let products = [
     stars: 4.5,
     reviews: [{ userId: "", context: "very good product.", stars: 4.5 }],
     description: "",
+    categoryId: "smnajdbsdbsahbd",
     images: [
       "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
       "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
@@ -33,6 +34,7 @@ let products = [
     stars: 4.5,
     reviews: [{ userId: "", context: "very good product.", stars: 4.5 }],
     description: "",
+    categoryId: "smnajdbsdbsahbd",
     images: [
       "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
       "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
@@ -48,6 +50,7 @@ let products = [
     stars: 4.5,
     reviews: [{ userId: "", context: "very good product.", stars: 4.5 }],
     description: "",
+    categoryId: "smnajdbsdbsahbd",
     images: [
       "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
       "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
@@ -83,7 +86,13 @@ let courselProducts = [
     subText: "third",
   },
 ]; // show products on coursels
-const DOMAIN = window.location.origin;
+const DOMAIN = window.location.origin; // domain of our url
+const categories = [
+  { name: "Electronics", id: "smnajdbsdbsahbd" },
+  { name: "Clothes", id: "smnaajdbabsajbdahhdasb" },
+  { name: "Watches", id: "smnjdbajdbajbdjab" },
+  { name: "organizers", id: "sjdbhasbdhbashdashbd" },
+]; // filters (categories) admin can create more
 
 // variables
 let isLoggedIn = false; // varaible to see is user logged in
@@ -94,6 +103,7 @@ let user = null; // login user
 let isAdmin = false; // if user is admin
 let isUserLoggingIn = true; // to show login page in auth html
 let showingPassword = false; // to check is user seeing his entered password
+let filter = ""; // selected filter
 
 // checking is user logged in with some token
 if (userToken !== null && userToken !== undefined) {
@@ -144,8 +154,9 @@ function showUi() {
     window.location.href === `${DOMAIN}/index.html/` ||
     window.location.href === `${DOMAIN}/index.html?`
   ) {
-    showProducts();
+    showProducts(products);
     showCoursels();
+    showCategoryFilters();
   }
 
   document.getElementsByClassName("loader-block")[0].style.display = "none"; // making loader disappear
@@ -409,8 +420,105 @@ function generateId(length) {
   return result;
 }
 
+// show categoryFilters
+function showCategoryFilters() {
+  let categoryFilter = document.getElementsByClassName("category-filter")[0];
+  let allButton = document.createElement("button");
+  allButton.textContent = "All";
+  allButton.className = "category-button selected";
+  allButton.addEventListener("click", () => {
+    applyFilter("all", 0);
+  });
+
+  categoryFilter.appendChild(allButton);
+  categories.forEach((category, index) => {
+    let catButton = document.createElement("button");
+    catButton.textContent = category.name;
+    catButton.className = "category-button";
+    catButton.id = category.id;
+    catButton.addEventListener("click", () => {
+      applyFilter(category.id);
+    });
+
+    categoryFilter.appendChild(catButton);
+  });
+}
+
 // showing products in content
-function showProducts() {}
+function showProducts(showProducts) {
+  let products = document.getElementsByClassName("products")[0];
+  products.textContent = "";
+  // for (let i = 0; i < products.children.length; i++) {
+  //   products.removeChild(products.children[0]);
+  // }
+  let noProductText = document.getElementsByClassName("no-products")[0];
+  noProductText.style.display = "none";
+  if (
+    showProducts == null ||
+    showProducts == undefined ||
+    showProducts.length === 0
+  ) {
+    noProductText.style.display = "block";
+    return;
+  }
+
+  showProducts.forEach((product) => {
+    let productCard = document.createElement("div");
+    productCard.className = "product";
+
+    let productImage = document.createElement("img");
+    productImage.className = "product-image";
+    productImage.src = product.images[0];
+
+    let productTitle = document.createElement("span");
+    productTitle.className = "product-title";
+    productTitle.textContent = product.name;
+
+    let productDesc = document.createElement("span");
+    productDesc.className = "product-desc";
+    let description = product.description.slice(0, 47);
+    if (product.description.length > 47) {
+      description = description + "...";
+    }
+    productDesc.textContent = description;
+
+    let AddToCartButton = document.createElement("button");
+    AddToCartButton.textContent = "Add To Cart";
+    AddToCartButton.className = "product-button";
+
+    productCard.appendChild(productImage);
+    productCard.appendChild(productTitle);
+    productCard.appendChild(productDesc);
+    productCard.appendChild(AddToCartButton);
+
+    products.appendChild(productCard);
+  });
+}
+
+// aplly iflters
+function applyFilter(filterId) {
+  let categoryFilter = document.getElementsByClassName("category-filter")[0];
+
+  if (filterId === "all") {
+    for (let i = 0; i < categoryFilter.children.length; i++) {
+      categoryFilter.children[i].className = "category-button";
+    }
+    categoryFilter.children[0].className = "category-button selected";
+    showProducts(products);
+  } else {
+    let index = Array.from(categoryFilter.children).findIndex(
+      (element) => element.id === filterId,
+    );
+    for (let i = 0; i < categoryFilter.children.length; i++) {
+      categoryFilter.children[i].className = "category-button";
+    }
+    categoryFilter.children[index].className = "category-button selected";
+    let filteredProducts = products.filter(
+      (element) => element.categoryId === filterId,
+    );
+    showProducts(filteredProducts);
+  }
+}
 
 // showing coursels
 function showCoursels() {
@@ -428,7 +536,7 @@ function showCoursels() {
 
     let subTextTrim = element.subText.slice(0, 40);
     if (element.subText.length > 40) {
-      subTextTrim = element.subText.slice(0, 40) + "....";
+      subTextTrim = element.subText.slice(0, 40) + "...";
     }
     let courselSubText = document.createElement("span");
     courselSubText.textContent = subTextTrim;
