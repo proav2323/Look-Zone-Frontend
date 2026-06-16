@@ -656,7 +656,7 @@ function createCoursel(element, index, coursel) {
   return courselItem;
 }
 
-// change cart badge
+// add to cart
 function addToCart() {}
 
 // change add to cart button
