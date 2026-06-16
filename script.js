@@ -4,7 +4,9 @@ let users = [
     name: "Ansh Verma",
     email: "anshvishesh03@gmail.com",
     password: "anshvishesh2007",
-    cartItems: [{}],
+    cartItems: [
+      { productId: "smndjnadjnsajndsjan", id: "snajdnajsdbas", qty: 1 },
+    ],
     orders: [{}],
     id: "mdkandkasm",
     address: {},
@@ -135,17 +137,7 @@ function showUi() {
       // to show admin dashboard if user is admin
       document.getElementsByClassName("admin")[0].style.display = "inline";
     }
-
-    // to show badge above cart icon if there items in user cart
-    if (
-      user.cartItems.length !== 0 &&
-      user.cartItems.length !== undefined &&
-      user.cartItems.length !== null
-    ) {
-      document.getElementsByClassName("cart-item")[0].style.display = "flex";
-      document.getElementsByClassName("cart-item")[0].textContent =
-        user.cartItems.length;
-    }
+    showCartBadge();
   }
   if (
     window.location.href === `${DOMAIN}/` ||
@@ -164,7 +156,21 @@ function showUi() {
 
   isLoading = false;
 }
-
+// change cart badge
+function showCartBadge() {
+  if (user != null && user != undefined) {
+    // to show badge above cart icon if there items in user cart
+    if (
+      user.cartItems.length !== 0 &&
+      user.cartItems.length !== undefined &&
+      user.cartItems.length !== null
+    ) {
+      document.getElementsByClassName("cart-item")[0].style.display = "flex";
+      document.getElementsByClassName("cart-item")[0].textContent =
+        user.cartItems.length;
+    }
+  }
+}
 // authentication
 function auth() {
   // to check if we found the user
@@ -555,8 +561,25 @@ function createProduct(product) {
   productDesc.textContent = description;
 
   let AddToCartButton = document.createElement("button");
-  AddToCartButton.textContent = "Add To Cart";
+  if (user != null && user != undefined) {
+    let cartItem = user.cart.find((item) => item.productId === product.id);
+    if (cartItem != null && cartItem != undefined) {
+      AddToCartButton.textContent = "Added";
+    } else {
+      AddToCartButton.textContent = "Add To Cart";
+    }
+  } else {
+    AddToCartButton.textContent = "Add To Cart";
+  }
   AddToCartButton.className = "product-button";
+
+  AddToCartButton.addEventListener("click", () => {
+    if (user != null && user != undefined) {
+      addToCart();
+    } else {
+      window.location.href = "/auth.html";
+    }
+  });
 
   productCard.appendChild(productImage);
   productCard.appendChild(productTitle);
@@ -633,6 +656,11 @@ function createCoursel(element, index, coursel) {
   return courselItem;
 }
 
+// change cart badge
+function addToCart() {}
+
+// change add to cart button
+function changeAddToCartButton() {}
 // showing product loader
 function showProductLoader() {}
 
