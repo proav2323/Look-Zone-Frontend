@@ -682,3 +682,16 @@ body {
   -webkit-box-shadow: 2px 3px 11px -1px var(--dark-bg-secondary);
   -moz-box-shadow: 2px 3px 11px -1px var(--dark-bg-secondary);
 }
+
+.products-loading {
+  display: none;
+  margin-left: 0px;
+  margin-right: 0px;
+  width: 100%;
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  height: fit-content;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

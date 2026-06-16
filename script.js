@@ -422,199 +422,219 @@ function generateId(length) {
 
 // show categoryFilters
 function showCategoryFilters() {
-  let categoryFilter = document.getElementsByClassName("category-filter")[0];
-  let allButton = document.createElement("button");
-  allButton.textContent = "All";
-  allButton.className = "category-button selected";
-  allButton.addEventListener("click", () => {
-    applyFilter("all", 0);
-  });
+  let categoryFilter = document.getElementsByClassName("category-filter")[0]; // getting cateyory parent div
+  let allButton = createCategory({ name: "All", id: "all" }); // creating all button
 
-  categoryFilter.appendChild(allButton);
-  categories.forEach((category, index) => {
-    let catButton = document.createElement("button");
-    catButton.textContent = category.name;
-    catButton.className = "category-button";
-    catButton.id = category.id;
-    catButton.addEventListener("click", () => {
-      applyFilter(category.id);
-    });
-
-    categoryFilter.appendChild(catButton);
+  categoryFilter.appendChild(allButton); // adding in parent div
+  // maping to add all other categries
+  categories.forEach((category) => {
+    let catButton = createCategory(category);
+    categoryFilter.appendChild(catButton); // appending in parent div
   });
 }
 
 // showing products in content
 function showProducts(showProducts) {
   let products = document.getElementsByClassName("products")[0];
-  products.textContent = "";
-  // for (let i = 0; i < products.children.length; i++) {
-  //   products.removeChild(products.children[0]);
-  // }
-  let noProductText = document.getElementsByClassName("no-products")[0];
-  noProductText.style.display = "none";
+  if (products.children.length > 0) {
+    products.textContent = ""; // removing already added products cards
+  }
+  let noProductText = document.getElementsByClassName("no-products")[0]; // no products found text
+  noProductText.style.display = "none"; // display to none
+  // checking if show products is no empty
   if (
     showProducts == null ||
     showProducts == undefined ||
     showProducts.length === 0
   ) {
-    noProductText.style.display = "block";
+    noProductText.style.display = "block"; // displaying no product found text
     return;
   }
 
+  // mapping show products array
   showProducts.forEach((product) => {
-    let productCard = document.createElement("div");
-    productCard.className = "product";
-
-    let productImage = document.createElement("img");
-    productImage.className = "product-image";
-    productImage.src = product.images[0];
-
-    let productTitle = document.createElement("span");
-    productTitle.className = "product-title";
-    productTitle.textContent = product.name;
-
-    let productDesc = document.createElement("span");
-    productDesc.className = "product-desc";
-    let description = product.description.slice(0, 47);
-    if (product.description.length > 47) {
-      description = description + "...";
-    }
-    productDesc.textContent = description;
-
-    let AddToCartButton = document.createElement("button");
-    AddToCartButton.textContent = "Add To Cart";
-    AddToCartButton.className = "product-button";
-
-    productCard.appendChild(productImage);
-    productCard.appendChild(productTitle);
-    productCard.appendChild(productDesc);
-    productCard.appendChild(AddToCartButton);
-
-    products.appendChild(productCard);
+    let productCard = createProduct(product); // creating product card
+    products.appendChild(productCard); // appedning product card
   });
-}
-
-// aplly iflters
-function applyFilter(filterId) {
-  let categoryFilter = document.getElementsByClassName("category-filter")[0];
-
-  if (filterId === "all") {
-    for (let i = 0; i < categoryFilter.children.length; i++) {
-      categoryFilter.children[i].className = "category-button";
-    }
-    categoryFilter.children[0].className = "category-button selected";
-    showProducts(products);
-  } else {
-    let index = Array.from(categoryFilter.children).findIndex(
-      (element) => element.id === filterId,
-    );
-    for (let i = 0; i < categoryFilter.children.length; i++) {
-      categoryFilter.children[i].className = "category-button";
-    }
-    categoryFilter.children[index].className = "category-button selected";
-    let filteredProducts = products.filter(
-      (element) => element.categoryId === filterId,
-    );
-    showProducts(filteredProducts);
-  }
 }
 
 // showing coursels
 function showCoursels() {
-  let coursel = document.getElementsByClassName("coursel")[0];
+  let coursel = document.getElementsByClassName("coursel")[0]; // coursel parent div
+  // maping coursel items
   courselProducts.forEach((element, index) => {
-    let courselItem = document.createElement("div");
-    courselItem.className = "coursel-item";
-
-    let courselText = document.createElement("div");
-    courselText.className = "coursel-text";
-
-    let courselMainText = document.createElement("span");
-    courselMainText.textContent = element.heading;
-    courselMainText.className = "coursel-main-text";
-
-    let subTextTrim = element.subText.slice(0, 40);
-    if (element.subText.length > 40) {
-      subTextTrim = element.subText.slice(0, 40) + "...";
-    }
-    let courselSubText = document.createElement("span");
-    courselSubText.textContent = subTextTrim;
-    courselSubText.className = "coursel-sub-text";
-
-    courselText.appendChild(courselMainText);
-    courselText.appendChild(courselSubText);
-
-    let leftButton = document.createElement("button");
-    leftButton.className = "coursel-button left";
-
-    let leftIcon = document.createElement("i");
-    leftIcon.className = "fa-solid fa-arrow-left";
-
-    leftButton.appendChild(leftIcon);
-
-    let rightButton = document.createElement("button");
-    rightButton.className = "coursel-button right";
-
-    let rightIcon = document.createElement("i");
-    rightIcon.className = "fa-solid fa-arrow-right";
-
-    rightButton.appendChild(rightIcon);
-
-    let product = products.find((product) => element.productId === product.id);
-    let courselImage = document.createElement("img");
-    courselImage.className = "coursel-image";
-    courselImage.src = product.images[0];
-
-    courselItem.appendChild(courselImage);
-    courselItem.appendChild(leftButton);
-    courselItem.appendChild(rightButton);
-    courselItem.appendChild(courselText);
-
-    courselItem.style.zIndex = index + 1;
-
-    coursel.appendChild(courselItem);
-
-    courselImage.addEventListener("click", () => {
-      window.location.href = `product.html?${product.id}`;
-    });
-
-    let rightClick = 1;
-    rightButton.addEventListener("click", () => {
-      rightCoursel(index, coursel, rightClick);
-      rightClick++;
-    });
-    leftButton.addEventListener("click", () => {
-      leftCoursel(index, coursel);
-    });
+    let courselItem = createCoursel(element, index, coursel); // creating coursel item
+    coursel.appendChild(courselItem); // adding coursel item in parent div
   });
 }
 
 function rightCoursel(index, coursel) {
+  // doing z-index of all slides 1
+  for (let i = 0; i < coursel.children.length; i++) {
+    coursel.children[i].style.zIndex = 1; // putting all slides z-index 1
+  }
+
+  // checking if user on last coursel slide
   if (index === courselProducts.length - 1) {
-    for (let i = 0; i < coursel.children.length; i++) {
-      coursel.children[i].style.zIndex = 1;
-    }
-    coursel.children[0].style.zIndex = courselProducts.length + 1;
+    coursel.children[0].style.zIndex = courselProducts.length + 1; // making selected slide z-index more than everyone's
   } else {
-    for (let i = 0; i < coursel.children.length; i++) {
-      coursel.children[i].style.zIndex = 1;
-    }
     coursel.children[index + 1].style.zIndex = courselProducts.length + 1;
   }
 }
 
 function leftCoursel(index, coursel, click) {
+  // doing z-index of all slides 1
+  for (let i = 0; i < coursel.children.length; i++) {
+    coursel.children[i].style.zIndex = 1; // putting all slides z-index 1
+  }
+
+  // checking if user is on first slided
   if (index === 0) {
-    for (let i = 0; i < coursel.children.length; i++) {
-      coursel.children[i].style.zIndex = 1;
-    }
     coursel.children[coursel.children.length - 1].style.zIndex =
       courselProducts.length + 1;
   } else {
-    for (let i = 0; i < coursel.children.length; i++) {
-      coursel.children[i].style.zIndex = 1;
-    }
     coursel.children[index - 1].style.zIndex = courselProducts.length + 1;
   }
 }
+
+// aplly iflters
+function applyFilter(filterId) {
+  let categoryFilter = document.getElementsByClassName("category-filter")[0];
+  // removing selected class from every category button
+  for (let i = 0; i < categoryFilter.children.length; i++) {
+    categoryFilter.children[i].className = "category-button"; // setting class ro categorory button
+  }
+  if (filterId === "all") {
+    categoryFilter.children[0].className = "category-button selected"; // making all object selected
+    showProducts(products); // getting and showing products
+  } else {
+    let index = Array.from(categoryFilter.children).findIndex(
+      (element) => element.id === filterId,
+    ); // finding clicked element
+    categoryFilter.children[index].className = "category-button selected"; // adding selected class
+    let filteredProducts = products.filter(
+      (element) => element.categoryId === filterId,
+    ); // finding filtreed array
+    showProducts(filteredProducts); // showing filtered products
+  }
+}
+
+// creating category
+function createCategory(category) {
+  let catButton = document.createElement("button"); // careting button
+  catButton.textContent = category.name; // adding category name
+  catButton.className =
+    category.id === "all" ? "category-button selected" : "category-button"; // adding class
+  catButton.id = category.id; // seeting id
+  catButton.addEventListener("click", () => {
+    applyFilter(category.id); // applying filters
+  });
+
+  return catButton;
+}
+
+// creating product card
+function createProduct(product) {
+  let productCard = document.createElement("div");
+  productCard.className = "product";
+
+  let productImage = document.createElement("img");
+  productImage.className = "product-image";
+  productImage.src = product.images[0];
+
+  let productTitle = document.createElement("span");
+  productTitle.className = "product-title";
+  productTitle.textContent = product.name;
+
+  let productDesc = document.createElement("span");
+  productDesc.className = "product-desc";
+  let description = product.description.slice(0, 47);
+  if (product.description.length > 47) {
+    description = description + "...";
+  }
+  productDesc.textContent = description;
+
+  let AddToCartButton = document.createElement("button");
+  AddToCartButton.textContent = "Add To Cart";
+  AddToCartButton.className = "product-button";
+
+  productCard.appendChild(productImage);
+  productCard.appendChild(productTitle);
+  productCard.appendChild(productDesc);
+  productCard.appendChild(AddToCartButton);
+
+  return productCard;
+}
+
+// creating coursels
+function createCoursel(element, index, coursel) {
+  let courselItem = document.createElement("div");
+  courselItem.className = "coursel-item";
+
+  let courselText = document.createElement("div");
+  courselText.className = "coursel-text";
+
+  let courselMainText = document.createElement("span");
+  courselMainText.textContent = element.heading;
+  courselMainText.className = "coursel-main-text";
+
+  let subTextTrim = element.subText.slice(0, 40);
+  if (element.subText.length > 40) {
+    subTextTrim = element.subText.slice(0, 40) + "...";
+  }
+  let courselSubText = document.createElement("span");
+  courselSubText.textContent = subTextTrim;
+  courselSubText.className = "coursel-sub-text";
+
+  courselText.appendChild(courselMainText);
+  courselText.appendChild(courselSubText);
+
+  let leftButton = document.createElement("button");
+  leftButton.className = "coursel-button left";
+
+  let leftIcon = document.createElement("i");
+  leftIcon.className = "fa-solid fa-arrow-left";
+
+  leftButton.appendChild(leftIcon);
+
+  let rightButton = document.createElement("button");
+  rightButton.className = "coursel-button right";
+
+  let rightIcon = document.createElement("i");
+  rightIcon.className = "fa-solid fa-arrow-right";
+
+  rightButton.appendChild(rightIcon);
+
+  let product = products.find((product) => element.productId === product.id);
+  let courselImage = document.createElement("img");
+  courselImage.className = "coursel-image";
+  courselImage.src = product.images[0];
+
+  courselItem.appendChild(courselImage);
+  courselItem.appendChild(leftButton);
+  courselItem.appendChild(rightButton);
+  courselItem.appendChild(courselText);
+
+  courselItem.style.zIndex = index + 1;
+
+  courselImage.addEventListener("click", () => {
+    window.location.href = `product.html?${product.id}`;
+  });
+
+  let rightClick = 1;
+  rightButton.addEventListener("click", () => {
+    rightCoursel(index, coursel, rightClick);
+    rightClick++;
+  });
+  leftButton.addEventListener("click", () => {
+    leftCoursel(index, coursel);
+  });
+
+  return courselItem;
+}
+
+// showing product loader
+function showProductLoader() {}
+
+// hiding product loader
+function hideProductLoader() {}
