@@ -464,3 +464,83 @@ body {
   padding-left: 0px;
   padding-right: 0px;
 }
+
+.coursel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.coursel-item {
+  width: 100%;
+  height: 80vh;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 1;
+  transition: all ease-in-out 0.25s;
+}
+
+.coursel-item:hover {
+  cursor: pointer;
+}
+
+.coursel-image {
+  width: 100%;
+  height: 80vh;
+}
+
+.coursel-button {
+  position: absolute;
+  top: 40vh;
+  font-size: 30px;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all ease-in-out 0.25s;
+}
+
+.coursel-button:hover {
+  cursor: pointer;
+  color: rgb(255, 0, 0);
+  z-index: 100;
+}
+
+.left {
+  left: 7px;
+}
+
+.right {
+  right: 7px;
+}
+
+.coursel-text {
+  position: absolute;
+  top: 65vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  background-color: var(--dark-bg-primary);
+  border-radius: 10px;
+  align-self: center;
+  width: 50%;
+}
+
+.coursel-main-text {
+  font-size: 40px;
+  color: white;
+  display: block;
+}
+
+.coursel-sub-text {
+  font-size: 20px;
+  color: white;
+  display: block;
+}

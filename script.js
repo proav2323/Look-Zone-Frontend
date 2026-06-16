@@ -11,7 +11,51 @@ let users = [
   },
 ];
 let products = [
-  { name: "Airpods", price: 1499, stars: 4.5, reviews: [], description: "" },
+  {
+    id: "smndjnadjnsajndsjan",
+    name: "Airpods",
+    price: 1499,
+    stars: 4.5,
+    reviews: [{ userId: "", context: "very good product.", stars: 4.5 }],
+    description: "",
+    images: [
+      "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
+      "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
+      "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
+      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
+      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
+    ],
+  },
+  {
+    id: "asdsjhdsjindajbdsdjsj",
+    name: "Airpods",
+    price: 1499,
+    stars: 4.5,
+    reviews: [{ userId: "", context: "very good product.", stars: 4.5 }],
+    description: "",
+    images: [
+      "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
+      "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
+      "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
+      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
+      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
+    ],
+  },
+  {
+    id: "sdmandjsadn#smjsdbjan",
+    name: "Airpods",
+    price: 1499,
+    stars: 4.5,
+    reviews: [{ userId: "", context: "very good product.", stars: 4.5 }],
+    description: "",
+    images: [
+      "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
+      "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
+      "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
+      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
+      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
+    ],
+  },
 ];
 let admins = [
   {
@@ -19,6 +63,26 @@ let admins = [
     canEdit: true,
   },
 ];
+let courselProducts = [
+  {
+    productId: "sdmandjsadn#smjsdbjan",
+    id: "sdnajdsandasndasn",
+    heading: "first slide",
+    subText: "first and this is product is so good you should give it a try",
+  },
+  {
+    productId: "asdsjhdsjindajbdsdjsj",
+    id: "akjdsjdnjdnsajndn",
+    heading: "second slide",
+    subText: "second",
+  },
+  {
+    productId: "smndjnadjnsajndsjan",
+    id: "andjsndjnsjdnasjn",
+    heading: "third slide",
+    subText: "third",
+  },
+]; // show products on coursels
 const DOMAIN = window.location.origin;
 
 // variables
@@ -73,8 +137,17 @@ function showUi() {
         user.cartItems.length;
     }
   }
+  if (
+    window.location.href === `${DOMAIN}/` ||
+    window.location.href === `${DOMAIN}` ||
+    window.location.href === `${DOMAIN}?` ||
+    window.location.href === `${DOMAIN}/index.html/` ||
+    window.location.href === `${DOMAIN}/index.html?`
+  ) {
+    showProducts();
+    showCoursels();
+  }
 
-  showProducts();
   document.getElementsByClassName("loader-block")[0].style.display = "none"; // making loader disappear
   document.getElementsByClassName("content-show")[0].style.display = "flex"; // making content appear
 
@@ -338,3 +411,102 @@ function generateId(length) {
 
 // showing products in content
 function showProducts() {}
+
+// showing coursels
+function showCoursels() {
+  let coursel = document.getElementsByClassName("coursel")[0];
+  courselProducts.forEach((element, index) => {
+    let courselItem = document.createElement("div");
+    courselItem.className = "coursel-item";
+
+    let courselText = document.createElement("div");
+    courselText.className = "coursel-text";
+
+    let courselMainText = document.createElement("span");
+    courselMainText.textContent = element.heading;
+    courselMainText.className = "coursel-main-text";
+
+    let subTextTrim = element.subText.slice(0, 40);
+    if (element.subText.length > 40) {
+      subTextTrim = element.subText.slice(0, 40) + "...";
+    }
+    let courselSubText = document.createElement("span");
+    courselSubText.textContent = subTextTrim;
+    courselSubText.className = "coursel-sub-text";
+
+    courselText.appendChild(courselMainText);
+    courselText.appendChild(courselSubText);
+
+    let leftButton = document.createElement("button");
+    leftButton.className = "coursel-button left";
+
+    let leftIcon = document.createElement("i");
+    leftIcon.className = "fa-solid fa-arrow-left";
+
+    leftButton.appendChild(leftIcon);
+
+    let rightButton = document.createElement("button");
+    rightButton.className = "coursel-button right";
+
+    let rightIcon = document.createElement("i");
+    rightIcon.className = "fa-solid fa-arrow-right";
+
+    rightButton.appendChild(rightIcon);
+
+    let product = products.find((product) => element.productId === product.id);
+    let courselImage = document.createElement("img");
+    courselImage.className = "coursel-image";
+    courselImage.src = product.images[0];
+
+    courselItem.appendChild(courselImage);
+    courselItem.appendChild(leftButton);
+    courselItem.appendChild(rightButton);
+    courselItem.appendChild(courselText);
+
+    courselItem.style.zIndex = index + 1;
+
+    coursel.appendChild(courselItem);
+
+    courselImage.addEventListener("click", () => {
+      window.location.href = `product.html?${product.id}`;
+    });
+
+    let rightClick = 1;
+    rightButton.addEventListener("click", () => {
+      rightCoursel(index, coursel, rightClick);
+      rightClick++;
+    });
+    leftButton.addEventListener("click", () => {
+      leftCoursel(index, coursel);
+    });
+  });
+}
+
+function rightCoursel(index, coursel) {
+  if (index === courselProducts.length - 1) {
+    for (let i = 0; i < coursel.children.length; i++) {
+      coursel.children[i].style.zIndex = 1;
+    }
+    coursel.children[0].style.zIndex = courselProducts.length + 1;
+  } else {
+    for (let i = 0; i < coursel.children.length; i++) {
+      coursel.children[i].style.zIndex = 1;
+    }
+    coursel.children[index + 1].style.zIndex = courselProducts.length + 1;
+  }
+}
+
+function leftCoursel(index, coursel, click) {
+  if (index === 0) {
+    for (let i = 0; i < coursel.children.length; i++) {
+      coursel.children[i].style.zIndex = 1;
+    }
+    coursel.children[coursel.children.length - 1].style.zIndex =
+      courselProducts.length + 1;
+  } else {
+    for (let i = 0; i < coursel.children.length; i++) {
+      coursel.children[i].style.zIndex = 1;
+    }
+    coursel.children[index - 1].style.zIndex = courselProducts.length + 1;
+  }
+}
