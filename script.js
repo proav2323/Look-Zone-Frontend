@@ -4,10 +4,25 @@ let users = [
     name: "Ansh Verma",
     email: "anshvishesh03@gmail.com",
     password: "anshvishesh2007",
-    cartItems: [
-      { productId: "smndjnadjnsajndsjan", id: "snajdnajsdbas", qty: 1 },
+    cart: {
+      productId: ["smndjnadjnsajndsjan"],
+      id: "snajdnajsdbas",
+      qty: 1,
+      price: 1499,
+    },
+    orders: [
+      {
+        cart: {
+          productId: ["smndjnadjnsajndsjan"],
+          id: "snajdnajsdbas",
+          qty: 1,
+          price: 1499,
+        },
+        id: "msnajdbsabdhab",
+        address: "",
+        payment: 1499,
+      },
     ],
-    orders: [{}],
     id: "mdkandkasm",
     address: {},
   },
@@ -18,7 +33,9 @@ let products = [
     name: "Airpods",
     price: 1499,
     stars: 4.5,
-    reviews: [{ userId: "", context: "very good product.", stars: 4.5 }],
+    reviews: [
+      { userId: "mdkandkasm", context: "very good product.", stars: 4.5 },
+    ],
     description: "",
     categoryId: "smnajdbsdbsahbd",
     images: [
@@ -33,8 +50,14 @@ let products = [
     id: "asdsjhdsjindajbdsdjsj",
     name: "Airpods",
     price: 1499,
-    stars: 4.5,
-    reviews: [{ userId: "", context: "very good product.", stars: 4.5 }],
+    stars: 0.5,
+    reviews: [
+      {
+        userId: "mdkandkasm",
+        context: "very good product. buy it",
+        stars: 0.5,
+      },
+    ],
     description: "",
     categoryId: "smnajdbsdbsahbd",
     images: [
@@ -46,11 +69,17 @@ let products = [
     ],
   },
   {
-    id: "sdmandjsadn#smjsdbjan",
+    id: "sdmandjsadnsmjsdbjan",
     name: "Airpods",
     price: 1499,
-    stars: 4.5,
-    reviews: [{ userId: "", context: "very good product.", stars: 4.5 }],
+    stars: 1.5,
+    reviews: [
+      {
+        userId: "mdkandkasm",
+        context: "very bad product. dont buy it",
+        stars: 1.5,
+      },
+    ],
     description: "",
     categoryId: "smnajdbsdbsahbd",
     images: [
@@ -70,7 +99,7 @@ let admins = [
 ];
 let courselProducts = [
   {
-    productId: "sdmandjsadn#smjsdbjan",
+    productId: "sdmandjsadnsmjsdbjan",
     id: "sdnajdsandasndasn",
     heading: "first slide",
     subText: "first and this is product is so good you should give it a try",
@@ -106,8 +135,10 @@ let isAdmin = false; // if user is admin
 let isUserLoggingIn = true; // to show login page in auth html
 let showingPassword = false; // to check is user seeing his entered password
 let filter = ""; // selected filter
+let selectedImage = ""; // selected image filter
 
 // checking is user logged in with some token
+showLoader();
 if (userToken !== null && userToken !== undefined) {
   user = users.find((element) => element.id == userToken); // checking if we can find user with this token
   auth();
@@ -151,23 +182,35 @@ function showUi() {
     showCategoryFilters();
   }
 
-  document.getElementsByClassName("loader-block")[0].style.display = "none"; // making loader disappear
-  document.getElementsByClassName("content-show")[0].style.display = "flex"; // making content appear
+  if (window.location.href.startsWith(`${DOMAIN}/product.html`) === true) {
+    showProductDetails();
+  }
+
+  hideLoader();
 
   isLoading = false;
+}
+function showLoader() {
+  document.getElementsByClassName("loader-block")[0].style.display = "flex"; // making loader appear
+  document.getElementsByClassName("content-show")[0].style.display = "none"; // making content appear
+}
+
+function hideLoader() {
+  document.getElementsByClassName("loader-block")[0].style.display = "none"; // making loader disappear
+  document.getElementsByClassName("content-show")[0].style.display = "flex"; // making content appear
 }
 // change cart badge
 function showCartBadge() {
   if (user != null && user != undefined) {
     // to show badge above cart icon if there items in user cart
     if (
-      user.cartItems.length !== 0 &&
-      user.cartItems.length !== undefined &&
-      user.cartItems.length !== null
+      user.cart.productId.length !== 0 &&
+      user.cart.productId.length !== undefined &&
+      user.cart.productId.length !== null
     ) {
       document.getElementsByClassName("cart-item")[0].style.display = "flex";
       document.getElementsByClassName("cart-item")[0].textContent =
-        user.cartItems.length;
+        user.cart.productId.length;
     }
   }
 }
@@ -181,7 +224,8 @@ function auth() {
       window.location.href === `${DOMAIN}` ||
       window.location.href === `${DOMAIN}?` ||
       window.location.href === `${DOMAIN}/index.html/` ||
-      window.location.href === `${DOMAIN}/index.html?`
+      window.location.href === `${DOMAIN}/index.html?` ||
+      window.location.href.startsWith(`${DOMAIN}/product.html`) === true
     )
       showRemove("user-info", "auth");
   }
@@ -417,8 +461,7 @@ function hideButtonLoader(classname, buttonClassnameText) {
 // generating random ids
 function generateId(length) {
   let result = "";
-  let characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&";
+  let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   let charactersLength = characters.length;
   for (var i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -441,6 +484,7 @@ function showCategoryFilters() {
 
 // showing products in content
 function showProducts(showProducts) {
+  showProductLoader();
   let products = document.getElementsByClassName("products")[0];
   if (products.children.length > 0) {
     products.textContent = ""; // removing already added products cards
@@ -453,6 +497,7 @@ function showProducts(showProducts) {
     showProducts == undefined ||
     showProducts.length === 0
   ) {
+    hideProductLoader();
     noProductText.style.display = "block"; // displaying no product found text
     return;
   }
@@ -462,6 +507,7 @@ function showProducts(showProducts) {
     let productCard = createProduct(product); // creating product card
     products.appendChild(productCard); // appedning product card
   });
+  hideProductLoader();
 }
 
 // showing coursels
@@ -471,6 +517,12 @@ function showCoursels() {
   courselProducts.forEach((element, index) => {
     let courselItem = createCoursel(element, index, coursel); // creating coursel item
     coursel.appendChild(courselItem); // adding coursel item in parent div
+    setTimeout(
+      () => {
+        rightCoursel(index, coursel);
+      },
+      3000 + (index + 1) * 1000,
+    );
   });
 }
 
@@ -486,6 +538,12 @@ function rightCoursel(index, coursel) {
   } else {
     coursel.children[index + 1].style.zIndex = courselProducts.length + 1;
   }
+  setTimeout(
+    () => {
+      leftCoursel(index, coursel);
+    },
+    3000 + (index + 1) * 1000,
+  );
 }
 
 function leftCoursel(index, coursel, click) {
@@ -505,6 +563,7 @@ function leftCoursel(index, coursel, click) {
 
 // aplly iflters
 function applyFilter(filterId) {
+  showProductLoader();
   let categoryFilter = document.getElementsByClassName("category-filter")[0];
   // removing selected class from every category button
   for (let i = 0; i < categoryFilter.children.length; i++) {
@@ -523,6 +582,7 @@ function applyFilter(filterId) {
     ); // finding filtreed array
     showProducts(filteredProducts); // showing filtered products
   }
+  hideProductLoader();
 }
 
 // creating category
@@ -548,6 +608,10 @@ function createProduct(product) {
   productImage.className = "product-image";
   productImage.src = product.images[0];
 
+  productImage.addEventListener("click", () => {
+    window.location.href = `/product.html?id=${product.id}`;
+  });
+
   let productTitle = document.createElement("span");
   productTitle.className = "product-title";
   productTitle.textContent = product.name;
@@ -562,7 +626,7 @@ function createProduct(product) {
 
   let AddToCartButton = document.createElement("button");
   if (user != null && user != undefined) {
-    let cartItem = user.cart.find((item) => item.productId === product.id);
+    let cartItem = user.cart.productId.find((item) => item === product.id);
     if (cartItem != null && cartItem != undefined) {
       AddToCartButton.textContent = "Added";
     } else {
@@ -574,8 +638,13 @@ function createProduct(product) {
   AddToCartButton.className = "product-button";
 
   AddToCartButton.addEventListener("click", () => {
+    let cartItem = user.cart.productId.find((item) => item === product.id);
     if (user != null && user != undefined) {
-      addToCart();
+      if (cartItem != null && cartItem != undefined) {
+      } else {
+        addToCart(product.id);
+        AddToCartButton.textContent = "Added";
+      }
     } else {
       window.location.href = "/auth.html";
     }
@@ -641,7 +710,7 @@ function createCoursel(element, index, coursel) {
   courselItem.style.zIndex = index + 1;
 
   courselImage.addEventListener("click", () => {
-    window.location.href = `product.html?${product.id}`;
+    window.location.href = `/product.html?id=${product.id}`;
   });
 
   let rightClick = 1;
@@ -656,13 +725,241 @@ function createCoursel(element, index, coursel) {
   return courselItem;
 }
 
-// add to cart
-function addToCart() {}
+// get product with id
+function getProduct(id) {
+  return products.find((product) => (product.id = id));
+}
 
-// change add to cart button
-function changeAddToCartButton() {}
+// show product details
+function showProductDetails() {
+  showLoader();
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const ID = urlParams.get("id");
+  const product = products.find((product) => product.id === ID);
+  if (product !== null && product !== undefined) {
+    document.getElementsByClassName("no-product")[0].style.display = "none";
+    createProductDetails(product);
+  } else {
+    document.getElementsByClassName("no-product")[0].style.display = "block";
+  }
+}
+
+// creating a product deatils page
+function createProductDetails(product) {
+  let productMainImage = document.getElementsByClassName(
+    "product-selected-image",
+  )[0];
+
+  selectedImage = product.images[0];
+  productMainImage.src = selectedImage;
+
+  let productSmallImages = document.getElementsByClassName(
+    "product-small-images",
+  )[0];
+
+  product.images.forEach((image) => {
+    let smallImage = document.createElement("img");
+    smallImage.className =
+      selectedImage === image
+        ? "product-small-image selected-image"
+        : "product-small-image";
+    smallImage.src = image;
+    smallImage.id = image;
+
+    smallImage.addEventListener("click", () => {
+      changeProducctMainImages(image);
+    });
+
+    productSmallImages.appendChild(smallImage);
+  });
+  let AddToCartButton = document.getElementsByClassName("add-to-cart")[0];
+  if (user != null && user != undefined) {
+    let cartItem = user.cart.productId.find((item) => item === product.id);
+    if (cartItem != null && cartItem != undefined) {
+      AddToCartButton.textContent = "Added";
+    } else {
+      AddToCartButton.textContent = "Add To Cart";
+    }
+  } else {
+    AddToCartButton.textContent = "Add To Cart";
+  }
+
+  AddToCartButton.addEventListener("click", () => {
+    let cartItem = user.cart.productId.find((item) => item === product.id);
+    if (user != null && user != undefined) {
+      if (cartItem != null && cartItem != undefined) {
+      } else {
+        addToCart(product.id);
+        AddToCartButton.textContent = "Added";
+      }
+    } else {
+      window.location.href = "/auth.html";
+    }
+  });
+  showReview(product);
+  let productTitle = document.getElementsByClassName("product-title")[0];
+  productTitle.textContent = product.name;
+
+  let productDesc = document.getElementsByClassName("product-description")[0];
+  productDesc.textContent = product.description;
+
+  let realPrice = document.getElementsByClassName("real-price")[0];
+  let originalPrice = document.getElementsByClassName("original-price")[0];
+
+  realPrice.textContent = `$${product.price}`;
+  originalPrice.textContent = `$${product.price + 200}`;
+  let rating = document.getElementsByClassName("rating")[0];
+
+  createRating(rating, product.stars);
+}
+
+function createRating(ratingDiv, starss) {
+  let stars = starss;
+  for (let i = 0; i < 5; i++) {
+    let starIcon = document.createElement("i");
+    if (i < stars) {
+      if (stars - i === 0.5) {
+        starIcon.className = "fa-solid fa-star-half-stroke star";
+      } else {
+        starIcon.className = "fa-solid fa-star star";
+      }
+    } else {
+      starIcon.className = "fa-regular fa-star star";
+    }
+
+    ratingDiv.appendChild(starIcon);
+  }
+
+  let ratingText = document.createElement("span");
+  ratingText.textContent = `${starss}`;
+  ratingText.className = "rating-text";
+
+  ratingDiv.appendChild(ratingText);
+}
+
+function changeProducctMainImages(image) {
+  let productMainImage = document.getElementsByClassName(
+    "product-selected-image",
+  )[0];
+
+  selectedImage = image;
+  productMainImage.src = selectedImage;
+
+  let productSmallImages = document.getElementsByClassName(
+    "product-small-images",
+  )[0];
+
+  let index = Array.from(productSmallImages.children).findIndex(
+    (element) => element.id === image,
+  ); // finding clicked element
+
+  for (let i = 0; i < productSmallImages.children.length; i++) {
+    productSmallImages.children[i].className = "product-small-image";
+  }
+
+  if (index >= 0) {
+    productSmallImages.children[index].className =
+      "product-small-image selected-image";
+  }
+}
+
+// add to cart
+function addToCart(productId) {
+  user.cart.productId.push(productId);
+  showCartBadge(); // updating cart badge
+}
+
 // showing product loader
-function showProductLoader() {}
+function showProductLoader() {
+  let productLoader = document.getElementsByClassName("products-loading")[0];
+  productLoader.style.display = "flex";
+}
 
 // hiding product loader
-function hideProductLoader() {}
+function hideProductLoader() {
+  let productLoader = document.getElementsByClassName("products-loading")[0];
+  productLoader.style.display = "none";
+}
+
+function redirectHome() {
+  window.location.href = `${DOMAIN}`;
+}
+
+// logout user
+function logout() {
+  localStorage.removeItem("token");
+  isLoggedIn = false;
+  window.location.href = `${DOMAIN}/auth.html`;
+}
+
+function showReview(product) {
+  let addReview = document.getElementsByClassName("add-review")[0];
+  if (user != null && user != undefined) {
+    let userName = document.getElementsByClassName("username")[0];
+    userName.textContent = user.name;
+    let addReviewButton =
+      document.getElementsByClassName("add-review-button")[0];
+    addReviewButton.addEventListener("click", () => {
+      addUserReview();
+    });
+    let userBuyedThisProduct = false;
+    user.orders.forEach((order) => {
+      order.cart.productId.forEach((id) => {
+        if (id === product.id) {
+          userBuyedThisProduct = true;
+        }
+      });
+    });
+    if (userBuyedThisProduct === true) {
+      addReview.style.display = "flex";
+    } else {
+      addReview.style.display = "none";
+    }
+  } else {
+    addReview.style.display = "none";
+  }
+
+  let otherReviews = document.getElementsByClassName("others-reviews")[0];
+  otherReviews.textContent = "";
+  product.reviews.forEach((review) => {
+    let reviewDiv = document.createElement("div");
+    reviewDiv.className = "review";
+
+    let userProfile = document.createElement("div");
+    userProfile.className = "userprofile";
+
+    let userIcon = document.createElement("i");
+    userIcon.className = "fa-solid fa-user";
+
+    let username = document.createElement("span");
+    let reviewUser = users.find((user) => user.id === review.userId);
+    username.textContent = reviewUser.name;
+    username.className = "username";
+
+    userProfile.appendChild(userIcon);
+    userProfile.appendChild(username);
+
+    let reviewDetails = document.createElement("div");
+    reviewDetails.className = "review-details";
+
+    let ratingDiv = document.createElement("div");
+    ratingDiv.className = "rating review-rating";
+
+    createRating(ratingDiv, review.stars);
+
+    let reviewText = document.createElement("div");
+    reviewText.className = "review-text";
+    reviewText.textContent = review.context;
+
+    reviewDetails.appendChild(ratingDiv);
+    reviewDetails.appendChild(reviewText);
+    reviewDiv.appendChild(userProfile);
+    reviewDiv.appendChild(reviewDetails);
+    otherReviews.appendChild(reviewDiv);
+  });
+}
+
+function addUserReview() {
+  console.log("dsndjsan");
+}

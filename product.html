@@ -66,16 +66,58 @@
       </header>
 
       <main class="main-content">
-        <!-- coursel -->
-        <div class="coursel"></div>
-        <!-- category filter -->
-        <div class="category-filter"></div>
-        <span class="no-products">No products Found</span>
-        <!-- products loading -->
-        <div class="loader-block products-loading">
-          <div class="loader"></div>
+        <span class="text no-product">No Product Found</span>
+        <div class="product-parent-div">
+          <div class="product-div">
+            <div class="product-images">
+              <img
+                src="https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0="
+                class="product-selected-image"
+              />
+              <div class="product-small-images"></div>
+            </div>
+            <div class="product-info">
+              <span class="product-title"></span>
+              <span class="product-description"></span>
+              <span class="product-price"
+                ><span class="real-price"></span>
+                <span class="original-price"></span
+              ></span>
+              <div class="product-action">
+                <div class="rating"></div>
+                <button class="add-to-cart"></button>
+              </div>
+            </div>
+          </div>
+          <span class="text" style="font-size: 25px">Reviews</span>
+          <div class="reviews">
+            <div class="add-review">
+              <div class="userprofile review-profile">
+                <i class="fa-solid fa-user"></i>
+                <span class="username"></span>
+              </div>
+              <div class="review-input-parent">
+                <div class="rating select-rating">
+                  <i class="fa-solid fa-star star"></i>
+                  <i class="fa-solid fa-star star"></i>
+                  <i class="fa-solid fa-star star"></i>
+                  <i class="fa-solid fa-star-half-stroke"></i>
+                  <i class="fa-regular fa-star star"></i>
+                </div>
+                <div class="review-input-div">
+                  <input
+                    type="text"
+                    value=""
+                    class="review-input"
+                    placeholder="Your Review"
+                  />
+                  <button class="add-review-button">Add</button>
+                </div>
+              </div>
+            </div>
+            <div class="others-reviews"></div>
+          </div>
         </div>
-        <div class="products"></div>
       </main>
 
       <footer></footer>
