@@ -32,10 +32,8 @@ let products = [
     id: "smndjnadjnsajndsjan",
     name: "Airpods",
     price: 1499,
-    stars: 4.5,
-    reviews: [
-      { userId: "mdkandkasm", context: "very good product.", stars: 4.5 },
-    ],
+    stars: 0,
+    reviews: [],
     description: "",
     categoryId: "smnajdbsdbsahbd",
     images: [
@@ -50,13 +48,9 @@ let products = [
     id: "asdsjhdsjindajbdsdjsj",
     name: "Airpods",
     price: 1499,
-    stars: 0.5,
+    stars: 5,
     reviews: [
-      {
-        userId: "mdkandkasm",
-        context: "very good product. buy it",
-        stars: 0.5,
-      },
+      { userId: "mdkandkasm", context: "very good product.", stars: 5 },
     ],
     description: "",
     categoryId: "smnajdbsdbsahbd",
@@ -72,13 +66,9 @@ let products = [
     id: "sdmandjsadnsmjsdbjan",
     name: "Airpods",
     price: 1499,
-    stars: 1.5,
+    stars: 4,
     reviews: [
-      {
-        userId: "mdkandkasm",
-        context: "very bad product. dont buy it",
-        stars: 1.5,
-      },
+      { userId: "mdkandkasm", context: "very good product.", stars: 4 },
     ],
     description: "",
     categoryId: "smnajdbsdbsahbd",
@@ -137,6 +127,7 @@ let showingPassword = false; // to check is user seeing his entered password
 let filter = ""; // selected filter
 let selectedImage = ""; // selected image filter
 let starsSelectedReview = 0; // selcted stars for add review
+let userReviewedTisProduct = false; // checki g if user has reveiwed this product
 
 // checking is user logged in with some token
 showLoader();
@@ -740,9 +731,12 @@ function showProductDetails() {
   const product = products.find((product) => product.id === ID);
   if (product !== null && product !== undefined) {
     document.getElementsByClassName("no-product")[0].style.display = "none";
+    console.log(product);
     createProductDetails(product);
+    hideLoader();
   } else {
     document.getElementsByClassName("no-product")[0].style.display = "block";
+    hideLoader();
   }
 }
 
@@ -923,8 +917,22 @@ function logout() {
 }
 
 function showReview(product) {
+  userReviewedTisProduct = false;
+  if (product.reviews.length === 0) {
+    let reviewsText = document.getElementsByClassName("reviews-text")[0];
+    reviewsText.textContent = "No Reviews";
+  } else {
+    let reviewsText = document.getElementsByClassName("reviews-text")[0];
+    reviewsText.textContent = "Reviews";
+  }
   let addReview = document.getElementsByClassName("add-review")[0];
   if (user != null && user != undefined) {
+    let checkReview = product.reviews.find(
+      (review) => review.userId === user.id,
+    );
+    if (checkReview !== undefined) {
+      userReviewedTisProduct = true;
+    }
     let userName = document.getElementsByClassName("username")[0];
     userName.textContent = user.name;
     let addReviewButton =
@@ -940,7 +948,7 @@ function showReview(product) {
         }
       });
     });
-    if (userBuyedThisProduct === true) {
+    if (userBuyedThisProduct === true && userReviewedTisProduct === false) {
       addReview.style.display = "flex";
     } else {
       addReview.style.display = "none";
@@ -1010,7 +1018,13 @@ function addUserReview() {
         stars: starsSelectedReview,
       });
     }
-    showReview(product);
+    let newStars = 0;
+    product.reviews.forEach((review) => {
+      newStars += review.stars;
+    });
+
+    product.stars = newStars / product.reviews.length;
+    showProductDetails();
   } else {
     return;
   }
