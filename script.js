@@ -521,7 +521,10 @@ function showCoursels() {
   });
 }
 
-function rightCoursel(index, coursel) {
+function rightCoursel(index, coursel, click) {
+  for (let i = 0; i < courselProducts.length; i++) {
+    coursel.children[i].style.zIndex = 1;
+  }
   // checking if user on last coursel slide
   if (index === courselProducts.length - 1) {
     coursel.children[0].classList.add("active"); // making selected slide z-index more than everyone's
@@ -543,6 +546,9 @@ function rightCoursel(index, coursel) {
 }
 
 function leftCoursel(index, coursel, click) {
+  for (let i = 0; i < courselProducts.length; i++) {
+    coursel.children[i].style.zIndex = 1;
+  }
   // checking if user is on first slided
   if (index === 0) {
     coursel.children[coursel.children.length - 1].classList.add("active"); // making selected slide z-index more than everyone's
