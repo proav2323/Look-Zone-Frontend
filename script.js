@@ -136,6 +136,7 @@ let isUserLoggingIn = true; // to show login page in auth html
 let showingPassword = false; // to check is user seeing his entered password
 let filter = ""; // selected filter
 let selectedImage = ""; // selected image filter
+let starsSelectedReview = 0; // selcted stars for add review
 
 // checking is user logged in with some token
 showLoader();
@@ -815,6 +816,7 @@ function createProductDetails(product) {
 }
 
 function createRating(ratingDiv, starss) {
+  ratingDiv.textContent = "";
   let stars = starss;
   for (let i = 0; i < 5; i++) {
     let starIcon = document.createElement("i");
@@ -829,6 +831,33 @@ function createRating(ratingDiv, starss) {
     }
 
     ratingDiv.appendChild(starIcon);
+  }
+
+  let ratingText = document.createElement("span");
+  ratingText.textContent = `${starss}`;
+  ratingText.className = "rating-text";
+
+  ratingDiv.appendChild(ratingText);
+}
+
+function createRatingButtons(ratingDiv, starss) {
+  ratingDiv.textContent = "";
+  let stars = starss;
+  for (let i = 1; i <= 5; i++) {
+    let starIconDiv = document.createElement("div");
+    starIconDiv.className = "star-button-div";
+    let starIcon = document.createElement("i");
+    starIcon.id = `${i}`;
+    if (i <= stars) {
+      starIcon.className = "fa-solid fa-star star btn";
+    } else {
+      starIcon.className = "fa-regular fa-star star btn";
+    }
+    starIconDiv.appendChild(starIcon);
+    starIconDiv.addEventListener("click", () => {
+      changeStars(i);
+    });
+    ratingDiv.appendChild(starIconDiv);
   }
 
   let ratingText = document.createElement("span");
@@ -961,5 +990,32 @@ function showReview(product) {
 }
 
 function addUserReview() {
-  console.log("dsndjsan");
+  let reviewContext = document.getElementsByClassName("review-input")[0].value;
+  if (
+    reviewContext !== "" &&
+    reviewContext != undefined &&
+    reviewContext != null &&
+    starsSelectedReview !== 0
+  ) {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const ID = urlParams.get("id");
+
+    let product = products.find((element) => (element.id = ID));
+    product.reviews.push({
+      userId: user.id,
+      context: reviewContext,
+      stars: starsSelectedReview,
+    });
+    showReview(product);
+  } else {
+    return;
+  }
+}
+
+function changeStars(number) {
+  starsSelectedReview = number;
+  let ratingDiv = document.getElementsByClassName("select-rating")[0];
+  ratingDiv.textContent = "";
+  createRatingButtons(ratingDiv, number);
 }
