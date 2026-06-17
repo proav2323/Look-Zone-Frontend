@@ -507,21 +507,24 @@ function showProducts(showProducts) {
 // showing coursels
 function showCoursels() {
   let coursel = document.getElementsByClassName("coursel")[0]; // coursel parent div
+  let index = 0;
   // maping coursel items
-  courselProducts.forEach((element, index) => {
-    let courselItem = createCoursel(element, index, coursel); // creating coursel item
+  courselProducts.forEach((element, i) => {
+    let courselItem = createCoursel(element, i, coursel); // creating coursel item
     coursel.appendChild(courselItem); // adding coursel item in parent div
-    // setInterval(
-    //   () => {
-    //     rightCoursel(index, coursel);
-    //     console.log("asndsadb");
-    //   },
-    //   index * 1000 + 3000,
-    // );
   });
+  index = courselProducts.length - 1;
+  let interval = setInterval(() => {
+    rightCoursel(index, coursel);
+    if (index == courselProducts.length - 1) {
+      index = 0;
+    } else {
+      index++;
+    }
+  }, 5000);
 }
 
-function rightCoursel(index, coursel, click) {
+function rightCoursel(index, coursel) {
   for (let i = 0; i < courselProducts.length; i++) {
     coursel.children[i].style.zIndex = 1;
   }
@@ -545,7 +548,7 @@ function rightCoursel(index, coursel, click) {
   }
 }
 
-function leftCoursel(index, coursel, click) {
+function leftCoursel(index, coursel) {
   for (let i = 0; i < courselProducts.length; i++) {
     coursel.children[i].style.zIndex = 1;
   }
@@ -738,7 +741,7 @@ function createCoursel(element, index, coursel) {
 
   let rightClick = 1;
   rightButton.addEventListener("click", () => {
-    rightCoursel(index, coursel, rightClick);
+    rightCoursel(index, coursel);
     rightClick++;
   });
   leftButton.addEventListener("click", () => {
