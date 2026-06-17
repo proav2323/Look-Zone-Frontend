@@ -1002,11 +1002,14 @@ function addUserReview() {
     const ID = urlParams.get("id");
 
     let product = products.find((element) => (element.id = ID));
-    product.reviews.push({
-      userId: user.id,
-      context: reviewContext,
-      stars: starsSelectedReview,
-    });
+    let review = product.reviews.find((review) => review.userId === user.id);
+    if (review === undefined) {
+      product.reviews.push({
+        userId: user.id,
+        context: reviewContext,
+        stars: starsSelectedReview,
+      });
+    }
     showReview(product);
   } else {
     return;
