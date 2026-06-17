@@ -55,11 +55,12 @@ let products = [
     description: "",
     categoryId: "smnajdbsdbsahbd",
     images: [
+      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
       "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
       "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
       "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
       "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
-      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
+      ,
     ],
   },
   {
@@ -73,10 +74,11 @@ let products = [
     description: "",
     categoryId: "smnajdbsdbsahbd",
     images: [
+      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
       "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
       "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
       "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
-      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
+      ,
       "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
     ],
   },
@@ -509,47 +511,59 @@ function showCoursels() {
   courselProducts.forEach((element, index) => {
     let courselItem = createCoursel(element, index, coursel); // creating coursel item
     coursel.appendChild(courselItem); // adding coursel item in parent div
-    setTimeout(
-      () => {
-        rightCoursel(index, coursel);
-      },
-      3000 + (index + 1) * 1000,
-    );
+    // setInterval(
+    //   () => {
+    //     rightCoursel(index, coursel);
+    //     console.log("asndsadb");
+    //   },
+    //   index * 1000 + 3000,
+    // );
   });
 }
 
 function rightCoursel(index, coursel) {
-  // doing z-index of all slides 1
-  for (let i = 0; i < coursel.children.length; i++) {
-    coursel.children[i].style.zIndex = 1; // putting all slides z-index 1
-  }
-
   // checking if user on last coursel slide
   if (index === courselProducts.length - 1) {
-    coursel.children[0].style.zIndex = courselProducts.length + 1; // making selected slide z-index more than everyone's
+    coursel.children[0].classList.add("active"); // making selected slide z-index more than everyone's
+    coursel.children[0].style.zIndex = 100;
+    coursel.children[index].classList.remove("active");
+    document.getElementById(`${index}-right`).classList.remove("active");
+    document.getElementById(`0-right`).classList.add("active");
+    document.getElementById(`${index}-left`).classList.remove("active");
+    document.getElementById(`0-left`).classList.add("active");
   } else {
-    coursel.children[index + 1].style.zIndex = courselProducts.length + 1;
+    coursel.children[index + 1].classList.add("active");
+    coursel.children[index + 1].style.zIndex = 100;
+    coursel.children[index].classList.remove("active");
+    document.getElementById(`${index}-right`).classList.remove("active");
+    document.getElementById(`${index + 1}-right`).classList.add("active");
+    document.getElementById(`${index}-left`).classList.remove("active");
+    document.getElementById(`${index + 1}-left`).classList.add("active");
   }
-  setTimeout(
-    () => {
-      leftCoursel(index, coursel);
-    },
-    3000 + (index + 1) * 1000,
-  );
 }
 
 function leftCoursel(index, coursel, click) {
-  // doing z-index of all slides 1
-  for (let i = 0; i < coursel.children.length; i++) {
-    coursel.children[i].style.zIndex = 1; // putting all slides z-index 1
-  }
-
   // checking if user is on first slided
   if (index === 0) {
-    coursel.children[coursel.children.length - 1].style.zIndex =
-      courselProducts.length + 1;
+    coursel.children[coursel.children.length - 1].classList.add("active"); // making selected slide z-index more than everyone's
+    coursel.children[coursel.children.length - 1].style.zIndex = 100;
+    coursel.children[0].classList.remove("active");
+    document.getElementById(`${0}-right`).classList.remove("active");
+    document
+      .getElementById(`${coursel.children.length - 1}-right`)
+      .classList.add("active");
+    document.getElementById(`${0}-left`).classList.remove("active");
+    document
+      .getElementById(`${coursel.children.length - 1}-left`)
+      .classList.add("active");
   } else {
-    coursel.children[index - 1].style.zIndex = courselProducts.length + 1;
+    coursel.children[index - 1].classList.add("active"); // making selected slide z-index more than everyone's
+    coursel.children[index - 1].style.zIndex = 100;
+    coursel.children[index].classList.remove("active");
+    document.getElementById(`${index}-right`).classList.remove("active");
+    document.getElementById(`${index - 1}-right`).classList.add("active");
+    document.getElementById(`${index}-left`).classList.remove("active");
+    document.getElementById(`${index - 1}-left`).classList.add("active");
   }
 }
 
@@ -653,7 +667,10 @@ function createProduct(product) {
 // creating coursels
 function createCoursel(element, index, coursel) {
   let courselItem = document.createElement("div");
-  courselItem.className = "coursel-item";
+  courselItem.className =
+    index === courselProducts.length - 1
+      ? "active coursel-item"
+      : "coursel-item";
 
   let courselText = document.createElement("div");
   courselText.className = "coursel-text";
@@ -674,7 +691,11 @@ function createCoursel(element, index, coursel) {
   courselText.appendChild(courselSubText);
 
   let leftButton = document.createElement("button");
-  leftButton.className = "coursel-button left";
+  leftButton.id = `${index}-left`;
+  leftButton.className =
+    index === courselProducts.length - 1
+      ? "active coursel-button left"
+      : "coursel-button left";
 
   let leftIcon = document.createElement("i");
   leftIcon.className = "fa-solid fa-arrow-left";
@@ -682,7 +703,11 @@ function createCoursel(element, index, coursel) {
   leftButton.appendChild(leftIcon);
 
   let rightButton = document.createElement("button");
-  rightButton.className = "coursel-button right";
+  rightButton.id = `${index}-right`;
+  rightButton.className =
+    index === courselProducts.length - 1
+      ? "active coursel-button right"
+      : "coursel-button right";
 
   let rightIcon = document.createElement("i");
   rightIcon.className = "fa-solid fa-arrow-right";
@@ -731,7 +756,6 @@ function showProductDetails() {
   const product = products.find((product) => product.id === ID);
   if (product !== null && product !== undefined) {
     document.getElementsByClassName("no-product")[0].style.display = "none";
-    console.log(product);
     createProductDetails(product);
     hideLoader();
   } else {
