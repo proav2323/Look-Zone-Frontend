@@ -5,18 +5,19 @@ let users = [
     email: "anshvishesh03@gmail.com",
     password: "anshvishesh2007",
     cart: {
-      productId: ["smndjnadjnsajndsjan"],
+      products: [
+        { id: "smndjnadjnsajndsjan", qty: 1, price: 1499 },
+        { id: "asdsjhdsjindajbdsdjsj", qty: 1, price: 1499 },
+      ],
       id: "snajdnajsdbas",
-      qty: 1,
-      price: 1499,
+      totalPrice: 1499 * 2,
     },
     orders: [
       {
         cart: {
-          productId: ["smndjnadjnsajndsjan"],
+          products: [{ id: "smndjnadjnsajndsjan", qty: 1, price: 1499 }],
           id: "snajdnajsdbas",
-          qty: 1,
-          price: 1499,
+          totalPrice: 1499,
         },
         id: "msnajdbsabdhab",
         address: "",
@@ -33,8 +34,10 @@ let products = [
     name: "Airpods",
     price: 1499,
     stars: 0,
+    stock: 7,
     reviews: [],
-    description: "",
+    description:
+      "sandjasndasdnkasnd asdlasjkdnas dlasmdlasmd asmdlnasdas daskdas dnaskndiasj dasnkasn dasndkasnd asndkasnd aslfsaknfmas fkasn fas asjnaskf asnfkasn",
     categoryId: "smnajdbsdbsahbd",
     images: [
       "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
@@ -49,10 +52,12 @@ let products = [
     name: "Airpods",
     price: 1499,
     stars: 5,
+    stock: 20,
     reviews: [
       { userId: "mdkandkasm", context: "very good product.", stars: 5 },
     ],
-    description: "",
+    description:
+      "skdfsn fdsnfkdsnf dmsnfksnf dsmfksn asndkasd asdnkasd asjlasfm asnfbaskmf asjfbskf asjfaslmfas fjsakf asjfkasf asjfnasknf sajfnksnf asfmnaskf asfnasmfasf kasnf asfasnfmasm fkasnkfas fksanfkasnf asm fknsakfnas fkasnfnas fkasnfas flasnfnas fkns",
     categoryId: "smnajdbsdbsahbd",
     images: [
       "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
@@ -68,10 +73,12 @@ let products = [
     name: "Airpods",
     price: 1499,
     stars: 4,
+    stock: 10,
     reviews: [
       { userId: "mdkandkasm", context: "very good product.", stars: 4 },
     ],
-    description: "",
+    description:
+      "smaNSDJBSA DASHDJASHD ASJDKSJD DSFJDSKFDS DKSJFDS FK sajfkdsnf dsjfkdsf dsfjkdsnf dsmfkdsnf dsmfnkdsmf dsmfnkdsnf dsfnkdsnf dssmfndskn",
     categoryId: "smnajdbsdbsahbd",
     images: [
       "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
@@ -79,6 +86,81 @@ let products = [
       "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
       "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
       ,
+      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
+    ],
+  },
+  {
+    id: "asdsjhdsjindajbdsdjsjnasndjasn",
+    name: "Airpods",
+    price: 1499,
+    stars: 5,
+    stock: 20,
+    reviews: [
+      { userId: "mdkandkasm", context: "very good product.", stars: 5 },
+    ],
+    description:
+      "skdfsn fdsnfkdsnf dmsnfksnf dsmfksn asndkasd asdnkasd asjlasfm asnfbaskmf asjfbskf asjfaslmfas fjsakf asjfkasf asjfnasknf sajfnksnf asfmnaskf asfnasmfasf kasnf asfasnfmasm fkasnkfas fksanfkasnf asm fknsakfnas fkasnfnas fkasnfas flasnfnas fkns",
+    categoryId: "smnajdbsdbsahbd",
+    images: [
+      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
+      "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
+      "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
+      "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
+      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
+      ,
+    ],
+  },
+  {
+    id: "smndjnadjnsajndsjanasdnjasndjasn",
+    name: "Airpods",
+    price: 1499,
+    stars: 0,
+    stock: 7,
+    reviews: [],
+    description:
+      "sandjasndasdnkasnd asdlasjkdnas dlasmdlasmd asmdlnasdas daskdas dnaskndiasj dasnkasn dasndkasnd asndkasnd aslfsaknfmas fkasn fas asjnaskf asnfkasn",
+    categoryId: "smnajdbsdbsahbd",
+    images: [
+      "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
+      "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
+      "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
+      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
+      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
+    ],
+  },
+  {
+    id: "smndjnadjnsajndsjanasdnjasndjasnsajdnjasndjand",
+    name: "Airpods",
+    price: 1499,
+    stars: 0,
+    stock: 7,
+    reviews: [],
+    description:
+      "sandjasndasdnkasnd asdlasjkdnas dlasmdlasmd asmdlnasdas daskdas dnaskndiasj dasnkasn dasndkasnd asndkasnd aslfsaknfmas fkasn fas asjnaskf asnfkasn",
+    categoryId: "smnajdbsdbsahbd",
+    images: [
+      "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
+      "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
+      "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
+      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
+      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
+    ],
+  },
+  {
+    id: "smndjnadjnsajndsjanasdnjasndjasnsnadnsaksjdidhddndjd",
+    name: "Airpods",
+    price: 1499,
+    stars: 0,
+    stock: 7,
+    reviews: [],
+    description:
+      "sandjasndasdnkasnd asdlasjkdnas dlasmdlasmd asmdlnasdas daskdas dnaskndiasj dasnkasn dasndkasnd asndkasnd aslfsaknfmas fkasn fas asjnaskf asnfkasn",
+    categoryId: "smnajdbsdbsahbd",
+    images: [
+      "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
+      "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
+      "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
+      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
       "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
     ],
   },
@@ -164,6 +246,14 @@ function showUi() {
     }
     showCartBadge();
   }
+  if (isLoggedIn === false) {
+    if (
+      window.location.href === `${DOMAIN}/cart.html` ||
+      window.location.href === `${DOMAIN}/cart.html?`
+    ) {
+      window.location.href = `${DOMAIN}`;
+    }
+  }
   if (
     window.location.href === `${DOMAIN}/` ||
     window.location.href === `${DOMAIN}` ||
@@ -174,6 +264,10 @@ function showUi() {
     showProducts(products);
     showCoursels();
     showCategoryFilters();
+  }
+
+  if (window.location.href.startsWith(`${DOMAIN}/cart.html`)) {
+    createCartPage();
   }
 
   if (window.location.href.startsWith(`${DOMAIN}/product.html`) === true) {
@@ -195,16 +289,20 @@ function hideLoader() {
 }
 // change cart badge
 function showCartBadge() {
+  document.getElementsByClassName("cart-item")[0].style.display = "none";
   if (user != null && user != undefined) {
     // to show badge above cart icon if there items in user cart
     if (
-      user.cart.productId.length !== 0 &&
-      user.cart.productId.length !== undefined &&
-      user.cart.productId.length !== null
+      user.cart.products.length !== 0 &&
+      user.cart.products.length !== undefined &&
+      user.cart.products.length !== null
     ) {
       document.getElementsByClassName("cart-item")[0].style.display = "flex";
-      document.getElementsByClassName("cart-item")[0].textContent =
-        user.cart.productId.length;
+      let qty = 0;
+      user.cart.products.forEach((item) => {
+        qty += item.qty;
+      });
+      document.getElementsByClassName("cart-item")[0].textContent = `${qty}`;
     }
   }
 }
@@ -219,7 +317,8 @@ function auth() {
       window.location.href === `${DOMAIN}?` ||
       window.location.href === `${DOMAIN}/index.html/` ||
       window.location.href === `${DOMAIN}/index.html?` ||
-      window.location.href.startsWith(`${DOMAIN}/product.html`) === true
+      window.location.href.startsWith(`${DOMAIN}/product.html`) === true ||
+      window.location.href.startsWith(`${DOMAIN}/cart.html`) === true
     )
       showRemove("user-info", "auth");
   }
@@ -641,7 +740,7 @@ function createProduct(product) {
 
   let AddToCartButton = document.createElement("button");
   if (user != null && user != undefined) {
-    let cartItem = user.cart.productId.find((item) => item === product.id);
+    let cartItem = user.cart.products.find((item) => item.id === product.id);
     if (cartItem != null && cartItem != undefined) {
       AddToCartButton.textContent = "Added";
     } else {
@@ -653,7 +752,7 @@ function createProduct(product) {
   AddToCartButton.className = "product-button";
 
   AddToCartButton.addEventListener("click", () => {
-    let cartItem = user.cart.productId.find((item) => item === product.id);
+    let cartItem = user.cart.products.find((item) => item.id === product.id);
     if (user != null && user != undefined) {
       if (cartItem != null && cartItem != undefined) {
       } else {
@@ -803,7 +902,7 @@ function createProductDetails(product) {
   });
   let AddToCartButton = document.getElementsByClassName("add-to-cart")[0];
   if (user != null && user != undefined) {
-    let cartItem = user.cart.productId.find((item) => item === product.id);
+    let cartItem = user.cart.products.find((item) => item.id === product.id);
     if (cartItem != null && cartItem != undefined) {
       AddToCartButton.textContent = "Added";
     } else {
@@ -814,7 +913,7 @@ function createProductDetails(product) {
   }
 
   AddToCartButton.addEventListener("click", () => {
-    let cartItem = user.cart.productId.find((item) => item === product.id);
+    let cartItem = user.cart.products.find((item) => item.id === product.id);
     if (user != null && user != undefined) {
       if (cartItem != null && cartItem != undefined) {
       } else {
@@ -922,7 +1021,8 @@ function changeProducctMainImages(image) {
 
 // add to cart
 function addToCart(productId) {
-  user.cart.productId.push(productId);
+  let prod = products.find((item) => item.id === productId);
+  user.cart.products.push({ id: productId, qty: 1, price: prod.price });
   showCartBadge(); // updating cart badge
 }
 
@@ -975,8 +1075,8 @@ function showReview(product) {
     });
     let userBuyedThisProduct = false;
     user.orders.forEach((order) => {
-      order.cart.productId.forEach((id) => {
-        if (id === product.id) {
+      order.cart.products.forEach((item) => {
+        if (item.id === product.id) {
           userBuyedThisProduct = true;
         }
       });
@@ -1069,3 +1169,175 @@ function changeStars(number) {
   ratingDiv.textContent = "";
   createRatingButtons(ratingDiv, number);
 }
+function goToCart() {
+  if (user !== null && user !== undefined) {
+    window.location.href = `${DOMAIN}/cart.html`;
+  }
+}
+
+function createCartPage() {
+  let yourCartText = document.getElementsByClassName("cart-text")[0];
+  let placeOrderBtn = document.getElementsByClassName("place-order")[0];
+  let totalPrice = document.getElementsByClassName("red")[0];
+  let cartDiv = document.getElementsByClassName("cart-div")[0];
+  let cartItemDivs = document.getElementsByClassName("cart-item-div");
+  let length = cartItemDivs.length;
+  for (let i = 0; i < length; i++) {
+    cartDiv.removeChild(cartItemDivs[0]);
+  }
+  placeOrderBtn.style.display = "block";
+  totalPrice.style.display = "block";
+  if (user.cart.products.length > 0) {
+    yourCartText.textContent = "Your Cart";
+    totalPrice.textContent = `Total Price: $${user.cart.totalPrice}`;
+
+    user.cart.products.forEach((item) => {
+      let cartProduct = products.find((ele) => ele.id === item.id);
+      let cartItem = document.createElement("div");
+      cartItem.className = "cart-item-div";
+
+      let cartImageDiv = document.createElement("div");
+      cartImageDiv.className = "product-image-div";
+
+      let cartImage = document.createElement("img");
+      cartImage.className = "product-image img";
+      cartImage.src = cartProduct.images[0];
+
+      cartImage.addEventListener("click", () => {
+        window.location.href = `${DOMAIN}/product.html?id=${item.id}`;
+      });
+
+      cartImageDiv.appendChild(cartImage);
+
+      let cartItemDetails = document.createElement("div");
+      cartItemDetails.className = "cart-item-details";
+
+      let textDiv = document.createElement("div");
+
+      let productTitle = document.createElement("span");
+      productTitle.className = "product-title cart-title";
+      productTitle.textContent = cartProduct.name;
+
+      let productDesc = document.createElement("span");
+      productDesc.className = "product-description cart-title";
+      productDesc.style.width = "100%";
+      productDesc.textContent =
+        cartProduct.description.length > 25
+          ? `${cartProduct.description.slice(0, 25)}...`
+          : cartProduct.description;
+
+      let productPrice = document.createElement("span");
+      productPrice.className = "real-price";
+      productPrice.style.display = "block";
+      productPrice.style.margin = "10px";
+      productPrice.textContent = `$${item.price}`;
+      textDiv.appendChild(productTitle);
+      textDiv.appendChild(productDesc);
+      textDiv.appendChild(productPrice);
+
+      let cartActions = document.createElement("div");
+      cartActions.className = "cart-actions";
+
+      let addQtyButton = document.createElement("button");
+      addQtyButton.className = "add cart-btn";
+      addQtyButton.textContent = "+";
+
+      let qtyText = document.createElement("span");
+      qtyText.className = "cart-qty";
+      qtyText.textContent = `${item.qty}`;
+
+      let subQtyButton = document.createElement("button");
+      subQtyButton.className = "sub cart-btn";
+      subQtyButton.textContent = "-";
+
+      let removeButton = document.createElement("button");
+      removeButton.className = "remove cart-btn";
+      removeButton.textContent = "x";
+
+      addQtyButton.addEventListener("click", () => {
+        addQty(item.id, qtyText, totalPrice);
+      });
+      subQtyButton.addEventListener("click", () => {
+        lessQty(item.id, qtyText, totalPrice);
+      });
+      removeButton.addEventListener("click", () => {
+        removeQty(item.id);
+      });
+
+      cartActions.appendChild(addQtyButton);
+      cartActions.appendChild(qtyText);
+      cartActions.appendChild(subQtyButton);
+      cartActions.appendChild(removeButton);
+
+      cartItemDetails.appendChild(textDiv);
+      cartItemDetails.appendChild(cartActions);
+      cartItem.appendChild(cartImageDiv);
+      cartItem.appendChild(cartItemDetails);
+      cartDiv.appendChild(cartItem);
+    });
+  } else {
+    yourCartText.textContent = "No Item In The Cart";
+    placeOrderBtn.style.display = "none";
+    totalPrice.style.display = "none";
+  }
+}
+
+function addQty(productid, text, totalPrice) {
+  let cartItemIndex = user.cart.products.findIndex(
+    (item) => item.id === productid,
+  );
+  let cartProduct = products.find((item) => item.id === productid);
+  if (user.cart.products[cartItemIndex].qty + 1 <= cartProduct.stock) {
+    user.cart.products[cartItemIndex].qty =
+      user.cart.products[cartItemIndex].qty + 1;
+  } else {
+    showToast("product is out of stock now");
+  }
+
+  text.textContent = user.cart.products[cartItemIndex].qty;
+
+  totalPrice.textContent = `Total Price: $${getTotalPrice()}`;
+  showCartBadge();
+}
+
+function getTotalPrice() {
+  let totalPrice = 0;
+  user.cart.products.forEach((item) => {
+    totalPrice = totalPrice + item.price * item.qty;
+  });
+  user.cart.totalPrice = totalPrice;
+  return totalPrice;
+}
+
+function lessQty(productid, text, totalPrice) {
+  let cartItemIndex = user.cart.products.findIndex(
+    (item) => item.id === productid,
+  );
+  if (user.cart.products[cartItemIndex].qty !== 1) {
+    user.cart.products[cartItemIndex].qty =
+      user.cart.products[cartItemIndex].qty - 1;
+
+    text.textContent = user.cart.products[cartItemIndex].qty;
+
+    totalPrice.textContent = `Total Price: $${getTotalPrice()}`;
+    showCartBadge();
+  } else {
+    removeQty(productid);
+  }
+}
+
+function removeQty(productId) {
+  let index = user.cart.products.findIndex((item) => item.id === productId);
+  if (index === 0) {
+    user.cart.products.shift();
+  } else {
+    user.cart.products = user.cart.products.slice(index - 1, 1);
+  }
+  getTotalPrice();
+  createCartPage();
+  showCartBadge();
+}
+
+function showToast(message) {}
+
+function hideToast() {}
