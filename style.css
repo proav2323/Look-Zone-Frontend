@@ -1123,7 +1123,6 @@ body {
 
 .toast {
   position: fixed;
-  z-index: 200;
   background-color: #af8f8f;
   padding: 10px;
   border-radius: 10px;
@@ -1134,6 +1133,7 @@ body {
   width: fit-content;
   height: fit-content;
   opacity: 0;
+  z-index: -1;
   transition: all ease-in-out 0.5s;
 }
 .msg {
@@ -1157,4 +1157,5 @@ body {
 
 .show-toast {
   opacity: 1;
+  z-index: 200;
 }

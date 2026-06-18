@@ -1,179 +1,176 @@
 // bolierplate data
+class USERS {
+  constructor(name, email, password, id, cart, orders, address) {
+    this.name = name;
+    this.email = email;
+    this.password = password;
+    this.id = id;
+    this.cart = cart;
+    this.orders = orders;
+    this.address = address;
+  }
+}
+
+class PRODUCTS {
+  constructor(
+    name,
+    price,
+    stars,
+    stock,
+    id,
+    reviews,
+    description,
+    categoryId,
+    images,
+  ) {
+    this.name = name;
+    this.price = price;
+    this.stars = stars;
+    this.stock = stock;
+    this.id = id;
+    this.reviews = reviews;
+    this.description = description;
+    this.categoryId = categoryId;
+    this.images = images;
+  }
+}
+
+class CATEGORIES {
+  constructor(name, id) {
+    this.name = name;
+    this.id = id;
+  }
+}
+
+class ORDERS {
+  constructor(cart, id, address, payment) {
+    this.cart = cart;
+    this.id = id;
+    this.address = address;
+    this.payment = payment;
+  }
+}
+
+class CART {
+  constructor(products, id, totalPrice) {
+    this.products = products;
+    this.id = id;
+    this.totalPrice = totalPrice;
+  }
+}
+
+class ADDRESS {
+  constructor(street, city, state, zip, country) {
+    this.street = street;
+    this.city = city;
+    this.state = state;
+    this.zip = zip;
+    this.country = country;
+  }
+}
+
+class REVIEWS {
+  constructor(userId, context, stars) {
+    this.userId = userId;
+    this.context = context;
+    this.stars = stars;
+  }
+}
+
 let users = [
-  {
-    name: "Ansh Verma",
-    email: "anshvishesh03@gmail.com",
-    password: "anshvishesh2007",
-    cart: {
-      products: [
+  new USERS(
+    "Ansh Verma",
+    "anshvishesh03@gmail.com",
+    "anshvishesh2007",
+    "mdkandkasm",
+    new CART(
+      [
         { id: "smndjnadjnsajndsjan", qty: 1, price: 1499 },
         { id: "asdsjhdsjindajbdsdjsj", qty: 1, price: 1499 },
       ],
-      id: "snajdnajsdbas",
-      totalPrice: 1499 * 2,
-    },
-    orders: [
-      {
-        cart: {
-          products: [{ id: "smndjnadjnsajndsjan", qty: 1, price: 1499 }],
-          id: "snajdnajsdbas",
-          totalPrice: 1499,
-        },
-        id: "msnajdbsabdhab",
-        address: "",
-        payment: 1499,
-      },
+      "snajdnajsdbas",
+      2998,
+    ),
+    [
+      new ORDERS(
+        new CART(
+          [{ id: "smndjnadjnsajndsjan", qty: 1, price: 1499 }],
+          "snajdnajsdbas",
+          1499,
+        ),
+        "msnajdbsabdhab",
+        new ADDRESS("123 Main St", "Anytown", "State", "12345", "Country"),
+        1499,
+      ),
     ],
-    id: "mdkandkasm",
-    address: {},
-  },
-];
+    new ADDRESS("123 Main St", "Anytown", "State", "12345", "Country"),
+  ),
+]; // user date
+
 let products = [
-  {
-    id: "smndjnadjnsajndsjan",
-    name: "Airpods",
-    price: 1499,
-    stars: 0,
-    stock: 7,
-    reviews: [],
-    description:
-      "sandjasndasdnkasnd asdlasjkdnas dlasmdlasmd asmdlnasdas daskdas dnaskndiasj dasnkasn dasndkasnd asndkasnd aslfsaknfmas fkasn fas asjnaskf asnfkasn",
-    categoryId: "smnajdbsdbsahbd",
-    images: [
+  new PRODUCTS(
+    "Airpods",
+    1499,
+    0,
+    7,
+    "smndjnadjnsajndsjan",
+    [],
+    "sandjasndasdnkasnd asdlasjkdnas dlasmdlasmd asmdlnasdas daskdas dnaskndiasj dasnkasn dasndkasnd asndkasnd aslfsaknfmas fkasn fas asjnaskf asnfkasn",
+    "smnajdbsdbsahbd",
+    [
       "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
       "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
       "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
       "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
       "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
     ],
-  },
-  {
-    id: "asdsjhdsjindajbdsdjsj",
-    name: "Airpods",
-    price: 1499,
-    stars: 5,
-    stock: 20,
-    reviews: [
-      { userId: "mdkandkasm", context: "very good product.", stars: 5 },
-    ],
-    description:
-      "skdfsn fdsnfkdsnf dmsnfksnf dsmfksn asndkasd asdnkasd asjlasfm asnfbaskmf asjfbskf asjfaslmfas fjsakf asjfkasf asjfnasknf sajfnksnf asfmnaskf asfnasmfasf kasnf asfasnfmasm fkasnkfas fksanfkasnf asm fknsakfnas fkasnfnas fkasnfas flasnfnas fkns",
-    categoryId: "smnajdbsdbsahbd",
-    images: [
+  ),
+  new PRODUCTS(
+    "Airpods",
+    1499,
+    5,
+    20,
+    "asdsjhdsjindajbdsdjsj",
+    [new REVIEWS("mdkandkasm", "very good product.", 5)],
+    "skdfsn fdsnfkdsnf dmsnfksnf dsmfksn asndkasd asdnkasd asjlasfm asnfbaskmf asjfbskf asjfaslmfas fjsakf asjfkasf asjfnasknf sajfnksnf asfmnaskf asfnasmfasf kasnf asfasnfmasm fkasnkfas fksanfkasnf asm fknsakfnas fkasnfnas fkasnfas flasnfnas fkns",
+    "smnajdbsdbsahbd",
+    [
       "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
       "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
       "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
       "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
       "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
-      ,
     ],
-  },
-  {
-    id: "sdmandjsadnsmjsdbjan",
-    name: "Airpods",
-    price: 1499,
-    stars: 4,
-    stock: 10,
-    reviews: [
-      { userId: "mdkandkasm", context: "very good product.", stars: 4 },
-    ],
-    description:
-      "smaNSDJBSA DASHDJASHD ASJDKSJD DSFJDSKFDS DKSJFDS FK sajfkdsnf dsjfkdsf dsfjkdsnf dsmfkdsnf dsmfnkdsmf dsmfnkdsnf dsfnkdsnf dssmfndskn",
-    categoryId: "smnajdbsdbsahbd",
-    images: [
-      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
-      "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
-      "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
+  ),
+  new PRODUCTS(
+    "Airpods",
+    1499,
+    5,
+    20,
+    "asdsjhdsjindajbdsdjsjsknadkasn",
+    [new REVIEWS("mdkandkasm", "very good product.", 5)],
+    "skdfsn fdsnfkdsnf dmsnfksnf dsmfksn asndkasd asdnkasd asjlasfm asnfbaskmf asjfbskf asjfaslmfas fjsakf asjfkasf asjfnasknf sajfnksnf asfmnaskf asfnasmfasf kasnf asfasnfmasm fkasnkfas fksanfkasnf asm fknsakfnas fkasnfnas fkasnfas flasnfnas fkns",
+    "smnajdbsdbsahbd",
+    [
       "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
-      ,
-      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
-    ],
-  },
-  {
-    id: "asdsjhdsjindajbdsdjsjnasndjasn",
-    name: "Airpods",
-    price: 1499,
-    stars: 5,
-    stock: 20,
-    reviews: [
-      { userId: "mdkandkasm", context: "very good product.", stars: 5 },
-    ],
-    description:
-      "skdfsn fdsnfkdsnf dmsnfksnf dsmfksn asndkasd asdnkasd asjlasfm asnfbaskmf asjfbskf asjfaslmfas fjsakf asjfkasf asjfnasknf sajfnksnf asfmnaskf asfnasmfasf kasnf asfasnfmasm fkasnkfas fksanfkasnf asm fknsakfnas fkasnfnas fkasnfas flasnfnas fkns",
-    categoryId: "smnajdbsdbsahbd",
-    images: [
       "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
       "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
       "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
-      "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
       "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
-      ,
     ],
-  },
-  {
-    id: "smndjnadjnsajndsjanasdnjasndjasn",
-    name: "Airpods",
-    price: 1499,
-    stars: 0,
-    stock: 7,
-    reviews: [],
-    description:
-      "sandjasndasdnkasnd asdlasjkdnas dlasmdlasmd asmdlnasdas daskdas dnaskndiasj dasnkasn dasndkasnd asndkasnd aslfsaknfmas fkasn fas asjnaskf asnfkasn",
-    categoryId: "smnajdbsdbsahbd",
-    images: [
-      "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
-      "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
-      "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
-      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
-      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
-    ],
-  },
-  {
-    id: "smndjnadjnsajndsjanasdnjasndjasnsajdnjasndjand",
-    name: "Airpods",
-    price: 1499,
-    stars: 0,
-    stock: 7,
-    reviews: [],
-    description:
-      "sandjasndasdnkasnd asdlasjkdnas dlasmdlasmd asmdlnasdas daskdas dnaskndiasj dasnkasn dasndkasnd asndkasnd aslfsaknfmas fkasn fas asjnaskf asnfkasn",
-    categoryId: "smnajdbsdbsahbd",
-    images: [
-      "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
-      "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
-      "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
-      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
-      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
-    ],
-  },
-  {
-    id: "smndjnadjnsajndsjanasdnjasndjasnsnadnsaksjdidhddndjd",
-    name: "Airpods",
-    price: 1499,
-    stars: 0,
-    stock: 7,
-    reviews: [],
-    description:
-      "sandjasndasdnkasnd asdlasjkdnas dlasmdlasmd asmdlnasdas daskdas dnaskndiasj dasnkasn dasndkasnd asndkasnd aslfsaknfmas fkasn fas asjnaskf asnfkasn",
-    categoryId: "smnajdbsdbsahbd",
-    images: [
-      "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
-      "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
-      "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
-      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
-      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
-    ],
-  },
-];
+  ),
+]; // products data
 let admins = [
   {
-    id: "mdkandkas",
+    userId: "mdkandkasm",
     canEdit: true,
+    id: "dsjdnasjbdsabdabshdbashdbahs",
   },
-];
+]; // admins data
+
 let courselProducts = [
   {
-    productId: "sdmandjsadnsmjsdbjan",
+    productId: "smndjnadjnsajndsjan",
     id: "sdnajdsandasndasn",
     heading: "first slide",
     subText: "first and this is product is so good you should give it a try",
@@ -184,20 +181,16 @@ let courselProducts = [
     heading: "second slide",
     subText: "second",
   },
-  {
-    productId: "smndjnadjnsajndsjan",
-    id: "andjsndjnsjdnasjn",
-    heading: "third slide",
-    subText: "third",
-  },
 ]; // show products on coursels
-const DOMAIN = window.location.origin; // domain of our url
+
 const categories = [
-  { name: "Electronics", id: "smnajdbsdbsahbd" },
-  { name: "Clothes", id: "smnaajdbabsajbdahhdasb" },
-  { name: "Watches", id: "smnjdbajdbajbdjab" },
-  { name: "organizers", id: "sjdbhasbdhbashdashbd" },
+  new CATEGORIES("Electronics", "smnajdbsdbsahbd"),
+  new CATEGORIES("Clothes", "smnaajdbabsajbdahhdasb"),
+  new CATEGORIES("Watches", "smnjdbajdbajbdjab"),
+  new CATEGORIES("organizers", "sjdbhasbdhbashdashbd"),
 ]; // filters (categories) admin can create more
+
+const DOMAIN = window.location.origin; // domain of our url
 
 // variables
 let isLoggedIn = false; // varaible to see is user logged in
@@ -238,8 +231,8 @@ function showUi() {
       window.location.href = `${DOMAIN}`;
     }
     if (
-      admins.find((element) => element.id == user.id) !== null &&
-      admins.find((element) => element.id == user.id) !== undefined
+      admins.find((element) => element.userId == user.id) !== null &&
+      admins.find((element) => element.userId == user.id) !== undefined
     ) {
       // to show admin dashboard if user is admin
       document.getElementsByClassName("admin")[0].style.display = "inline";
@@ -452,15 +445,15 @@ function signUp() {
     return;
   }
   showButtonLoader("short", "text"); // showing loader
-  let newUser = {
-    email: email.value,
-    password: password.value,
-    name: name.value,
-    cartItems: [],
-    orders: [],
-    address: {},
-    id: generateId(8),
-  }; // new user
+  let newUser = new USERS(
+    name.value,
+    email.value,
+    password.value,
+    generateId(8),
+    new CART([], generateId(8), 0),
+    [],
+    new ADDRESS("", "", "", "", ""),
+  ); // new user
   users.push(newUser); // ading new user
   localStorage.setItem("token", newUser.id); //  setting it to local storage
   hideButtonLoader("short", "text"); // hiding loader
@@ -1162,11 +1155,9 @@ function addUserReview() {
     let product = products.find((element) => (element.id = ID));
     let review = product.reviews.find((review) => review.userId === user.id);
     if (review === undefined) {
-      product.reviews.push({
-        userId: user.id,
-        context: reviewContext,
-        stars: starsSelectedReview,
-      });
+      product.reviews.push(
+        new REVIEWS(user.id, reviewContext, starsSelectedReview),
+      );
     }
     let newStars = 0;
     product.reviews.forEach((review) => {
