@@ -1104,9 +1104,6 @@ body {
   cursor: pointer;
 }
 
-.cart-qty {
-}
-
 .remove {
   background-color: red;
   margin-left: 0px;
@@ -1122,4 +1119,42 @@ body {
   color: red;
   text-align: center;
   margin: 10px;
+}
+
+.toast {
+  position: fixed;
+  z-index: 200;
+  background-color: #af8f8f;
+  padding: 10px;
+  border-radius: 10px;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+  height: fit-content;
+  opacity: 0;
+  transition: all ease-in-out 0.5s;
+}
+.msg {
+  color: var(--dark-text-color);
+  font-size: 20px;
+  margin: 10px;
+}
+.close-toast {
+  font-size: 15px;
+  background-color: transparent;
+  border: 0px;
+  outline: none;
+  color: red;
+  transition: all ease-in-out 0.25s;
+}
+
+.close-toast:hover {
+  color: white;
+  cursor: pointer;
+}
+
+.show-toast {
+  opacity: 1;
 }

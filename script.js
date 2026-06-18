@@ -613,7 +613,24 @@ function showCoursels() {
     coursel.appendChild(courselItem); // adding coursel item in parent div
   });
   index = courselProducts.length - 1;
-  let interval = setInterval(() => {
+  document.addEventListener("keydown", (ev) => {
+    if (ev.key === "ArrowRight") {
+      rightCoursel(index, coursel);
+      if (index >= courselProducts.length - 1) {
+        index = 0;
+      } else {
+        index++;
+      }
+    } else if (ev.key === "ArrowLeft") {
+      leftCoursel(index, coursel);
+      if (index <= 0) {
+        index = courselProducts.length - 1;
+      } else {
+        index--;
+      }
+    }
+  });
+  setInterval(() => {
     rightCoursel(index, coursel);
     if (index == courselProducts.length - 1) {
       index = 0;
@@ -1338,6 +1355,20 @@ function removeQty(productId) {
   showCartBadge();
 }
 
-function showToast(message) {}
+function showToast(message) {
+  let toastDiv = document.getElementsByClassName("toast")[0];
+  let toastSpan = document.getElementsByClassName("msg")[0];
+  let toastBtn = document.getElementsByClassName("close-toast")[0];
 
-function hideToast() {}
+  toastBtn.addEventListener("click", () => {
+    hideToast();
+  });
+  toastSpan.textContent = message;
+  toastDiv.classList.add("show-toast");
+  setTimeout(hideToast, 11000);
+}
+
+function hideToast() {
+  let toastDiv = document.getElementsByClassName("toast")[0];
+  toastDiv.classList.remove("show-toast");
+}
