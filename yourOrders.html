@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Look Zone</title>
     <link rel="stylesheet" href="/style.css" />
+    <link rel="icon" type="image/x-icon" href="icon.svg" />
   </head>
   <body>
     <!-- loading -->
@@ -65,16 +66,58 @@
       </header>
 
       <main class="main-content">
-        <div class="cart-div">
-          <span class="cart-text"></span>
-          <span class="cart-text red">Total Price</span>
-          <button class="cart-btn place-order">Place Order</button>
+        <span class="orders-title">Your Orders</span>
+        <div class="orders-container">
+          <div class="order-details">
+            <div class="order">
+              <div class="order-actions">
+                <span class="order-id"></span>
+                <button onclick="closeOrderDetails()" class="close-btn">
+                  X
+                </button>
+              </div>
+              <div class="order-address">
+                Address:
+                <span class="order-address-text"></span>
+              </div>
+              <div class="order-price">
+                Price:
+                <span class="order-price-text red"></span>
+              </div>
+              <div class="order-date">
+                Date:
+                <span class="order-date-text"></span>
+              </div>
+
+              <div class="order-status">
+                Status:
+                <span class="order-status-text"></span>
+              </div>
+
+              <div class="order-products">products:</div>
+              <div class="product-actions">
+                <button class="btn return">return</button>
+                <button class="btn cancel">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <table class="orders">
+            <tr class="order-tr">
+              <th class="order-th">Order ID</th>
+              <th class="order-th">Date</th>
+              <th class="order-th">Total Amount</th>
+              <th class="order-th">Status</th>
+            </tr>
+          </table>
         </div>
+
         <div class="toast">
           <span class="msg">You are Now Logged In</span>
           <button class="close-toast">X</button>
         </div>
       </main>
+
+      <footer></footer>
     </div>
 
     <!--my javascript file -->

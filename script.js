@@ -43,11 +43,13 @@ class CATEGORIES {
 }
 
 class ORDERS {
-  constructor(cart, id, address, payment) {
+  constructor(cart, id, address, payment, date, status) {
     this.cart = cart;
     this.id = id;
     this.address = address;
     this.payment = payment;
+    this.date = date || new Date();
+    this.status = status || "Processing";
   }
 }
 
@@ -99,11 +101,37 @@ let users = [
           1499,
         ),
         "msnajdbsabdhab",
-        new ADDRESS("123 Main St", "Anytown", "State", "12345", "Country"),
+        new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada"),
         1499,
+        new Date(),
+        "processing",
+      ),
+      new ORDERS(
+        new CART(
+          [{ id: "smndjnadjnsajndsjan", qty: 2, price: 1499 * 2 }],
+          "snajdnajsdbas",
+          1499 * 2,
+        ),
+        "msnajdbsabdhabsadasdasd",
+        new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada"),
+        1499 * 2,
+        new Date(),
+        "shipped",
+      ),
+      new ORDERS(
+        new CART(
+          [{ id: "smndjnadjnsajndsjan", qty: 2, price: 1499 * 3 }],
+          "snajdnajsdbas",
+          1499 * 3,
+        ),
+        "msnajdbsabdhabfghgfhgfh",
+        new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada"),
+        1499 * 3,
+        new Date(),
+        "delivered",
       ),
     ],
-    new ADDRESS("123 Main St", "Anytown", "State", "12345", "Country"),
+    new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada"),
   ),
 ]; // user date
 
@@ -246,7 +274,14 @@ function showUi() {
     ) {
       window.location.href = `${DOMAIN}`;
     }
+    if (
+      window.location.href === `${DOMAIN}/yourOrders.html` ||
+      window.location.href === `${DOMAIN}/yourOrders.html?`
+    ) {
+      window.location.href = `${DOMAIN}`;
+    }
   }
+  // checking user on home-page
   if (
     window.location.href === `${DOMAIN}/` ||
     window.location.href === `${DOMAIN}` ||
@@ -258,11 +293,15 @@ function showUi() {
     showCoursels();
     showCategoryFilters();
   }
-
+  // checking user on cart page
   if (window.location.href.startsWith(`${DOMAIN}/cart.html`)) {
     createCartPage();
   }
-
+  // checking user on orders page
+  if (window.location.href.startsWith(`${DOMAIN}/yourOrders.html`)) {
+    createOrdersPage();
+  }
+  // checking user on product page
   if (window.location.href.startsWith(`${DOMAIN}/product.html`) === true) {
     showProductDetails();
   }
@@ -271,11 +310,12 @@ function showUi() {
 
   isLoading = false;
 }
+// show loader
 function showLoader() {
   document.getElementsByClassName("loader-block")[0].style.display = "flex"; // making loader appear
   document.getElementsByClassName("content-show")[0].style.display = "none"; // making content appear
 }
-
+// hide loader
 function hideLoader() {
   document.getElementsByClassName("loader-block")[0].style.display = "none"; // making loader disappear
   document.getElementsByClassName("content-show")[0].style.display = "flex"; // making content appear
@@ -304,6 +344,7 @@ function auth() {
   // to check if we found the user
   if (user !== null && user !== undefined) {
     isLoggedIn = true;
+    // changing navbar according to user login status
     if (
       window.location.href === `${DOMAIN}/` ||
       window.location.href === `${DOMAIN}` ||
@@ -311,7 +352,8 @@ function auth() {
       window.location.href === `${DOMAIN}/index.html/` ||
       window.location.href === `${DOMAIN}/index.html?` ||
       window.location.href.startsWith(`${DOMAIN}/product.html`) === true ||
-      window.location.href.startsWith(`${DOMAIN}/cart.html`) === true
+      window.location.href.startsWith(`${DOMAIN}/cart.html`) === true ||
+      window.location.href.startsWith(`${DOMAIN}/yourOrders.html`) === true
     )
       showRemove("user-info", "auth");
   }
@@ -599,16 +641,19 @@ function showProducts(showProducts) {
 // showing coursels
 function showCoursels() {
   let coursel = document.getElementsByClassName("coursel")[0]; // coursel parent div
-  let index = 0;
+  let index = 0; // index for interval
   // maping coursel items
   courselProducts.forEach((element, i) => {
     let courselItem = createCoursel(element, i, coursel); // creating coursel item
     coursel.appendChild(courselItem); // adding coursel item in parent div
   });
-  index = courselProducts.length - 1;
+  index = courselProducts.length - 1; // current index of coursel item for interval
+  // adding event listener for keydown to change coursel
   document.addEventListener("keydown", (ev) => {
+    // right arrow key pressed
     if (ev.key === "ArrowRight") {
-      rightCoursel(index, coursel);
+      rightCoursel(index, coursel); // right coursel function
+      // checking if user is on last coursel slide
       if (index >= courselProducts.length - 1) {
         index = 0;
       } else {
@@ -623,6 +668,7 @@ function showCoursels() {
       }
     }
   });
+  // automatix changing coursel slides after 5 seconds
   setInterval(() => {
     rightCoursel(index, coursel);
     if (index == courselProducts.length - 1) {
@@ -633,7 +679,9 @@ function showCoursels() {
   }, 5000);
 }
 
+// right coursel function
 function rightCoursel(index, coursel) {
+  // setting all coiursel zIndex = 1
   for (let i = 0; i < courselProducts.length; i++) {
     coursel.children[i].style.zIndex = 1;
   }
@@ -657,7 +705,9 @@ function rightCoursel(index, coursel) {
   }
 }
 
+// left coursel function
 function leftCoursel(index, coursel) {
+  // setting all coiursel zIndex = 1
   for (let i = 0; i < courselProducts.length; i++) {
     coursel.children[i].style.zIndex = 1;
   }
@@ -951,6 +1001,7 @@ function createProductDetails(product) {
   createRating(rating, product.stars);
 }
 
+// create rating view
 function createRating(ratingDiv, starss) {
   ratingDiv.textContent = "";
   let stars = starss;
@@ -976,6 +1027,7 @@ function createRating(ratingDiv, starss) {
   ratingDiv.appendChild(ratingText);
 }
 
+// creating rating buttons for user to add review
 function createRatingButtons(ratingDiv, starss) {
   ratingDiv.textContent = "";
   let stars = starss;
@@ -1003,6 +1055,7 @@ function createRatingButtons(ratingDiv, starss) {
   ratingDiv.appendChild(ratingText);
 }
 
+// changing product main image when user click on small image
 function changeProducctMainImages(image) {
   let productMainImage = document.getElementsByClassName(
     "product-selected-image",
@@ -1048,6 +1101,7 @@ function hideProductLoader() {
   productLoader.style.display = "none";
 }
 
+// redirecting user to home page
 function redirectHome() {
   window.location.href = `${DOMAIN}`;
 }
@@ -1059,6 +1113,7 @@ function logout() {
   window.location.href = `${DOMAIN}/auth.html`;
 }
 
+// showing reviews of product
 function showReview(product) {
   userReviewedTisProduct = false;
   if (product.reviews.length === 0) {
@@ -1140,6 +1195,7 @@ function showReview(product) {
   });
 }
 
+// adding user review
 function addUserReview() {
   let reviewContext = document.getElementsByClassName("review-input")[0].value;
   if (
@@ -1171,6 +1227,7 @@ function addUserReview() {
   }
 }
 
+// changing stars when user click on star button
 function changeStars(number) {
   starsSelectedReview = number;
   let ratingDiv = document.getElementsByClassName("select-rating")[0];
@@ -1183,6 +1240,7 @@ function goToCart() {
   }
 }
 
+// creating cart page
 function createCartPage() {
   let yourCartText = document.getElementsByClassName("cart-text")[0];
   let placeOrderBtn = document.getElementsByClassName("place-order")[0];
@@ -1290,6 +1348,7 @@ function createCartPage() {
   }
 }
 
+// adding quantity of product in cart
 function addQty(productid, text, totalPrice) {
   let cartItemIndex = user.cart.products.findIndex(
     (item) => item.id === productid,
@@ -1308,6 +1367,7 @@ function addQty(productid, text, totalPrice) {
   showCartBadge();
 }
 
+// getting total price of cart
 function getTotalPrice() {
   let totalPrice = 0;
   user.cart.products.forEach((item) => {
@@ -1317,6 +1377,7 @@ function getTotalPrice() {
   return totalPrice;
 }
 
+// lessing quantity of product in cart
 function lessQty(productid, text, totalPrice) {
   let cartItemIndex = user.cart.products.findIndex(
     (item) => item.id === productid,
@@ -1334,6 +1395,7 @@ function lessQty(productid, text, totalPrice) {
   }
 }
 
+// removing product from cart
 function removeQty(productId) {
   let index = user.cart.products.findIndex((item) => item.id === productId);
   if (index === 0) {
@@ -1346,6 +1408,7 @@ function removeQty(productId) {
   showCartBadge();
 }
 
+// showing toast message
 function showToast(message) {
   let toastDiv = document.getElementsByClassName("toast")[0];
   let toastSpan = document.getElementsByClassName("msg")[0];
@@ -1356,10 +1419,212 @@ function showToast(message) {
   });
   toastSpan.textContent = message;
   toastDiv.classList.add("show-toast");
-  setTimeout(hideToast, 11000);
+  setTimeout(hideToast, 8000); // hiding toast after 8 seconds
 }
 
+// hiding toast message
 function hideToast() {
   let toastDiv = document.getElementsByClassName("toast")[0];
   toastDiv.classList.remove("show-toast");
+}
+
+// go to your orders page
+function goToOrders() {
+  window.location.href = "/yourOrders.html";
+}
+
+function createOrdersPage() {
+  ordersTitle = document.getElementsByClassName("orders-title")[0];
+  if (user.orders.length === 0) {
+    ordersTitle.textContent = "No Orders Yet";
+    return;
+  }
+
+  ordersTitle.textContent = "Your Orders";
+  ordersTable = document.getElementsByClassName("orders")[0];
+  ordersTr = document.getElementsByClassName("orders-td");
+  let length = ordersTr.length;
+  for (let i = 0; i < length; i++) {
+    ordersTable.removeChild(ordersTr[0]);
+  }
+  user.orders.forEach((order) => {
+    ordersTr = document.createElement("tr");
+    ordersTr.className = "orders-td";
+
+    orderId = document.createElement("th");
+    orderId.className = "order-td";
+    orderId.textContent = `${order.id}`;
+
+    orderDate = document.createElement("th");
+    orderDate.className = "order-td";
+    orderDate.textContent = `${order.date.toLocaleDateString()}`;
+
+    orderPrice = document.createElement("th");
+    orderPrice.className = "order-td red";
+    orderPrice.textContent = `$${order.payment}`;
+
+    orderStatus = document.createElement("th");
+    orderStatus.className = "order-td";
+    orderStatus.textContent = `${order.status}`;
+
+    if (order.status === "delivered") {
+      orderStatus.style.color = "green";
+    } else if (order.status === "cancelled") {
+      orderStatus.style.color = "red";
+    } else if (order.status === "shipped") {
+      orderStatus.style.color = "orange";
+    } else {
+      orderStatus.style.color = "blue";
+    }
+
+    ordersTr.appendChild(orderId);
+    ordersTr.appendChild(orderDate);
+    ordersTr.appendChild(orderPrice);
+    ordersTr.appendChild(orderStatus);
+
+    ordersTable.appendChild(ordersTr);
+
+    ordersTr.addEventListener("click", () => {
+      showOrderDetails(order.id);
+    });
+  });
+}
+
+// showing order details when user click on order card
+function showOrderDetails(orderId) {
+  closeOrderDetails();
+  let order = user.orders.find((order) => order.id === orderId);
+  let cartDiv = document.getElementsByClassName("order-products")[0];
+  cartDiv.className = "order-products";
+  cartDiv.textContent = "Products: ";
+  let orderDeatils = document.getElementsByClassName("order-details")[0];
+  orderDeatils.style.display = "flex";
+  let orderIdText = document.getElementsByClassName("order-id")[0];
+  orderIdText.textContent = `orderId: ${order.id}`;
+  let orderDateText = document.getElementsByClassName("order-date-text")[0];
+  orderDateText.textContent = `${order.date.toLocaleDateString()}`;
+  let orderPaymentText = document.getElementsByClassName("order-price-text")[0];
+  orderPaymentText.textContent = `$${order.payment}`;
+  let orderStatusText = document.getElementsByClassName("order-status-text")[0];
+  orderStatusText.textContent = `${order.status}`;
+
+  if (order.status === "delivered") {
+    orderStatusText.style.color = "green";
+  } else if (order.status === "cancelled") {
+    orderStatusText.style.color = "red";
+  } else if (order.status === "shipped") {
+    orderStatusText.style.color = "orange";
+  } else {
+    orderStatusText.style.color = "blue";
+  }
+
+  let orderAddressText =
+    document.getElementsByClassName("order-address-text")[0];
+  orderAddressText.textContent = `${order.address.street}, ${order.address.city}, ${order.address.state}, ${order.address.zip}, ${order.address.country}`;
+
+  order.cart.products.forEach((item) => {
+    let cartProduct = products.find((ele) => ele.id === item.id);
+    let cartItem = document.createElement("div");
+    cartItem.className = "cart-item-div";
+
+    let cartImageDiv = document.createElement("div");
+    cartImageDiv.className = "product-image-div";
+
+    let cartImage = document.createElement("img");
+    cartImage.className = "product-image img";
+    cartImage.src = cartProduct.images[0];
+
+    cartImage.addEventListener("click", () => {
+      window.location.href = `${DOMAIN}/product.html?id=${item.id}`;
+    });
+
+    cartImageDiv.appendChild(cartImage);
+
+    let cartItemDetails = document.createElement("div");
+    cartItemDetails.className = "cart-item-details";
+
+    let textDiv = document.createElement("div");
+
+    let productTitle = document.createElement("span");
+    productTitle.className = "product-title cart-title";
+    productTitle.textContent = cartProduct.name;
+
+    let productDesc = document.createElement("span");
+    productDesc.className = "product-description cart-title";
+    productDesc.style.width = "100%";
+    productDesc.textContent =
+      cartProduct.description.length > 25
+        ? `${cartProduct.description.slice(0, 25)}...`
+        : cartProduct.description;
+
+    let productPrice = document.createElement("span");
+    productPrice.className = "real-price";
+    productPrice.style.display = "block";
+    productPrice.style.margin = "10px";
+    productPrice.textContent = `$${item.price}`;
+    textDiv.appendChild(productTitle);
+    textDiv.appendChild(productDesc);
+    textDiv.appendChild(productPrice);
+
+    let cartActions = document.createElement("div");
+    cartActions.className = "cart-actions";
+
+    let qtyText = document.createElement("span");
+    qtyText.className = "cart-qty";
+    qtyText.style.margin = "0px 10px";
+    qtyText.style.color = "var(--dark-text-color)";
+    qtyText.textContent = `${item.qty}`;
+
+    cartActions.appendChild(qtyText);
+
+    cartItemDetails.appendChild(textDiv);
+    cartItemDetails.appendChild(cartActions);
+    cartItem.appendChild(cartImageDiv);
+    cartItem.appendChild(cartItemDetails);
+    cartDiv.appendChild(cartItem);
+  });
+
+  let returnBtn = document.getElementsByClassName("return")[0];
+  let cancelBtn = document.getElementsByClassName("cancel")[0];
+  if (order.status === "delivered") {
+    returnBtn.style.display = "block";
+  } else {
+    returnBtn.style.display = "none";
+  }
+
+  if (order.status === "processing") {
+    cancelBtn.style.display = "block";
+  } else {
+    cancelBtn.style.display = "none";
+  }
+
+  returnBtn.addEventListener("click", () => {
+    returnOrder(orderId);
+  });
+  cancelBtn.addEventListener("click", () => {
+    cancelOrder(orderId);
+  });
+}
+
+// returning order
+function returnOrder(orderId) {
+  let index = user.orders.findIndex((item) => item.id === orderId);
+  user.orders[index].status = "returned";
+  closeOrderDetails();
+  createOrdersPage();
+}
+
+// canceling order
+function cancelOrder(orderId) {
+  console.log(orderId);
+  let index = user.orders.findIndex((item) => item.id === orderId);
+  user.orders[index].status = "cancelled";
+  closeOrderDetails();
+  createOrdersPage();
+}
+
+// closing order details
+function closeOrderDetails() {
+  orderDeatils = document.getElementsByClassName("order-details")[0];
+  orderDeatils.style.display = "none";
 }
