@@ -1507,6 +1507,12 @@ function showOrderDetails(orderId) {
   orderPaymentText.textContent = `$${order.payment}`;
   let orderStatusText = document.getElementsByClassName("order-status-text")[0];
   orderStatusText.textContent = `${order.status}`;
+  let productActions = document.getElementsByClassName("product-actions")[0];
+
+  let lenght = productActions.children.length;
+  for (let i = 0; i < lenght; i++) {
+    productActions.removeChild(productActions.children[0]);
+  }
 
   if (order.status === "delivered") {
     orderStatusText.style.color = "green";
@@ -1584,8 +1590,12 @@ function showOrderDetails(orderId) {
     cartDiv.appendChild(cartItem);
   });
 
-  let returnBtn = document.getElementsByClassName("return")[0];
-  let cancelBtn = document.getElementsByClassName("cancel")[0];
+  let returnBtn = document.createElement("button");
+  let cancelBtn = document.createElement("button");
+  returnBtn.className = "btn return";
+  cancelBtn.className = "btn cancel";
+  cancelBtn.textContent = "Cancel";
+  returnBtn.textContent = "Return";
   if (order.status === "delivered") {
     returnBtn.style.display = "block";
   } else {
@@ -1604,6 +1614,9 @@ function showOrderDetails(orderId) {
   cancelBtn.addEventListener("click", () => {
     cancelOrder(orderId);
   });
+
+  productActions.appendChild(returnBtn);
+  productActions.appendChild(cancelBtn);
 }
 
 // returning order
