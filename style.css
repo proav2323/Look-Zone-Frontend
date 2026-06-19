@@ -1329,7 +1329,7 @@ body {
   padding-top: 10px;
 }
 
-.btn {
+.btnn {
   width: 100%;
   padding: 10px;
   border-radius: 10px;
@@ -1340,7 +1340,7 @@ body {
   font-size: 20px;
 }
 
-.btn:hover {
+.btnn:hover {
   cursor: pointer;
   box-shadow: 2px 3px 11px -1px var(--dark-bg-secondary);
   -webkit-box-shadow: 2px 3px 11px -1px var(--dark-bg-secondary);

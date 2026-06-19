@@ -1592,8 +1592,8 @@ function showOrderDetails(orderId) {
 
   let returnBtn = document.createElement("button");
   let cancelBtn = document.createElement("button");
-  returnBtn.className = "btn return";
-  cancelBtn.className = "btn cancel";
+  returnBtn.className = "btnn return";
+  cancelBtn.className = "btnn cancel";
   cancelBtn.textContent = "Cancel";
   returnBtn.textContent = "Return";
   if (order.status === "delivered") {
