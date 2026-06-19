@@ -233,6 +233,7 @@ let filter = ""; // selected filter
 let selectedImage = ""; // selected image filter
 let starsSelectedReview = 0; // selcted stars for add review
 let userReviewedTisProduct = false; // checki g if user has reveiwed this product
+let isSideDropdownOpen = false; // checking if users has opened side dropdown
 
 // checking is user logged in with some token
 showLoader();
@@ -365,6 +366,9 @@ function auth() {
 function dropdown(classname) {
   if (dropdownOpen == true) {
     document.getElementsByClassName(classname)[0].style.display = "none";
+    if (isSideDropdownOpen === true) {
+      showSideDropdown();
+    }
     dropdownOpen = false;
   } else {
     document.getElementsByClassName(classname)[0].style.display =
@@ -1640,4 +1644,15 @@ function cancelOrder(orderId) {
 function closeOrderDetails() {
   orderDeatils = document.getElementsByClassName("order-details")[0];
   orderDeatils.style.display = "none";
+}
+
+function showSideDropdown() {
+  let sideDropdown = document.getElementsByClassName("side-dropdown")[0];
+  if (isSideDropdownOpen === true) {
+    sideDropdown.style.display = "none";
+    isSideDropdownOpen = false;
+  } else {
+    sideDropdown.style.display = "inline-block";
+    isSideDropdownOpen = true;
+  }
 }

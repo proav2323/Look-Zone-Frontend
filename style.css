@@ -222,7 +222,7 @@ body {
   padding: 8px;
   border-radius: 10px;
   width: 10vw;
-  right: 5px;
+  right: 1vw;
   display: none;
 }
 
@@ -1353,4 +1353,15 @@ body {
 
 .return {
   background-color: green;
+}
+
+.side-dropdown {
+  right: 11vw;
+  position: absolute;
+  background-color: var(--dark-bg-secondary);
+  top: 63px;
+  padding: 8px;
+  border-radius: 10px;
+  width: 10vw;
+  display: none;
 }
