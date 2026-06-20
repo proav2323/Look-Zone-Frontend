@@ -297,7 +297,6 @@ function showUi() {
     showProducts(products);
     showCoursels();
     showCategoryFilters();
-    changeUi();
   }
   // checking user on cart page
   if (window.location.href.startsWith(`${DOMAIN}/cart.html`)) {
@@ -312,6 +311,9 @@ function showUi() {
     showProductDetails();
   }
 
+  if (window.location.href.startsWith(`${DOMAIN}/search.html`) === true) {
+    showSearch();
+  }
   hideLoader();
 
   isLoading = false;
@@ -360,7 +362,8 @@ function auth() {
       window.location.href === `${DOMAIN}/index.html?` ||
       window.location.href.startsWith(`${DOMAIN}/product.html`) === true ||
       window.location.href.startsWith(`${DOMAIN}/cart.html`) === true ||
-      window.location.href.startsWith(`${DOMAIN}/yourOrders.html`) === true
+      window.location.href.startsWith(`${DOMAIN}/yourOrders.html`) === true ||
+      window.location.href.startsWith(`${DOMAIN}/search.html`) === true
     ) {
       showRemove("user-info", "auth");
     }
@@ -375,7 +378,8 @@ function auth() {
     window.location.href === `${DOMAIN}/index.html?` ||
     window.location.href.startsWith(`${DOMAIN}/product.html`) === true ||
     window.location.href.startsWith(`${DOMAIN}/cart.html`) === true ||
-    window.location.href.startsWith(`${DOMAIN}/yourOrders.html`) === true
+    window.location.href.startsWith(`${DOMAIN}/yourOrders.html`) === true ||
+    window.location.href.startsWith(`${DOMAIN}/search.html`) === true
   ) {
     changeUi();
   }
@@ -1719,4 +1723,73 @@ function toggleMode() {
   }
   showMode();
   changeUi();
+}
+
+function goToSearch(search) {
+  window.location.href = `${DOMAIN}/search.html?search=${search}`;
+}
+
+function searchInputChange() {
+  let searchInput = document.getElementById("search");
+  searchInput.addEventListener("keydown", (e) => {
+    if (
+      e.key === "Enter" &&
+      searchInput.value !== null &&
+      searchInput.value !== undefined &&
+      searchInput.value !== ""
+    ) {
+      goToSearch(searchInput.value);
+    }
+  });
+}
+
+function search(search) {
+  let searchProducts = products.filter(
+    (item) => item.name.toLowerCase().startsWith(search.toLowerCase()) === true,
+  );
+  if (searchProducts.length !== 0) {
+    return searchProducts;
+  }
+
+  searchProducts = products.filter(
+    (item) =>
+      item.description.toLowerCase().startsWith(search.toLowerCase()) === true,
+  );
+
+  if (searchProducts.length !== 0) {
+    return searchProducts;
+  }
+
+  return [];
+}
+
+function showSearch() {
+  showProductLoader();
+  const SEARCH = new URLSearchParams(window.location.search).get("search");
+  if (SEARCH === "" || SEARCH == undefined || SEARCH == null) {
+    window.location.href = `${DOMAIN}/`;
+    return;
+  }
+
+  let searchProducts = search(SEARCH);
+  let searchInput = document.getElementById("search");
+  searchInput.value = `${SEARCH}`;
+
+  let searchText = document.getElementsByClassName("search-text")[0];
+  let productsDiv = document.getElementsByClassName("products")[0];
+
+  if (searchProducts.length !== 0) {
+    searchText.textContent = `your searched products`;
+    searchProducts.forEach((product) => {
+      let productCard = createProduct(product);
+      productsDiv.appendChild(productCard);
+    });
+  } else {
+    searchText.textContent = "No products found";
+  }
+  hideProductLoader();
+}
+
+function goToAddress() {
+  window.location.href = `${DOMAIN}/address.html`;
 }
