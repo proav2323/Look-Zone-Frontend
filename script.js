@@ -108,7 +108,7 @@ let users = [
       ),
       new ORDERS(
         new CART(
-          [{ id: "smndjnadjnsajndsjan", qty: 2, price: 1499 * 2 }],
+          [{ id: "smndjnadjnsajndsjan", qty: 2, price: 1499 }],
           "snajdnajsdbas",
           1499 * 2,
         ),
@@ -120,7 +120,7 @@ let users = [
       ),
       new ORDERS(
         new CART(
-          [{ id: "smndjnadjnsajndsjan", qty: 2, price: 1499 * 3 }],
+          [{ id: "smndjnadjnsajndsjan", qty: 3, price: 1499 }],
           "snajdnajsdbas",
           1499 * 3,
         ),
@@ -234,6 +234,10 @@ let selectedImage = ""; // selected image filter
 let starsSelectedReview = 0; // selcted stars for add review
 let userReviewedTisProduct = false; // checki g if user has reveiwed this product
 let isSideDropdownOpen = false; // checking if users has opened side dropdown
+let isDarkMode =
+  localStorage.getItem("mode") !== null
+    ? localStorage.getItem("mode")
+    : "light";
 
 // checking is user logged in with some token
 showLoader();
@@ -293,6 +297,7 @@ function showUi() {
     showProducts(products);
     showCoursels();
     showCategoryFilters();
+    changeUi();
   }
   // checking user on cart page
   if (window.location.href.startsWith(`${DOMAIN}/cart.html`)) {
@@ -342,6 +347,7 @@ function showCartBadge() {
 }
 // authentication
 function auth() {
+  showMode();
   // to check if we found the user
   if (user !== null && user !== undefined) {
     isLoggedIn = true;
@@ -355,8 +361,23 @@ function auth() {
       window.location.href.startsWith(`${DOMAIN}/product.html`) === true ||
       window.location.href.startsWith(`${DOMAIN}/cart.html`) === true ||
       window.location.href.startsWith(`${DOMAIN}/yourOrders.html`) === true
-    )
+    ) {
       showRemove("user-info", "auth");
+    }
+  }
+
+  // changing navbar according to user login status
+  if (
+    window.location.href === `${DOMAIN}/` ||
+    window.location.href === `${DOMAIN}` ||
+    window.location.href === `${DOMAIN}?` ||
+    window.location.href === `${DOMAIN}/index.html/` ||
+    window.location.href === `${DOMAIN}/index.html?` ||
+    window.location.href.startsWith(`${DOMAIN}/product.html`) === true ||
+    window.location.href.startsWith(`${DOMAIN}/cart.html`) === true ||
+    window.location.href.startsWith(`${DOMAIN}/yourOrders.html`) === true
+  ) {
+    changeUi();
   }
 
   showUi(); // to show content
@@ -1655,4 +1676,47 @@ function showSideDropdown() {
     sideDropdown.style.display = "inline-block";
     isSideDropdownOpen = true;
   }
+}
+
+function showMode() {
+  const root = document.documentElement;
+  if (isDarkMode === "light") {
+    root.style.setProperty("--dark-bg-primary", "#ffffff");
+    root.style.setProperty("--dark-text-color", "black");
+    root.style.setProperty("--dark-bg-secondary", "#c6c6c6");
+  } else {
+    root.style.setProperty("--dark-bg-primary", "#121212");
+    root.style.setProperty("--dark-text-color", "white");
+    root.style.setProperty("--dark-bg-secondary", "#444444");
+  }
+}
+
+function changeUi() {
+  const modeText = document.getElementsByClassName("mode-text")[0];
+  const darkIcon = document.getElementsByClassName("dark-icon")[0];
+  const LightIcon = document.getElementsByClassName("light-icon")[0];
+
+  if (isDarkMode === "light") {
+    modeText.textContent = "Dark Mode";
+    LightIcon.style.display = "none";
+    darkIcon.style.display = "inline";
+  } else {
+    modeText.textContent = "Light Mode";
+    LightIcon.style.display = "inline";
+    darkIcon.style.display = "none";
+  }
+}
+
+function toggleMode() {
+  if (isDarkMode === "light") {
+    localStorage.removeItem("mode");
+    localStorage.setItem("mode", "dark");
+    isDarkMode = "dark";
+  } else {
+    localStorage.removeItem("mode");
+    localStorage.setItem("mode", "light");
+    isDarkMode = "light";
+  }
+  showMode();
+  changeUi();
 }
