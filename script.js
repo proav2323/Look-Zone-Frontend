@@ -59,17 +59,18 @@ class CART {
     this.id = id;
     this.totalPrice = totalPrice;
   }
-}
+} // not in mangodb database class
 
 class ADDRESS {
-  constructor(street, city, state, zip, country) {
+  constructor(street, city, state, zip, country, addressMade) {
     this.street = street;
     this.city = city;
     this.state = state;
     this.zip = zip;
     this.country = country;
+    this.addressMade = addressMade;
   }
-}
+} // not in mangodb database class
 
 class REVIEWS {
   constructor(userId, context, stars) {
@@ -101,7 +102,7 @@ let users = [
           1499,
         ),
         "msnajdbsabdhab",
-        new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada"),
+        new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada", true),
         1499,
         new Date(),
         "processing",
@@ -113,7 +114,7 @@ let users = [
           1499 * 2,
         ),
         "msnajdbsabdhabsadasdasd",
-        new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada"),
+        new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada", true),
         1499 * 2,
         new Date(),
         "shipped",
@@ -125,13 +126,13 @@ let users = [
           1499 * 3,
         ),
         "msnajdbsabdhabfghgfhgfh",
-        new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada"),
+        new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada", true),
         1499 * 3,
         new Date(),
         "delivered",
       ),
     ],
-    new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada"),
+    new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada", true),
   ),
 ]; // user date
 
@@ -285,6 +286,12 @@ function showUi() {
     ) {
       window.location.href = `${DOMAIN}`;
     }
+    if (
+      window.location.href === `${DOMAIN}/address.html` ||
+      window.location.href === `${DOMAIN}/address.html?`
+    ) {
+      window.location.href = `${DOMAIN}`;
+    }
   }
   // checking user on home-page
   if (
@@ -313,6 +320,10 @@ function showUi() {
 
   if (window.location.href.startsWith(`${DOMAIN}/search.html`) === true) {
     showSearch();
+  }
+
+  if (window.location.href.startsWith(`${DOMAIN}/address.html`) === true) {
+    showAddress();
   }
   hideLoader();
 
@@ -363,27 +374,14 @@ function auth() {
       window.location.href.startsWith(`${DOMAIN}/product.html`) === true ||
       window.location.href.startsWith(`${DOMAIN}/cart.html`) === true ||
       window.location.href.startsWith(`${DOMAIN}/yourOrders.html`) === true ||
-      window.location.href.startsWith(`${DOMAIN}/search.html`) === true
+      window.location.href.startsWith(`${DOMAIN}/search.html`) === true ||
+      window.location.href.startsWith(`${DOMAIN}/address.html`) === true
     ) {
       showRemove("user-info", "auth");
     }
   }
 
-  // changing navbar according to user login status
-  if (
-    window.location.href === `${DOMAIN}/` ||
-    window.location.href === `${DOMAIN}` ||
-    window.location.href === `${DOMAIN}?` ||
-    window.location.href === `${DOMAIN}/index.html/` ||
-    window.location.href === `${DOMAIN}/index.html?` ||
-    window.location.href.startsWith(`${DOMAIN}/product.html`) === true ||
-    window.location.href.startsWith(`${DOMAIN}/cart.html`) === true ||
-    window.location.href.startsWith(`${DOMAIN}/yourOrders.html`) === true ||
-    window.location.href.startsWith(`${DOMAIN}/search.html`) === true
-  ) {
-    changeUi();
-  }
-
+  changeUi();
   showUi(); // to show content
 }
 
@@ -1271,6 +1269,7 @@ function goToCart() {
 
 // creating cart page
 function createCartPage() {
+  showCartBadge();
   let yourCartText = document.getElementsByClassName("cart-text")[0];
   let placeOrderBtn = document.getElementsByClassName("place-order")[0];
   let totalPrice = document.getElementsByClassName("red")[0];
@@ -1387,7 +1386,7 @@ function addQty(productid, text, totalPrice) {
     user.cart.products[cartItemIndex].qty =
       user.cart.products[cartItemIndex].qty + 1;
   } else {
-    showToast("product is out of stock now");
+    showToast("product is out of stock now", "red");
   }
 
   text.textContent = user.cart.products[cartItemIndex].qty;
@@ -1438,7 +1437,7 @@ function removeQty(productId) {
 }
 
 // showing toast message
-function showToast(message) {
+function showToast(message, color) {
   let toastDiv = document.getElementsByClassName("toast")[0];
   let toastSpan = document.getElementsByClassName("msg")[0];
   let toastBtn = document.getElementsByClassName("close-toast")[0];
@@ -1447,7 +1446,10 @@ function showToast(message) {
     hideToast();
   });
   toastSpan.textContent = message;
+  toastDiv.style.backgroundColor =
+    color !== undefined && color !== null ? color : "red";
   toastDiv.classList.add("show-toast");
+
   setTimeout(hideToast, 8000); // hiding toast after 8 seconds
 }
 
@@ -1792,4 +1794,117 @@ function showSearch() {
 
 function goToAddress() {
   window.location.href = `${DOMAIN}/address.html`;
+}
+
+function showAddress() {
+  let addressDiv = document.getElementsByClassName("address-div")[0];
+  addressDiv.style.display = "flex";
+
+  if (user.address.addressMade === false) {
+    addressDiv.style.display = "none";
+    showEditAddress();
+    return;
+  }
+
+  let addressText = document.getElementsByClassName("address-text")[0];
+  addressText.textContent = `Your Address: ${user.address.street}, ${user.address.city}, ${user.address.state}, ${user.address.country}, ${user.address.zip}`;
+}
+
+function showEditAddress() {
+  closeEditAddress();
+  let editAddressf = document.getElementsByClassName("edit-address")[0];
+  editAddressf.style.display = "flex";
+
+  let editText = document.getElementsByClassName("edit-text")[0];
+  let inputDiv = document.getElementsByClassName("address-input-div")[0];
+  let saveBtnCreated = document.getElementsByClassName("address-btn")[0];
+
+  let streetInput = document.getElementById("street");
+  let stateInput = document.getElementById("state");
+  let cityInput = document.getElementById("city");
+  let zipInput = document.getElementById("zip");
+  let countryInput = document.getElementById("country");
+
+  if (saveBtnCreated) {
+    inputDiv.removeChild(saveBtnCreated);
+  }
+
+  let saveBtn = document.createElement("button");
+  saveBtn.className = "address-btn";
+
+  if (user.address.addressMade === false) {
+    editText.textContent = "Add Address";
+    saveBtn.textContent = "Add";
+  } else {
+    streetInput.value = `${user.address.street}`;
+    stateInput.value = `${user.address.state}`;
+    cityInput.value = `${user.address.city}`;
+    zipInput.value = `${user.address.zip}`;
+    countryInput.value = `${user.address.country}`;
+
+    editText.textContent = "Edit Address";
+    saveBtn.textContent = "Edit";
+  }
+
+  saveBtn.addEventListener("click", editAddress);
+
+  inputDiv.appendChild(saveBtn);
+}
+
+function closeEditAddress() {
+  let editAddress = document.getElementsByClassName("edit-address")[0];
+  editAddress.style.display = "none";
+}
+
+function editAddress() {
+  let streetInput = document.getElementById("street").value;
+  let stateInput = document.getElementById("state").value;
+  let cityInput = document.getElementById("city").value;
+  let zipInput = document.getElementById("zip").value;
+  let countryInput = document.getElementById("country").value;
+
+  if (
+    streetInput === "" ||
+    stateInput == "" ||
+    cityInput == "" ||
+    zipInput == "" ||
+    countryInput == ""
+  ) {
+    showToast("please fill the fields", "red");
+    return;
+  }
+
+  user.address.street = streetInput;
+  user.address.state = stateInput;
+  user.address.city = cityInput;
+  user.address.zip = zipInput;
+  user.address.country = countryInput;
+  user.address.addressMade = true;
+
+  showToast("address updated", "green");
+  closeEditAddress();
+  showAddress();
+}
+
+function placeOrder() {
+  if (user.address.addressMade === false) {
+    showToast("please add your address before buying");
+    return;
+  }
+
+  user.orders.push(
+    new ORDERS(
+      user.cart,
+      generateId(8),
+      user.address,
+      user.cart.totalPrice,
+      new Date(),
+      "processing",
+    ),
+  );
+
+  user.cart = new CART([], generateId(8), 0);
+  createCartPage();
+
+  showToast("order placed", "green");
 }

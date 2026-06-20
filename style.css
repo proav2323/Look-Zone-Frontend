@@ -1140,12 +1140,12 @@ body {
   background-color: transparent;
   border: 0px;
   outline: none;
-  color: red;
+  color: rgb(255, 255, 255);
   transition: all ease-in-out 0.25s;
 }
 
 .close-toast:hover {
-  color: white;
+  color: rgb(255, 162, 162);
   cursor: pointer;
 }
 
@@ -1364,4 +1364,126 @@ body {
   margin: 10px;
   margin-top: 20px;
   margin-bottom: 10px;
+}
+
+.address-div {
+  width: 100%;
+  justify-content: center;
+  align-items: start;
+  display: flex;
+}
+
+.address {
+  background-color: var(--dark-bg-secondary);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 98%;
+  margin-top: 15px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.address-text {
+  margin: 10px;
+  text-align: start;
+  color: var(--dark-text-color);
+  font-size: 20px;
+  font-weight: bolder;
+  width: 100%;
+}
+
+.address-edit {
+  padding: 10px;
+  border-radius: 10px;
+  outline: none;
+  border: 0px;
+  background-color: var(--dark-bg-primary);
+  color: var(--dark-text-color);
+  margin: 10px;
+}
+
+.address-edit:hover {
+  cursor: pointer;
+}
+
+.edit-address {
+  background-color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  top: 0px;
+  z-index: 300;
+  overflow-y: hidden;
+}
+
+.edit {
+  width: 70%;
+  height: 100%;
+  overflow-y: scroll;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 10px;
+  background-color: var(--dark-bg-secondary);
+  color: var(--dark-text-color);
+}
+
+.edit::-webkit-scrollbar {
+  display: none;
+}
+
+.edit-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 25px;
+}
+
+.address-input-div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+}
+
+.address-input {
+  width: 95%;
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--dark-bg-primary);
+  color: var(--dark-text-color);
+  outline: none;
+  border: 0px;
+}
+
+.address-input::placeholder {
+  color: rgb(255, 126, 126);
+}
+
+.address-btn {
+  width: 50%;
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 0px;
+  outline: none;
+  background-color: red;
+  color: white;
+  transition: all ease-in-out 0.25s;
+}
+
+.address-btn:hover {
+  cursor: pointer;
+  box-shadow: 2px 3px 11px -1px var(--dark-bg-secondary);
+  -webkit-box-shadow: 2px 3px 11px -1px var(--dark-bg-secondary);
+  -moz-box-shadow: 2px 3px 11px -1px var(--dark-bg-secondary);
 }

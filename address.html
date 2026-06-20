@@ -26,8 +26,11 @@
             <input
               class="search"
               type="search"
+              value=""
+              id="search"
               placeholder="Search"
-              onsubmit=""
+              oninput="searchInputChange()"
+              onsubmit="(e) => goToSearch(e.value)"
             />
           </div>
           <div class="auth">
@@ -77,82 +80,58 @@
       </header>
 
       <main class="main-content">
-        <span class="text no-product">No Product Found</span>
-        <div class="product-parent-div">
-          <div class="product-div">
-            <div class="product-images">
-              <img
-                src="https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0="
-                class="product-selected-image"
-              />
-              <div class="product-small-images"></div>
+        <div class="edit-address">
+          <div class="edit">
+            <div class="edit-actions">
+              <span class="edit-text">Edit Address</span>
+              <button class="close-btn" onclick="closeEditAddress()">X</button>
             </div>
-            <div class="product-info">
-              <span class="product-title"></span>
-              <span class="product-description"></span>
-              <span class="product-price"
-                ><span class="real-price"></span>
-                <span class="original-price"></span
-              ></span>
-              <div class="product-action">
-                <div class="rating"></div>
-                <button class="add-to-cart"></button>
-              </div>
+            <div class="address-input-div">
+              <input
+                class="address-input"
+                id="street"
+                placeholder="street"
+                value=""
+                type="text"
+              />
+              <input
+                class="address-input"
+                id="city"
+                placeholder="City"
+                value=""
+                type="text"
+              />
+              <input
+                class="address-input"
+                id="state"
+                placeholder="State"
+                value=""
+                type="text"
+              />
+              <input
+                class="address-input"
+                id="zip"
+                placeholder="Zip Code"
+                value=""
+                type="text"
+              />
+              <input
+                class="address-input"
+                id="country"
+                placeholder="Country"
+                value=""
+                type="text"
+              />
             </div>
           </div>
-          <span class="reviews-text text" style="font-size: 25px">Reviews</span>
-          <div class="reviews">
-            <div class="add-review">
-              <div
-                class="userprofile review-profile"
-                style="justify-content: start"
-              >
-                <i class="fa-solid fa-user"></i>
-                <span class="username"></span>
-              </div>
-              <div class="review-input-parent">
-                <div
-                  class="rating select-rating"
-                  style="justify-content: start"
-                >
-                  <i
-                    id="1"
-                    class="fa-regular fa-star star btn"
-                    onclick="changeStars(1)"
-                  ></i>
-                  <i
-                    id="2"
-                    class="fa-regular fa-star star btn"
-                    onclick="changeStars(2)"
-                  ></i>
-                  <i
-                    id="3"
-                    class="fa-regular fa-star star btn"
-                    onclick="changeStars(3)"
-                  ></i>
-                  <i
-                    id="4"
-                    class="fa-regular fa-star btn"
-                    onclick="changeStars(4)"
-                  ></i>
-                  <i
-                    id="5"
-                    class="fa-regular fa-star star btn"
-                    onclick="changeStars(5)"
-                  ></i>
-                </div>
-                <div class="review-input-div">
-                  <input
-                    type="text"
-                    value=""
-                    class="review-input"
-                    placeholder="Your Review"
-                  />
-                  <button class="add-review-button">Add</button>
-                </div>
-              </div>
-            </div>
-            <div class="others-reviews"></div>
+        </div>
+
+        <div class="address-div">
+          <div class="address">
+            <span class="address-text">Your Address:</span>
+            <button class="address-edit" onclick="showEditAddress()">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
           </div>
         </div>
         <div class="toast">
