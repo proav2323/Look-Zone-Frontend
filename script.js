@@ -378,10 +378,10 @@ function auth() {
       window.location.href.startsWith(`${DOMAIN}/address.html`) === true
     ) {
       showRemove("user-info", "auth");
+      changeUi();
     }
   }
 
-  changeUi();
   showUi(); // to show content
 }
 
