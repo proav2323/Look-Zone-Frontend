@@ -855,8 +855,8 @@ function createProduct(product) {
   AddToCartButton.className = "product-button";
 
   AddToCartButton.addEventListener("click", async () => {
-    let cartItem = user.cart.products.find((item) => item.id === product._id);
     if (user != null && user != undefined) {
+      let cartItem = user.cart.products.find((item) => item.id === product._id);
       if (cartItem != null && cartItem != undefined) {
       } else {
         await addToCart(product._id);
