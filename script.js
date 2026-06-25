@@ -3,7 +3,7 @@ let courselProducts = []; // show products on coursels
 let categories = []; // filters (categories) admin can create more
 
 const DOMAIN = window.location.origin; // domain of our url
-const API_BASE_URL = "https://look-zone-backend.onrender.com";
+const API_BASE_URL = "https://look-zone-backend.onrender.com"; // domain of our backedn server
 
 // variables
 let isLoggedIn = false; // varaible to see is user logged in
@@ -110,7 +110,7 @@ async function showUi() {
   }
   // checking user on cart page
   if (window.location.href.startsWith(`${DOMAIN}/cart.html`)) {
-    createCartPage();
+    await createCartPage();
   }
   // checking user on orders page
   if (window.location.href.startsWith(`${DOMAIN}/yourOrders.html`)) {
@@ -279,11 +279,40 @@ async function getUserById(id) {
   return user;
 }
 
+async function getOrderById(id) {
+  if (!userToken) {
+    return;
+  }
+  let order = null;
+  try {
+    let res = await fetch(`${API_BASE_URL}/orders/order/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+
+    if (!res.ok && res.status === 500) {
+      showToast("an error occured");
+    } else if (!res.ok) {
+      let text = await res.text();
+      showToast(text);
+    } else {
+      order = await res.json();
+    }
+  } catch (err) {
+    showToast(err);
+  }
+
+  return order;
+}
+
 // adding user review
 async function addUserReview() {
   if (!userToken) {
     return;
   }
+  showLoader();
   let reviewContext = document.getElementsByClassName("review-input")[0].value;
   if (
     reviewContext !== "" &&
@@ -297,22 +326,34 @@ async function addUserReview() {
     try {
       let res = await fetch(`${API_BASE_URL}/reviews/add/${ID}`, {
         method: "POST",
-        body: { context: reviewContext, stars: starsSelectedReview },
-        Authorization: `Bearer ${userToken}`,
+        body: JSON.stringify({
+          context: reviewContext,
+          stars: starsSelectedReview,
+        }),
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+          "Content-Type": "application/json",
+        },
       });
       if (!res.ok && res.status === 500) {
+        hideLoader();
         showToast("an error occured");
       } else if (!res.ok) {
         let text = await res.text();
+        hideLoader();
         showToast(text);
       } else {
+        hideLoader();
         showToast("review added");
       }
     } catch (err) {
+      hideLoader();
       showToast(err.message);
     }
-    showProductDetails();
+    await showProductDetails();
+    hideLoader();
   } else {
+    hideLoader();
     return;
   }
 }
@@ -454,7 +495,7 @@ function togglePassword() {
 }
 
 // login user
-function login() {
+async function login() {
   let email = document.getElementById("email"); // email input
   let password = document.getElementById("password"); // password input
   let errorEmail = document.getElementsByClassName("error-email")[0]; // email error
@@ -466,38 +507,51 @@ function login() {
     return;
   }
   showButtonLoader("short", "text"); // showing loader on button
-  let user = users.find((element) => element.email === email.value); // finding user
   let mainError = document.getElementsByClassName("main")[0]; // main error of form
   mainError.style.display = "none"; // removing error
-  // is no user found showing no user found error
-  if (user == null || user == undefined) {
-    mainError.textContent = "No user found with this email";
+
+  try {
+    let data = { email: email.value, password: password.value };
+    let res = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json", // Missing this causes Express to skip parsing
+      },
+    });
+
+    if (!res.ok && res.status === 500) {
+      mainError.textContent = "internal server error. please try again later";
+      mainError.style.display = "block";
+      hideButtonLoader("short", "text"); // hiding button loader
+    } else if (!res.ok) {
+      mainError.textContent = await res.text();
+      mainError.style.display = "block";
+      hideButtonLoader("short", "text"); // hiding button loader
+    } else {
+      let data = await res.text();
+      localStorage.setItem("token", data); // adding token in local storage
+      hideButtonLoader("short", "text"); // hiding button loader
+      window.location.href = `${DOMAIN}/`; // redirctiong to home page
+    }
+  } catch (err) {
+    mainError.textContent = err.message;
     mainError.style.display = "block";
     hideButtonLoader("short", "text"); // hiding button loader
-    return;
   }
-
-  // if wrong password showing wrong password error
-  if (user.password !== password.value) {
-    mainError.textContent = "enetered wrong password";
-    mainError.style.display = "block";
-    hideButtonLoader("short", "text"); // hiding button loader
-    return;
-  }
-
-  localStorage.setItem("token", user.id); // adding token in local storage
-  hideButtonLoader("short", "text"); // hiding button loader
-  window.location.href = `${DOMAIN}/`; // redirctiong to home page
 }
 
 // sign up user
-function signUp() {
+async function signUp() {
+  showButtonLoader("short", "text");
   let email = document.getElementById("email");
   let password = document.getElementById("password");
   let name = document.getElementById("name");
   let errorEmail = document.getElementsByClassName("error-email")[0];
   let errorPassword = document.getElementsByClassName("error-password")[0];
   let errorName = document.getElementsByClassName("error-name")[0];
+  let mainError = document.getElementsByClassName("main")[0]; // main error of form
+  mainError.style.display = "none"; // removing error
   // all filds are filled
   if (
     validateEmail() !== true ||
@@ -509,29 +563,39 @@ function signUp() {
     validatePassword();
     return;
   }
-  let user = users.find((element) => element.email === email.value); // findind user
-  let mainError = document.getElementsByClassName("main")[0]; // main form error
-  mainError.style.display = "none"; // removing error
-  // checking if user found with this email
-  if (user != null && user != undefined) {
-    mainError.textContent = "user found with this email. Login"; // main error
-    mainError.style.display = "block"; // main error styling
-    return;
+  try {
+    let data = {
+      email: email.value,
+      password: password.value,
+      name: name.value,
+    };
+    let res = await fetch(`${API_BASE_URL}/auth/signup`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json", // Missing this causes Express to skip parsing
+      },
+    });
+
+    if (!res.ok && res.status === 500) {
+      mainError.textContent = "internal server error. please try again later";
+      mainError.style.display = "block";
+      hideButtonLoader("short", "text"); // hiding button loader
+    } else if (!res.ok) {
+      mainError.textContent = await res.text();
+      mainError.style.display = "block";
+      hideButtonLoader("short", "text"); // hiding button loader
+    } else {
+      let data = await res.text();
+      localStorage.setItem("token", data); // adding token in local storage
+      hideButtonLoader("short", "text"); // hiding button loader
+      window.location.href = `${DOMAIN}/`; // redirctiong to home page
+    }
+  } catch (err) {
+    mainError.textContent = err.message;
+    mainError.style.display = "block";
+    hideButtonLoader("short", "text"); // hiding button loader
   }
-  showButtonLoader("short", "text"); // showing loader
-  let newUser = new USERS(
-    name.value,
-    email.value,
-    password.value,
-    generateId(8),
-    new CART([], generateId(8), 0),
-    [],
-    new ADDRESS("", "", "", "", ""),
-  ); // new user
-  users.push(newUser); // ading new user
-  localStorage.setItem("token", newUser.id); //  setting it to local storage
-  hideButtonLoader("short", "text"); // hiding loader
-  window.location.href = `${DOMAIN}/`; // redirctiong to home page
 }
 
 // validate email
@@ -1180,14 +1244,16 @@ async function showReview(product) {
     let reviewsText = document.getElementsByClassName("reviews-text")[0];
     reviewsText.textContent = "Reviews";
   }
-  let addReview = document.getElementsByClassName("add-review")[0];
   if (user != null && user != undefined) {
-    let checkReview = product.reviews.find(
-      (review) => review.userId === user._id,
-    );
-    if (checkReview !== undefined) {
-      userReviewedTisProduct = true;
-    }
+    user.orders.forEach(async (id) => {
+      let order = await getOrderById(id);
+      order.cart.products.forEach((item) => {
+        if (item.id === product._id) {
+          showAddReview(product);
+          return;
+        }
+      });
+    });
     let userName = document.getElementsByClassName("username")[0];
     userName.textContent = user.name;
     let addReviewButton =
@@ -1195,19 +1261,6 @@ async function showReview(product) {
     addReviewButton.addEventListener("click", () => {
       addUserReview();
     });
-    let userBuyedThisProduct = false;
-    user.orders.forEach((order) => {
-      order.cart.products.forEach((item) => {
-        if (item.id === product._id) {
-          userBuyedThisProduct = true;
-        }
-      });
-    });
-    if (userBuyedThisProduct === true && userReviewedTisProduct === false) {
-      addReview.style.display = "flex";
-    } else {
-      addReview.style.display = "none";
-    }
   } else {
     addReview.style.display = "none";
   }
@@ -1251,6 +1304,18 @@ async function showReview(product) {
     otherReviews.appendChild(reviewDiv);
   });
 }
+
+function showAddReview(product) {
+  let addReview = document.getElementsByClassName("add-review")[0];
+  addReview.style.display = "none";
+  let checkReview = product.reviews.find(
+    (review) => review.userId === user._id,
+  );
+  if (!checkReview) {
+    addReview.style.display = "flex";
+  }
+}
+
 // changing stars when user click on star button
 function changeStars(number) {
   starsSelectedReview = number;
@@ -1266,7 +1331,7 @@ function goToCart() {
 }
 
 // creating cart page
-function createCartPage() {
+async function createCartPage() {
   showCartBadge();
   let yourCartText = document.getElementsByClassName("cart-text")[0];
   let placeOrderBtn = document.getElementsByClassName("place-order")[0];
@@ -1282,9 +1347,9 @@ function createCartPage() {
   if (user.cart.products.length > 0) {
     yourCartText.textContent = "Your Cart";
     totalPrice.textContent = `Total Price: $${user.cart.totalPrice}`;
-
-    user.cart.products.forEach((item) => {
-      let cartProduct = products.find((ele) => ele.id === item.id);
+    showLoader();
+    user.cart.products.forEach(async (item) => {
+      let cartProduct = await getProductById(item.id);
       let cartItem = document.createElement("div");
       cartItem.className = "cart-item-div";
 
@@ -1366,6 +1431,7 @@ function createCartPage() {
       cartItem.appendChild(cartImageDiv);
       cartItem.appendChild(cartItemDetails);
       cartDiv.appendChild(cartItem);
+      hideLoader();
     });
   } else {
     yourCartText.textContent = "No Item In The Cart";
@@ -1375,22 +1441,38 @@ function createCartPage() {
 }
 
 // adding quantity of product in cart
-function addQty(productid, text, totalPrice) {
-  let cartItemIndex = user.cart.products.findIndex(
-    (item) => item.id === productid,
-  );
-  let cartProduct = products.find((item) => item.id === productid);
-  if (user.cart.products[cartItemIndex].qty + 1 <= cartProduct.stock) {
-    user.cart.products[cartItemIndex].qty =
-      user.cart.products[cartItemIndex].qty + 1;
-  } else {
-    showToast("product is out of stock now", "red");
+async function addQty(productid, text, totalPrice) {
+  if (!userToken) {
+    return;
   }
+  showLoader();
+  try {
+    let res = await fetch(`${API_BASE_URL}/cart/increase/${productid}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
 
-  text.textContent = user.cart.products[cartItemIndex].qty;
+    if (!res.ok && res.status === 500) {
+      showToast("internal error occured", "red");
+      hideLoader();
+    } else if (!res.ok) {
+      let data = await res.text();
+      showToast(data, "red");
+      hideLoader();
+    } else {
+      user = await res.json();
+      totalPrice.textContent = `Total Price: $${getTotalPrice()}`;
+      showCartBadge();
 
-  totalPrice.textContent = `Total Price: $${getTotalPrice()}`;
-  showCartBadge();
+      await createCartPage();
+      hideLoader();
+    }
+  } catch (err) {
+    showToast(err.message, "red");
+    hideLoader();
+  }
 }
 
 // getting total price of cart
@@ -1404,34 +1486,71 @@ function getTotalPrice() {
 }
 
 // lessing quantity of product in cart
-function lessQty(productid, text, totalPrice) {
-  let cartItemIndex = user.cart.products.findIndex(
-    (item) => item.id === productid,
-  );
-  if (user.cart.products[cartItemIndex].qty !== 1) {
-    user.cart.products[cartItemIndex].qty =
-      user.cart.products[cartItemIndex].qty - 1;
+async function lessQty(productid, text, totalPrice) {
+  if (!userToken) {
+    return;
+  }
+  showLoader();
+  try {
+    let res = await fetch(`${API_BASE_URL}/cart/decrease/${productid}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
 
-    text.textContent = user.cart.products[cartItemIndex].qty;
+    if (!res.ok && res.status === 500) {
+      showToast("internal error occured", "red");
+      hideLoader();
+    } else if (!res.ok) {
+      let data = await res.text();
+      showToast(data, "red");
+      hideLoader();
+    } else {
+      user = await res.json();
+      totalPrice.textContent = `Total Price: $${getTotalPrice()}`;
+      showCartBadge();
 
-    totalPrice.textContent = `Total Price: $${getTotalPrice()}`;
-    showCartBadge();
-  } else {
-    removeQty(productid);
+      await createCartPage();
+      hideLoader();
+    }
+  } catch (err) {
+    showToast(err.message, "red");
+    hideLoader();
   }
 }
 
 // removing product from cart
-function removeQty(productId) {
-  let index = user.cart.products.findIndex((item) => item.id === productId);
-  if (index === 0) {
-    user.cart.products.shift();
-  } else {
-    user.cart.products = user.cart.products.slice(index - 1, 1);
+async function removeQty(productId) {
+  if (!userToken) {
+    return;
   }
-  getTotalPrice();
-  createCartPage();
-  showCartBadge();
+  showLoader();
+  try {
+    let res = await fetch(`${API_BASE_URL}/cart/delete/${productId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+
+    if (!res.ok && res.status === 500) {
+      showToast("internal error occured", "red");
+      hideLoader();
+    } else if (!res.ok) {
+      let data = await res.text();
+      showToast(data, "red");
+      hideLoader();
+    } else {
+      user = await res.json();
+      showCartBadge();
+      await createCartPage();
+      hideLoader();
+    }
+  } catch (err) {
+    showToast(err.message, "red");
+    hideLoader();
+  }
 }
 
 // showing toast message
@@ -1463,6 +1582,7 @@ function goToOrders() {
 }
 
 function createOrdersPage() {
+  showLoader();
   ordersTitle = document.getElementsByClassName("orders-title")[0];
   if (user.orders.length === 0) {
     ordersTitle.textContent = "No Orders Yet";
@@ -1476,17 +1596,18 @@ function createOrdersPage() {
   for (let i = 0; i < length; i++) {
     ordersTable.removeChild(ordersTr[0]);
   }
-  user.orders.forEach((order) => {
+  user.orders.forEach(async (id) => {
+    let order = await getOrderById(id);
     ordersTr = document.createElement("tr");
     ordersTr.className = "orders-td";
 
     orderId = document.createElement("th");
     orderId.className = "order-td";
-    orderId.textContent = `${order.id}`;
+    orderId.textContent = `${order._id}`;
 
     orderDate = document.createElement("th");
     orderDate.className = "order-td";
-    orderDate.textContent = `${order.date.toLocaleDateString()}`;
+    orderDate.textContent = `${new Date(order.date).toDateString()}`;
 
     orderPrice = document.createElement("th");
     orderPrice.className = "order-td red";
@@ -1514,24 +1635,24 @@ function createOrdersPage() {
     ordersTable.appendChild(ordersTr);
 
     ordersTr.addEventListener("click", () => {
-      showOrderDetails(order.id);
+      showOrderDetails(order);
     });
   });
+  hideLoader();
 }
 
 // showing order details when user click on order card
-function showOrderDetails(orderId) {
+function showOrderDetails(order) {
   closeOrderDetails();
-  let order = user.orders.find((order) => order.id === orderId);
   let cartDiv = document.getElementsByClassName("order-products")[0];
   cartDiv.className = "order-products";
   cartDiv.textContent = "Products: ";
   let orderDeatils = document.getElementsByClassName("order-details")[0];
   orderDeatils.style.display = "flex";
   let orderIdText = document.getElementsByClassName("order-id")[0];
-  orderIdText.textContent = `orderId: ${order.id}`;
+  orderIdText.textContent = `orderId: ${order._id}`;
   let orderDateText = document.getElementsByClassName("order-date-text")[0];
-  orderDateText.textContent = `${order.date.toLocaleDateString()}`;
+  orderDateText.textContent = `${new Date(order.date).toDateString()}`;
   let orderPaymentText = document.getElementsByClassName("order-price-text")[0];
   orderPaymentText.textContent = `$${order.payment}`;
   let orderStatusText = document.getElementsByClassName("order-status-text")[0];
@@ -1557,8 +1678,8 @@ function showOrderDetails(orderId) {
     document.getElementsByClassName("order-address-text")[0];
   orderAddressText.textContent = `${order.address.street}, ${order.address.city}, ${order.address.state}, ${order.address.zip}, ${order.address.country}`;
 
-  order.cart.products.forEach((item) => {
-    let cartProduct = products.find((ele) => ele.id === item.id);
+  order.cart.products.forEach(async (item) => {
+    let cartProduct = await getProductById(item.id);
     let cartItem = document.createElement("div");
     cartItem.className = "cart-item-div";
 
@@ -1631,17 +1752,17 @@ function showOrderDetails(orderId) {
     returnBtn.style.display = "none";
   }
 
-  if (order.status === "processing") {
+  if (order.status === "processing" || order.status === "ordered") {
     cancelBtn.style.display = "block";
   } else {
     cancelBtn.style.display = "none";
   }
 
   returnBtn.addEventListener("click", () => {
-    returnOrder(orderId);
+    returnOrder(order._id);
   });
   cancelBtn.addEventListener("click", () => {
-    cancelOrder(orderId);
+    cancelOrder(order._id);
   });
 
   productActions.appendChild(returnBtn);
@@ -1649,20 +1770,69 @@ function showOrderDetails(orderId) {
 }
 
 // returning order
-function returnOrder(orderId) {
-  let index = user.orders.findIndex((item) => item.id === orderId);
-  user.orders[index].status = "returned";
-  closeOrderDetails();
-  createOrdersPage();
+async function returnOrder(orderId) {
+  if (!userToken) {
+    return;
+  }
+  showLoader();
+  try {
+    let res = await fetch(`${API_BASE_URL}/orders/return/${orderId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+
+    if (!res.ok && res.status === 500) {
+      hideLoader();
+      showToast("an internal error occured");
+    } else if (!res.ok) {
+      let errText = await res.text();
+      hideLoader();
+      showToast(errText);
+    } else {
+      hideLoader();
+      showToast("order added for return");
+      closeOrderDetails();
+      createOrdersPage();
+    }
+  } catch (err) {
+    hideLoader();
+    showToast(err.message);
+  }
 }
 
 // canceling order
-function cancelOrder(orderId) {
-  console.log(orderId);
-  let index = user.orders.findIndex((item) => item.id === orderId);
-  user.orders[index].status = "cancelled";
-  closeOrderDetails();
-  createOrdersPage();
+async function cancelOrder(orderId) {
+  if (!userToken) {
+    return;
+  }
+  showLoader();
+  try {
+    let res = await fetch(`${API_BASE_URL}/orders/cancel/${orderId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+
+    if (!res.ok && res.status === 500) {
+      hideLoader();
+      showToast("an internal error occured");
+    } else if (!res.ok) {
+      let errText = await res.text();
+      hideLoader();
+      showToast(errText);
+    } else {
+      hideLoader();
+      showToast("order cancelled");
+      closeOrderDetails();
+      createOrdersPage();
+    }
+  } catch (err) {
+    hideLoader();
+    showToast(err.message);
+  }
 }
 
 // closing order details
@@ -1797,14 +1967,15 @@ function goToAddress() {
 function showAddress() {
   let addressDiv = document.getElementsByClassName("address-div")[0];
   addressDiv.style.display = "flex";
+  let addressText = document.getElementsByClassName("address-text")[0];
 
   if (user.address.addressMade === false) {
-    addressDiv.style.display = "none";
+    addressText.textContent = "You have no Saved address";
+    addressText.style.display = "block";
     showEditAddress();
     return;
   }
 
-  let addressText = document.getElementsByClassName("address-text")[0];
   addressText.textContent = `Your Address: ${user.address.street}, ${user.address.city}, ${user.address.state}, ${user.address.country}, ${user.address.zip}`;
 }
 
@@ -1854,7 +2025,8 @@ function closeEditAddress() {
   editAddress.style.display = "none";
 }
 
-function editAddress() {
+async function editAddress() {
+  showLoader();
   let streetInput = document.getElementById("street").value;
   let stateInput = document.getElementById("state").value;
   let cityInput = document.getElementById("city").value;
@@ -1871,38 +2043,72 @@ function editAddress() {
     showToast("please fill the fields", "red");
     return;
   }
+  try {
+    let res = await fetch(`${API_BASE_URL}/auth/update/${user._id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        street: streetInput,
+        zip: zipInput,
+        state: stateInput,
+        country: countryInput,
+        city: cityInput,
+      }),
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-  user.address.street = streetInput;
-  user.address.state = stateInput;
-  user.address.city = cityInput;
-  user.address.zip = zipInput;
-  user.address.country = countryInput;
-  user.address.addressMade = true;
-
-  showToast("address updated", "green");
-  closeEditAddress();
-  showAddress();
+    if (!res.ok && res.status === 500) {
+      showToast("internal error occured", "red");
+      hideLoader();
+    } else if (!res.ok) {
+      let error = await res.text();
+      showToast(error, "red");
+      hideLoader();
+    } else {
+      let newUser = await getUserById(user._id);
+      user = newUser;
+      hideLoader();
+      showToast("address updated", "green");
+      closeEditAddress();
+      showAddress();
+    }
+  } catch (err) {
+    showToast(err.message, "red");
+    hideLoader();
+  }
 }
 
-function placeOrder() {
-  if (user.address.addressMade === false) {
-    showToast("please add your address before buying");
+async function placeOrder() {
+  if (!userToken) {
     return;
   }
+  showLoader();
+  try {
+    let res = await fetch(`${API_BASE_URL}/orders/place/`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
 
-  user.orders.push(
-    new ORDERS(
-      user.cart,
-      generateId(8),
-      user.address,
-      user.cart.totalPrice,
-      new Date(),
-      "processing",
-    ),
-  );
-
-  user.cart = new CART([], generateId(8), 0);
-  createCartPage();
-
-  showToast("order placed", "green");
+    if (!res.ok && res.status === 500) {
+      showToast("internal error occured", "red");
+      hideLoader();
+    } else if (!res.ok) {
+      let data = await res.text();
+      showToast(data, "red");
+      hideLoader();
+    } else {
+      let newUser = await getUserById(user._id);
+      user = newUser;
+      createCartPage();
+      hideLoader();
+      showToast("order placed");
+    }
+  } catch (err) {
+    showToast(err.message, "red");
+    hideLoader();
+  }
 }
