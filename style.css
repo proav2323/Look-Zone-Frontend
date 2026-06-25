@@ -493,6 +493,7 @@ body {
 
 .coursel-button.active {
   opacity: 100%;
+  z-index: 150;
 }
 .coursel-item:hover {
   cursor: pointer;

@@ -1,225 +1,9 @@
-// bolierplate data
-class USERS {
-  constructor(name, email, password, id, cart, orders, address) {
-    this.name = name;
-    this.email = email;
-    this.password = password;
-    this.id = id;
-    this.cart = cart;
-    this.orders = orders;
-    this.address = address;
-  }
-}
-
-class PRODUCTS {
-  constructor(
-    name,
-    price,
-    stars,
-    stock,
-    id,
-    reviews,
-    description,
-    categoryId,
-    images,
-  ) {
-    this.name = name;
-    this.price = price;
-    this.stars = stars;
-    this.stock = stock;
-    this.id = id;
-    this.reviews = reviews;
-    this.description = description;
-    this.categoryId = categoryId;
-    this.images = images;
-  }
-}
-
-class CATEGORIES {
-  constructor(name, id) {
-    this.name = name;
-    this.id = id;
-  }
-}
-
-class ORDERS {
-  constructor(cart, id, address, payment, date, status) {
-    this.cart = cart;
-    this.id = id;
-    this.address = address;
-    this.payment = payment;
-    this.date = date || new Date();
-    this.status = status || "Processing";
-  }
-}
-
-class CART {
-  constructor(products, id, totalPrice) {
-    this.products = products;
-    this.id = id;
-    this.totalPrice = totalPrice;
-  }
-} // not in mangodb database class
-
-class ADDRESS {
-  constructor(street, city, state, zip, country, addressMade) {
-    this.street = street;
-    this.city = city;
-    this.state = state;
-    this.zip = zip;
-    this.country = country;
-    this.addressMade = addressMade;
-  }
-} // not in mangodb database class
-
-class REVIEWS {
-  constructor(userId, context, stars) {
-    this.userId = userId;
-    this.context = context;
-    this.stars = stars;
-  }
-}
-
-let users = [
-  new USERS(
-    "Ansh Verma",
-    "anshvishesh03@gmail.com",
-    "anshvishesh2007",
-    "mdkandkasm",
-    new CART(
-      [
-        { id: "smndjnadjnsajndsjan", qty: 1, price: 1499 },
-        { id: "asdsjhdsjindajbdsdjsj", qty: 1, price: 1499 },
-      ],
-      "snajdnajsdbas",
-      2998,
-    ),
-    [
-      new ORDERS(
-        new CART(
-          [{ id: "smndjnadjnsajndsjan", qty: 1, price: 1499 }],
-          "snajdnajsdbas",
-          1499,
-        ),
-        "msnajdbsabdhab",
-        new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada", true),
-        1499,
-        new Date(),
-        "processing",
-      ),
-      new ORDERS(
-        new CART(
-          [{ id: "smndjnadjnsajndsjan", qty: 2, price: 1499 }],
-          "snajdnajsdbas",
-          1499 * 2,
-        ),
-        "msnajdbsabdhabsadasdasd",
-        new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada", true),
-        1499 * 2,
-        new Date(),
-        "shipped",
-      ),
-      new ORDERS(
-        new CART(
-          [{ id: "smndjnadjnsajndsjan", qty: 3, price: 1499 }],
-          "snajdnajsdbas",
-          1499 * 3,
-        ),
-        "msnajdbsabdhabfghgfhgfh",
-        new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada", true),
-        1499 * 3,
-        new Date(),
-        "delivered",
-      ),
-    ],
-    new ADDRESS("123 Main St", "Anytown", "State", "12345", "Canada", true),
-  ),
-]; // user date
-
-let products = [
-  new PRODUCTS(
-    "Airpods",
-    1499,
-    0,
-    7,
-    "smndjnadjnsajndsjan",
-    [],
-    "sandjasndasdnkasnd asdlasjkdnas dlasmdlasmd asmdlnasdas daskdas dnaskndiasj dasnkasn dasndkasnd asndkasnd aslfsaknfmas fkasn fas asjnaskf asnfkasn",
-    "smnajdbsdbsahbd",
-    [
-      "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
-      "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
-      "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
-      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
-      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
-    ],
-  ),
-  new PRODUCTS(
-    "Airpods",
-    1499,
-    5,
-    20,
-    "asdsjhdsjindajbdsdjsj",
-    [new REVIEWS("mdkandkasm", "very good product.", 5)],
-    "skdfsn fdsnfkdsnf dmsnfksnf dsmfksn asndkasd asdnkasd asjlasfm asnfbaskmf asjfbskf asjfaslmfas fjsakf asjfkasf asjfnasknf sajfnksnf asfmnaskf asfnasmfasf kasnf asfasnfmasm fkasnkfas fksanfkasnf asm fknsakfnas fkasnfnas fkasnfas flasnfnas fkns",
-    "smnajdbsdbsahbd",
-    [
-      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
-      "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
-      "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
-      "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
-      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
-    ],
-  ),
-  new PRODUCTS(
-    "Airpods",
-    1499,
-    5,
-    20,
-    "asdsjhdsjindajbdsdjsjsknadkasn",
-    [new REVIEWS("mdkandkasm", "very good product.", 5)],
-    "skdfsn fdsnfkdsnf dmsnfksnf dsmfksn asndkasd asdnkasd asjlasfm asnfbaskmf asjfbskf asjfaslmfas fjsakf asjfkasf asjfnasknf sajfnksnf asfmnaskf asfnasmfasf kasnf asfasnfmasm fkasnkfas fksanfkasnf asm fknsakfnas fkasnfnas fkasnfas flasnfnas fkns",
-    "smnajdbsdbsahbd",
-    [
-      "https://media.istockphoto.com/id/1204039347/photo/apple-airpods-on-a-white-background.jpg?s=612x612&w=0&k=20&c=2__4hfynkvBt7PA0UE7N5JxSTuaGRFVKaXJUuoQlBzk=",
-      "https://media.istockphoto.com/id/1208634643/photo/apple-airpods-pro-on-a-white-background.jpg?s=612x612&w=0&k=20&c=TRA9JwDgw_6mv7PV8CRkYfw5oAJ4SVVC14ximky_dr0=",
-      "https://as2.ftcdn.net/jpg/02/88/75/63/1000_F_288756334_ZbfCC1iZuFh0GWlu0DOp7SA5NZ9vWtFw.jpg",
-      "https://t4.ftcdn.net/jpg/03/01/97/89/360_F_301978961_hgdYKF55dQkG7nUmXT5DHm0r5PgNWKz3.jpg",
-      "https://static.vecteezy.com/system/resources/thumbnails/034/087/793/small/iconic-airpods-pro-from-apple-inc-on-a-clean-white-backdrop-ai-generated-photo.jpg",
-    ],
-  ),
-]; // products data
-let admins = [
-  {
-    userId: "mdkandkasm",
-    canEdit: true,
-    id: "dsjdnasjbdsabdabshdbashdbahs",
-  },
-]; // admins data
-
-let courselProducts = [
-  {
-    productId: "smndjnadjnsajndsjan",
-    id: "sdnajdsandasndasn",
-    heading: "first slide",
-    subText: "first and this is product is so good you should give it a try",
-  },
-  {
-    productId: "asdsjhdsjindajbdsdjsj",
-    id: "akjdsjdnjdnsajndn",
-    heading: "second slide",
-    subText: "second",
-  },
-]; // show products on coursels
-
-const categories = [
-  new CATEGORIES("Electronics", "smnajdbsdbsahbd"),
-  new CATEGORIES("Clothes", "smnaajdbabsajbdahhdasb"),
-  new CATEGORIES("Watches", "smnjdbajdbajbdjab"),
-  new CATEGORIES("organizers", "sjdbhasbdhbashdashbd"),
-]; // filters (categories) admin can create more
+let products = []; // products data
+let courselProducts = []; // show products on coursels
+let categories = []; // filters (categories) admin can create more
 
 const DOMAIN = window.location.origin; // domain of our url
+const API_BASE_URL = "https://look-zone-backend.onrender.com";
 
 // variables
 let isLoggedIn = false; // varaible to see is user logged in
@@ -240,13 +24,25 @@ let isDarkMode =
     ? localStorage.getItem("mode")
     : "light";
 
-// checking is user logged in with some token
-showLoader();
-if (userToken !== null && userToken !== undefined) {
-  user = users.find((element) => element.id == userToken); // checking if we can find user with this token
-  auth();
-} else {
-  showUi(); // to show content
+start();
+
+async function start() {
+  // checking is user logged in with some token
+  showLoader();
+  if (userToken !== null && userToken !== undefined) {
+    user = null;
+    isLoggedIn = false;
+    try {
+      await auth();
+    } catch (err) {
+      showToast(err.message);
+      console.log(err.message);
+    }
+  } else {
+    user = null;
+    isLoggedIn = false;
+    showUi(); // to show content
+  }
 }
 
 // showing an element and removing an element
@@ -256,7 +52,7 @@ function showRemove(show, remove) {
 }
 
 // showing website content
-function showUi() {
+async function showUi() {
   if (isLoggedIn == true) {
     if (
       window.location.href === `${DOMAIN}/auth.html` ||
@@ -265,8 +61,9 @@ function showUi() {
       window.location.href = `${DOMAIN}`;
     }
     if (
-      admins.find((element) => element.userId == user.id) !== null &&
-      admins.find((element) => element.userId == user.id) !== undefined
+      user.isAdmin === true ||
+      user.canEdit === true ||
+      user.canView === true
     ) {
       // to show admin dashboard if user is admin
       document.getElementsByClassName("admin")[0].style.display = "inline";
@@ -278,18 +75,21 @@ function showUi() {
       window.location.href === `${DOMAIN}/cart.html` ||
       window.location.href === `${DOMAIN}/cart.html?`
     ) {
+      showToast("you need to login first");
       window.location.href = `${DOMAIN}`;
     }
     if (
       window.location.href === `${DOMAIN}/yourOrders.html` ||
       window.location.href === `${DOMAIN}/yourOrders.html?`
     ) {
+      showToast("you need to login first");
       window.location.href = `${DOMAIN}`;
     }
     if (
       window.location.href === `${DOMAIN}/address.html` ||
       window.location.href === `${DOMAIN}/address.html?`
     ) {
+      showToast("you need to login first");
       window.location.href = `${DOMAIN}`;
     }
   }
@@ -301,8 +101,11 @@ function showUi() {
     window.location.href === `${DOMAIN}/index.html/` ||
     window.location.href === `${DOMAIN}/index.html?`
   ) {
+    products = await getAllProducts();
+    courselProducts = await getAllCourselProducts();
+    categories = await getAllCategories();
     showProducts(products);
-    showCoursels();
+    await showCoursels();
     showCategoryFilters();
   }
   // checking user on cart page
@@ -315,11 +118,11 @@ function showUi() {
   }
   // checking user on product page
   if (window.location.href.startsWith(`${DOMAIN}/product.html`) === true) {
-    showProductDetails();
+    await showProductDetails();
   }
 
   if (window.location.href.startsWith(`${DOMAIN}/search.html`) === true) {
-    showSearch();
+    await showSearch();
   }
 
   if (window.location.href.startsWith(`${DOMAIN}/address.html`) === true) {
@@ -329,6 +132,191 @@ function showUi() {
 
   isLoading = false;
 }
+
+async function getAllProducts() {
+  let products = [];
+  try {
+    let res = await fetch(`${API_BASE_URL}/products/`, { method: "GET" });
+
+    if (!res.ok && res.status === 500) {
+      showToast("an error occured");
+    } else if (!res.ok) {
+      let text = await res.text();
+      showToast(text);
+    } else {
+      products = await res.json();
+    }
+  } catch (err) {
+    showToast(err.message);
+  }
+
+  return products;
+}
+
+async function getAllCourselProducts() {
+  let products = [];
+  try {
+    let res = await fetch(`${API_BASE_URL}/coursels/`, { method: "GET" });
+
+    if (!res.ok && res.status === 500) {
+      showToast("an error occured");
+    } else if (!res.ok) {
+      let text = await res.text();
+      showToast(text);
+    } else {
+      products = await res.json();
+    }
+  } catch (err) {
+    showToast(err.message);
+  }
+
+  return products;
+}
+
+async function getProductById(id) {
+  let product = null;
+  try {
+    let res = await fetch(`${API_BASE_URL}/products/product/${id}`, {
+      method: "GET",
+    });
+
+    if (!res.ok && res.status === 500) {
+      showToast("an error occured");
+    } else {
+      product = await res.json();
+    }
+  } catch (err) {
+    showToast(err.message);
+  }
+
+  return product;
+}
+
+async function getAllCategories() {
+  let categories = [];
+  try {
+    let res = await fetch(`${API_BASE_URL}/categories/`, { method: "GET" });
+
+    if (!res.ok && res.status === 500) {
+      showToast("an error occured");
+    } else if (!res.ok) {
+      let text = await res.text();
+      showToast(text);
+    } else {
+      categories = await res.json();
+    }
+  } catch (err) {
+    showToast(err.message);
+  }
+
+  return categories;
+}
+
+async function getCategoryProducts(id) {
+  let products = [];
+  try {
+    let res = await fetch(`${API_BASE_URL}/products/category/${id}`, {
+      method: "GET",
+    });
+
+    if (!res.ok && res.status === 500) {
+      showToast("an error occured");
+    } else if (!res.ok) {
+      let text = await res.text();
+      showToast(text);
+    } else {
+      products = await res.json();
+    }
+  } catch (err) {
+    showToast(err.message);
+  }
+
+  return products;
+}
+
+async function getSearchedProducts(search) {
+  let products = [];
+  try {
+    let res = await fetch(`${API_BASE_URL}/products/search?search=${search}`, {
+      method: "GET",
+    });
+
+    if (!res.ok && res.status === 500) {
+      showToast("an error occured");
+    } else if (!res.ok) {
+      let text = await res.text();
+      showToast(text);
+    } else {
+      products = await res.json();
+    }
+  } catch (err) {
+    showToast(err.message);
+  }
+
+  return products;
+}
+
+async function getUserById(id) {
+  let user = null;
+  console.log(id);
+  try {
+    let res = await fetch(`${API_BASE_URL}/auth/user/${id}`, {
+      method: "GET",
+    });
+
+    if (!res.ok && res.status === 500) {
+      showToast("an error occured");
+    } else if (!res.ok) {
+      let text = await res.text();
+      showToast(text);
+    } else {
+      user = await res.json();
+    }
+  } catch (err) {
+    showToast(err);
+  }
+
+  return user;
+}
+
+// adding user review
+async function addUserReview() {
+  if (!userToken) {
+    return;
+  }
+  let reviewContext = document.getElementsByClassName("review-input")[0].value;
+  if (
+    reviewContext !== "" &&
+    reviewContext != undefined &&
+    reviewContext != null &&
+    starsSelectedReview !== 0
+  ) {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const ID = urlParams.get("id");
+    try {
+      let res = await fetch(`${API_BASE_URL}/reviews/add/${ID}`, {
+        method: "POST",
+        body: { context: reviewContext, stars: starsSelectedReview },
+        Authorization: `Bearer ${userToken}`,
+      });
+      if (!res.ok && res.status === 500) {
+        showToast("an error occured");
+      } else if (!res.ok) {
+        let text = await res.text();
+        showToast(text);
+      } else {
+        showToast("review added");
+      }
+    } catch (err) {
+      showToast(err.message);
+    }
+    showProductDetails();
+  } else {
+    return;
+  }
+}
+
 // show loader
 function showLoader() {
   document.getElementsByClassName("loader-block")[0].style.display = "flex"; // making loader appear
@@ -359,8 +347,25 @@ function showCartBadge() {
   }
 }
 // authentication
-function auth() {
+async function auth() {
   showMode();
+  try {
+    let res = await fetch(`${API_BASE_URL}/auth`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+    if (!res.ok) {
+      showToast("something went wrong. please try again later");
+    } else {
+      user = await res.json();
+      isLoggedIn = true;
+    }
+  } catch (err) {
+    showToast(err);
+  }
+
   // to check if we found the user
   if (user !== null && user !== undefined) {
     isLoggedIn = true;
@@ -382,7 +387,7 @@ function auth() {
     }
   }
 
-  showUi(); // to show content
+  await showUi(); // to show content
 }
 
 // show dropdown
@@ -627,7 +632,7 @@ function generateId(length) {
 // show categoryFilters
 function showCategoryFilters() {
   let categoryFilter = document.getElementsByClassName("category-filter")[0]; // getting cateyory parent div
-  let allButton = createCategory({ name: "All", id: "all" }); // creating all button
+  let allButton = createCategory({ name: "All", _id: "all" }); // creating all button
 
   categoryFilter.appendChild(allButton); // adding in parent div
   // maping to add all other categries
@@ -641,10 +646,19 @@ function showCategoryFilters() {
 function showProducts(showProducts) {
   showProductLoader();
   let products = document.getElementsByClassName("products")[0];
+  let noProductText = document.getElementsByClassName("no-products")[0]; // no products found text
+  noProductText.textContent = "";
+
   if (products.children.length > 0) {
     products.textContent = ""; // removing already added products cards
   }
-  let noProductText = document.getElementsByClassName("no-products")[0]; // no products found text
+  // mapping show products array
+  showProducts.forEach((product) => {
+    let productCard = createProduct(product); // creating product card
+    products.appendChild(productCard); // appedning product card
+  });
+
+  noProductText.textContent = "No products Found";
   noProductText.style.display = "none"; // display to none
   // checking if show products is no empty
   if (
@@ -656,22 +670,21 @@ function showProducts(showProducts) {
     noProductText.style.display = "block"; // displaying no product found text
     return;
   }
-
-  // mapping show products array
-  showProducts.forEach((product) => {
-    let productCard = createProduct(product); // creating product card
-    products.appendChild(productCard); // appedning product card
-  });
   hideProductLoader();
 }
 
 // showing coursels
-function showCoursels() {
+async function showCoursels() {
   let coursel = document.getElementsByClassName("coursel")[0]; // coursel parent div
+  coursel.style.display = "flex";
+  if (courselProducts.length === 0) {
+    coursel.style.display = "none";
+    return;
+  }
   let index = 0; // index for interval
   // maping coursel items
-  courselProducts.forEach((element, i) => {
-    let courselItem = createCoursel(element, i, coursel); // creating coursel item
+  courselProducts.forEach(async (element, i) => {
+    let courselItem = await createCoursel(element, i, coursel); // creating coursel item
     coursel.appendChild(courselItem); // adding coursel item in parent div
   });
   index = courselProducts.length - 1; // current index of coursel item for interval
@@ -763,8 +776,7 @@ function leftCoursel(index, coursel) {
 }
 
 // aplly iflters
-function applyFilter(filterId) {
-  showProductLoader();
+async function applyFilter(filterId) {
   let categoryFilter = document.getElementsByClassName("category-filter")[0];
   // removing selected class from every category button
   for (let i = 0; i < categoryFilter.children.length; i++) {
@@ -774,16 +786,11 @@ function applyFilter(filterId) {
     categoryFilter.children[0].className = "category-button selected"; // making all object selected
     showProducts(products); // getting and showing products
   } else {
-    let index = Array.from(categoryFilter.children).findIndex(
-      (element) => element.id === filterId,
-    ); // finding clicked element
-    categoryFilter.children[index].className = "category-button selected"; // adding selected class
-    let filteredProducts = products.filter(
-      (element) => element.categoryId === filterId,
-    ); // finding filtreed array
-    showProducts(filteredProducts); // showing filtered products
+    let index = categories.findIndex((elem) => elem._id === filterId);
+    categoryFilter.children[index + 1].className = "category-button selected"; // adding selected class
+    let showProdcuts = await getCategoryProducts(filterId);
+    showProducts(showProdcuts); // showing filtered products
   }
-  hideProductLoader();
 }
 
 // creating category
@@ -791,10 +798,19 @@ function createCategory(category) {
   let catButton = document.createElement("button"); // careting button
   catButton.textContent = category.name; // adding category name
   catButton.className =
-    category.id === "all" ? "category-button selected" : "category-button"; // adding class
-  catButton.id = category.id; // seeting id
-  catButton.addEventListener("click", () => {
-    applyFilter(category.id); // applying filters
+    category._id === "all" ? "category-button selected" : "category-button"; // adding class
+  catButton.id = category._id; // seeting id
+  catButton.addEventListener("click", async () => {
+    let products = document.getElementsByClassName("products")[0];
+    let noProductText = document.getElementsByClassName("no-products")[0]; // no products found text
+    noProductText.textContent = "";
+
+    if (products.children.length > 0) {
+      products.textContent = ""; // removing already added products cards
+    }
+    showProductLoader();
+    await applyFilter(category._id); // applying filters
+    hideProductLoader();
   });
 
   return catButton;
@@ -810,7 +826,7 @@ function createProduct(product) {
   productImage.src = product.images[0];
 
   productImage.addEventListener("click", () => {
-    window.location.href = `/product.html?id=${product.id}`;
+    window.location.href = `/product.html?id=${product._id}`;
   });
 
   let productTitle = document.createElement("span");
@@ -827,7 +843,7 @@ function createProduct(product) {
 
   let AddToCartButton = document.createElement("button");
   if (user != null && user != undefined) {
-    let cartItem = user.cart.products.find((item) => item.id === product.id);
+    let cartItem = user.cart.products.find((item) => item.id === product._id);
     if (cartItem != null && cartItem != undefined) {
       AddToCartButton.textContent = "Added";
     } else {
@@ -838,12 +854,12 @@ function createProduct(product) {
   }
   AddToCartButton.className = "product-button";
 
-  AddToCartButton.addEventListener("click", () => {
-    let cartItem = user.cart.products.find((item) => item.id === product.id);
+  AddToCartButton.addEventListener("click", async () => {
+    let cartItem = user.cart.products.find((item) => item.id === product._id);
     if (user != null && user != undefined) {
       if (cartItem != null && cartItem != undefined) {
       } else {
-        addToCart(product.id);
+        await addToCart(product._id);
         AddToCartButton.textContent = "Added";
       }
     } else {
@@ -860,7 +876,7 @@ function createProduct(product) {
 }
 
 // creating coursels
-function createCoursel(element, index, coursel) {
+async function createCoursel(element, index, coursel) {
   let courselItem = document.createElement("div");
   courselItem.className =
     index === courselProducts.length - 1
@@ -909,20 +925,21 @@ function createCoursel(element, index, coursel) {
 
   rightButton.appendChild(rightIcon);
 
-  let product = products.find((product) => element.productId === product.id);
+  courselItem.appendChild(leftButton);
+  courselItem.appendChild(rightButton);
+  courselItem.appendChild(courselText);
+
+  let product = await getProductById(element.productId);
   let courselImage = document.createElement("img");
   courselImage.className = "coursel-image";
   courselImage.src = product.images[0];
 
   courselItem.appendChild(courselImage);
-  courselItem.appendChild(leftButton);
-  courselItem.appendChild(rightButton);
-  courselItem.appendChild(courselText);
 
   courselItem.style.zIndex = index + 1;
 
   courselImage.addEventListener("click", () => {
-    window.location.href = `/product.html?id=${product.id}`;
+    window.location.href = `/product.html?id=${product._id}`;
   });
 
   let rightClick = 1;
@@ -937,21 +954,16 @@ function createCoursel(element, index, coursel) {
   return courselItem;
 }
 
-// get product with id
-function getProduct(id) {
-  return products.find((product) => (product.id = id));
-}
-
 // show product details
-function showProductDetails() {
+async function showProductDetails() {
   showLoader();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const ID = urlParams.get("id");
-  const product = products.find((product) => product.id === ID);
+  const product = await getProductById(ID);
   if (product !== null && product !== undefined) {
     document.getElementsByClassName("no-product")[0].style.display = "none";
-    createProductDetails(product);
+    await createProductDetails(product);
     hideLoader();
   } else {
     document.getElementsByClassName("no-product")[0].style.display = "block";
@@ -960,7 +972,7 @@ function showProductDetails() {
 }
 
 // creating a product deatils page
-function createProductDetails(product) {
+async function createProductDetails(product) {
   let productMainImage = document.getElementsByClassName(
     "product-selected-image",
   )[0];
@@ -989,7 +1001,7 @@ function createProductDetails(product) {
   });
   let AddToCartButton = document.getElementsByClassName("add-to-cart")[0];
   if (user != null && user != undefined) {
-    let cartItem = user.cart.products.find((item) => item.id === product.id);
+    let cartItem = user.cart.products.find((item) => item.id === product._id);
     if (cartItem != null && cartItem != undefined) {
       AddToCartButton.textContent = "Added";
     } else {
@@ -1000,18 +1012,18 @@ function createProductDetails(product) {
   }
 
   AddToCartButton.addEventListener("click", () => {
-    let cartItem = user.cart.products.find((item) => item.id === product.id);
+    let cartItem = user.cart.products.find((item) => item.id === product._id);
     if (user != null && user != undefined) {
       if (cartItem != null && cartItem != undefined) {
       } else {
-        addToCart(product.id);
+        addToCart(product._id);
         AddToCartButton.textContent = "Added";
       }
     } else {
       window.location.href = "/auth.html";
     }
   });
-  showReview(product);
+  await showReview(product);
   let productTitle = document.getElementsByClassName("product-title")[0];
   productTitle.textContent = product.name;
 
@@ -1110,20 +1122,38 @@ function changeProducctMainImages(image) {
 }
 
 // add to cart
-function addToCart(productId) {
-  let prod = products.find((item) => item.id === productId);
-  user.cart.products.push({ id: productId, qty: 1, price: prod.price });
-  showCartBadge(); // updating cart badge
+async function addToCart(productId) {
+  if (user) {
+    try {
+      let res = await fetch(`${API_BASE_URL}/cart/add/${productId}`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${userToken}` },
+      });
+
+      if (res.ok) {
+        let data = await res.json();
+        user = data;
+        showCartBadge(); // updating cart badge
+        showToast("item added");
+      } else {
+        showToast("an error occured");
+      }
+    } catch (err) {
+      showToast(err.message);
+    }
+  }
 }
 
 // showing product loader
 function showProductLoader() {
+  document.getElementsByClassName("products")[0].style.display = "none";
   let productLoader = document.getElementsByClassName("products-loading")[0];
   productLoader.style.display = "flex";
 }
 
 // hiding product loader
 function hideProductLoader() {
+  document.getElementsByClassName("products")[0].style.display = "flex";
   let productLoader = document.getElementsByClassName("products-loading")[0];
   productLoader.style.display = "none";
 }
@@ -1141,7 +1171,7 @@ function logout() {
 }
 
 // showing reviews of product
-function showReview(product) {
+async function showReview(product) {
   userReviewedTisProduct = false;
   if (product.reviews.length === 0) {
     let reviewsText = document.getElementsByClassName("reviews-text")[0];
@@ -1153,7 +1183,7 @@ function showReview(product) {
   let addReview = document.getElementsByClassName("add-review")[0];
   if (user != null && user != undefined) {
     let checkReview = product.reviews.find(
-      (review) => review.userId === user.id,
+      (review) => review.userId === user._id,
     );
     if (checkReview !== undefined) {
       userReviewedTisProduct = true;
@@ -1168,7 +1198,7 @@ function showReview(product) {
     let userBuyedThisProduct = false;
     user.orders.forEach((order) => {
       order.cart.products.forEach((item) => {
-        if (item.id === product.id) {
+        if (item.id === product._id) {
           userBuyedThisProduct = true;
         }
       });
@@ -1184,7 +1214,7 @@ function showReview(product) {
 
   let otherReviews = document.getElementsByClassName("others-reviews")[0];
   otherReviews.textContent = "";
-  product.reviews.forEach((review) => {
+  product.reviews.forEach(async (review) => {
     let reviewDiv = document.createElement("div");
     reviewDiv.className = "review";
 
@@ -1195,7 +1225,7 @@ function showReview(product) {
     userIcon.className = "fa-solid fa-user";
 
     let username = document.createElement("span");
-    let reviewUser = users.find((user) => user.id === review.userId);
+    let reviewUser = await getUserById(review.userId);
     username.textContent = reviewUser.name;
     username.className = "username";
 
@@ -1221,39 +1251,6 @@ function showReview(product) {
     otherReviews.appendChild(reviewDiv);
   });
 }
-
-// adding user review
-function addUserReview() {
-  let reviewContext = document.getElementsByClassName("review-input")[0].value;
-  if (
-    reviewContext !== "" &&
-    reviewContext != undefined &&
-    reviewContext != null &&
-    starsSelectedReview !== 0
-  ) {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const ID = urlParams.get("id");
-
-    let product = products.find((element) => (element.id = ID));
-    let review = product.reviews.find((review) => review.userId === user.id);
-    if (review === undefined) {
-      product.reviews.push(
-        new REVIEWS(user.id, reviewContext, starsSelectedReview),
-      );
-    }
-    let newStars = 0;
-    product.reviews.forEach((review) => {
-      newStars += review.stars;
-    });
-
-    product.stars = newStars / product.reviews.length;
-    showProductDetails();
-  } else {
-    return;
-  }
-}
-
 // changing stars when user click on star button
 function changeStars(number) {
   starsSelectedReview = number;
@@ -1261,6 +1258,7 @@ function changeStars(number) {
   ratingDiv.textContent = "";
   createRatingButtons(ratingDiv, number);
 }
+
 function goToCart() {
   if (user !== null && user !== undefined) {
     window.location.href = `${DOMAIN}/cart.html`;
@@ -1765,7 +1763,7 @@ function search(search) {
   return [];
 }
 
-function showSearch() {
+async function showSearch() {
   showProductLoader();
   const SEARCH = new URLSearchParams(window.location.search).get("search");
   if (SEARCH === "" || SEARCH == undefined || SEARCH == null) {
@@ -1773,7 +1771,7 @@ function showSearch() {
     return;
   }
 
-  let searchProducts = search(SEARCH);
+  let searchProducts = await getSearchedProducts(SEARCH);
   let searchInput = document.getElementById("search");
   searchInput.value = `${SEARCH}`;
 
