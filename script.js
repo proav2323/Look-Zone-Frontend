@@ -26,6 +26,7 @@ let isDarkMode =
 
 start();
 
+// starting the application
 async function start() {
   // checking is user logged in with some token
   showLoader();
@@ -133,6 +134,7 @@ async function showUi() {
   isLoading = false;
 }
 
+// getting all the products
 async function getAllProducts() {
   let products = [];
   try {
@@ -153,6 +155,7 @@ async function getAllProducts() {
   return products;
 }
 
+// get coursel prodycts
 async function getAllCourselProducts() {
   let products = [];
   try {
@@ -172,7 +175,7 @@ async function getAllCourselProducts() {
 
   return products;
 }
-
+// get product by id
 async function getProductById(id) {
   let product = null;
   try {
@@ -192,6 +195,7 @@ async function getProductById(id) {
   return product;
 }
 
+// get all categories
 async function getAllCategories() {
   let categories = [];
   try {
@@ -212,6 +216,7 @@ async function getAllCategories() {
   return categories;
 }
 
+// get category products
 async function getCategoryProducts(id) {
   let products = [];
   try {
@@ -234,6 +239,7 @@ async function getCategoryProducts(id) {
   return products;
 }
 
+// get searched products
 async function getSearchedProducts(search) {
   let products = [];
   try {
@@ -256,6 +262,7 @@ async function getSearchedProducts(search) {
   return products;
 }
 
+// get usre by id
 async function getUserById(id) {
   let user = null;
   console.log(id);
@@ -279,6 +286,7 @@ async function getUserById(id) {
   return user;
 }
 
+// get order by id
 async function getOrderById(id) {
   if (!userToken) {
     return;
@@ -1324,6 +1332,7 @@ function changeStars(number) {
   createRatingButtons(ratingDiv, number);
 }
 
+// going to cart
 function goToCart() {
   if (user !== null && user !== undefined) {
     window.location.href = `${DOMAIN}/cart.html`;
@@ -1347,8 +1356,9 @@ async function createCartPage() {
   if (user.cart.products.length > 0) {
     yourCartText.textContent = "Your Cart";
     totalPrice.textContent = `Total Price: $${user.cart.totalPrice}`;
-    showLoader();
-    user.cart.products.forEach(async (item) => {
+    showSmallLoader("cart-div");
+    user.cart.products.forEach(async (item, index) => {
+      showLoader();
       let cartProduct = await getProductById(item.id);
       let cartItem = document.createElement("div");
       cartItem.className = "cart-item-div";
@@ -1423,6 +1433,9 @@ async function createCartPage() {
       cartItem.appendChild(cartItemDetails);
       cartDiv.appendChild(cartItem);
       hideLoader();
+      if (index === user.cart.products.length - 1) {
+        hideSmallLoader("cart-div");
+      }
     });
   } else {
     yourCartText.textContent = "No Item In The Cart";
@@ -1572,6 +1585,7 @@ function goToOrders() {
   window.location.href = "/yourOrders.html";
 }
 
+// create orders page
 function createOrdersPage() {
   showLoader();
   ordersTitle = document.getElementsByClassName("orders-title")[0];
@@ -1587,7 +1601,8 @@ function createOrdersPage() {
   for (let i = 0; i < length; i++) {
     ordersTable.removeChild(ordersTr[0]);
   }
-  user.orders.forEach(async (id) => {
+  user.orders.forEach(async (id, index) => {
+    showSmallLoader("orders-container");
     let order = await getOrderById(id);
     ordersTr = document.createElement("tr");
     ordersTr.className = "orders-td";
@@ -1627,6 +1642,10 @@ function createOrdersPage() {
     ordersTr.addEventListener("click", () => {
       showOrderDetails(order);
     });
+    if (index === user.orders.length - 1) {
+      hideSmallLoader("orders-container", "inline-block");
+      ordersTable.style.width = "100%";
+    }
   });
   hideLoader();
 }
@@ -1835,17 +1854,7 @@ function closeOrderDetails() {
   orderDeatils.style.display = "none";
 }
 
-function showSideDropdown() {
-  let sideDropdown = document.getElementsByClassName("side-dropdown")[0];
-  if (isSideDropdownOpen === true) {
-    sideDropdown.style.display = "none";
-    isSideDropdownOpen = false;
-  } else {
-    sideDropdown.style.display = "inline-block";
-    isSideDropdownOpen = true;
-  }
-}
-
+// show light/dark mode
 function showMode() {
   const root = document.documentElement;
   if (isDarkMode === "light") {
@@ -1859,6 +1868,7 @@ function showMode() {
   }
 }
 
+// chnage mode
 function changeUi() {
   const modeText = document.getElementsByClassName("mode-text")[0];
   const darkIcon = document.getElementsByClassName("dark-icon")[0];
@@ -1875,6 +1885,7 @@ function changeUi() {
   }
 }
 
+// toglle mode
 function toggleMode() {
   if (isDarkMode === "light") {
     localStorage.removeItem("mode");
@@ -1889,10 +1900,12 @@ function toggleMode() {
   changeUi();
 }
 
+// go to search
 function goToSearch(search) {
   window.location.href = `${DOMAIN}/search.html?search=${search}`;
 }
 
+// seaerch input chnage event
 function searchInputChange() {
   let searchInput = document.getElementsByClassName("search");
 
@@ -1910,6 +1923,7 @@ function searchInputChange() {
   }
 }
 
+// shoiwnf search
 async function showSearch() {
   showProductLoader();
   const SEARCH = new URLSearchParams(window.location.search).get("search");
@@ -1939,10 +1953,12 @@ async function showSearch() {
   hideProductLoader();
 }
 
+// go to address
 function goToAddress() {
   window.location.href = `${DOMAIN}/address.html`;
 }
 
+// show address
 function showAddress() {
   let addressDiv = document.getElementsByClassName("address-div")[0];
   addressDiv.style.display = "flex";
@@ -1958,6 +1974,7 @@ function showAddress() {
   addressText.textContent = `Your Address: ${user.address.street}, ${user.address.city}, ${user.address.state}, ${user.address.country}, ${user.address.zip}`;
 }
 
+// show edit address
 function showEditAddress() {
   closeEditAddress();
   let editAddressf = document.getElementsByClassName("edit-address")[0];
@@ -1999,11 +2016,13 @@ function showEditAddress() {
   inputDiv.appendChild(saveBtn);
 }
 
+// closing edit address toast
 function closeEditAddress() {
   let editAddress = document.getElementsByClassName("edit-address")[0];
   editAddress.style.display = "none";
 }
 
+// editing address backend
 async function editAddress() {
   showLoader();
   let streetInput = document.getElementById("street").value;
@@ -2059,6 +2078,7 @@ async function editAddress() {
   }
 }
 
+// placing order
 async function placeOrder() {
   if (!userToken) {
     return;
@@ -2090,4 +2110,18 @@ async function placeOrder() {
     showToast(err.message, "red");
     hideLoader();
   }
+}
+
+function showSmallLoader(classname) {
+  document.getElementsByClassName(classname)[0].style.display = "none";
+  let productLoader = document.getElementsByClassName("products-loading")[0];
+  productLoader.style.display = "flex";
+}
+
+function hideSmallLoader(classname, style) {
+  document.getElementsByClassName(classname)[0].style.display = style
+    ? style
+    : "flex";
+  let productLoader = document.getElementsByClassName("products-loading")[0];
+  productLoader.style.display = "none";
 }

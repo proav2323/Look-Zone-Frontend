@@ -1656,6 +1656,7 @@ body {
   }
   .orders {
     width: 100%;
+    display: block;
     font-size: 15px;
   }
   .mobile-d {
