@@ -15,62 +15,73 @@
     <div class="content-show content">
       <!-- Navbar -->
       <header class="header">
-        <nav class="nav">
-          <div class="logo-block" onclick="redirectHome()">
-            <i class="fa-solid fa-bag-shopping logo"></i>
-            <span class="logo-text">Look Zone</span>
+        <nav class="navbar">
+          <div class="nav">
+            <div class="logo-block" onclick="redirectHome()">
+              <i class="fa-solid fa-bag-shopping logo"></i>
+              <span class="logo-text">Look Zone</span>
+            </div>
+            <div class="search-block">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input
+                class="search"
+                type="search"
+                value=""
+                id="search"
+                placeholder="Search"
+                oninput="searchInputChange()"
+                onsubmit="(e) => goToSearch(e.value)"
+              />
+            </div>
+            <div class="auth">
+              <button class="auth-button" onclick="goToLogin()">
+                <i class="fa-solid fa-user"></i> Login In
+              </button>
+            </div>
+            <div class="user-info">
+              <button class="user-button cart" onclick="goToCart()">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="cart-item"></span>
+              </button>
+              <button class="user-button user" onclick="dropdown('dropdown')">
+                <i class="fa-solid fa-user"></i>
+              </button>
+              <div class="dropdown">
+                <button class="dropdown-button admin">
+                  <i class="fa-solid fa-gear"></i>
+                  <span class="dropdown-text">Dashboard</span>
+                </button>
+                <button class="dropdown-button" onclick="goToOrders()">
+                  <i class="fa-solid fa-wallet"></i>
+                  <span class="dropdown-text">Your Orders</span>
+                </button>
+                <button class="dropdown-button" onclick="toggleMode()">
+                  <i class="fa-solid fa-moon dark-icon"></i>
+                  <i class="fa-solid fa-bolt light-icon"></i>
+                  <span class="dropdown-text mode-text">Dark Mode</span>
+                </button>
+                <button class="dropdown-button" onclick="goToAddress()">
+                  <i class="fa-solid fa-house"></i>
+                  <span class="dropdown-text">Your address</span>
+                </button>
+                <button class="dropdown-button logout" onclick="logout()">
+                  <i class="fa-solid fa-right-from-bracket logout-icon"></i>
+                  <span class="dropdown-text">Logout</span>
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="search-block">
+          <div class="search-block mobile">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
             <input
               class="search"
               type="search"
+              value=""
+              id="search"
               placeholder="Search"
-              onsubmit=""
+              oninput="searchInputChange()"
+              onsubmit="(e) => goToSearch(e.value)"
             />
-          </div>
-          <div class="auth">
-            <button class="auth-button" onclick="goToLogin()">
-              <i class="fa-solid fa-user"></i> Login In
-            </button>
-          </div>
-          <div class="user-info">
-            <button class="user-button cart" onclick="goToCart()">
-              <i class="fa-solid fa-cart-shopping"></i>
-              <span class="cart-item"></span>
-            </button>
-            <button class="user-button user" onclick="dropdown('dropdown')">
-              <i class="fa-solid fa-user"></i>
-            </button>
-            <div class="dropdown">
-              <button class="dropdown-button admin">
-                <i class="fa-solid fa-gear"></i>
-                <span class="dropdown-text">Dashboard</span>
-              </button>
-              <button class="dropdown-button" onclick="goToOrders()">
-                <i class="fa-solid fa-wallet"></i>
-                <span class="dropdown-text">Your Orders</span>
-              </button>
-              <button class="dropdown-button" onclick="showSideDropdown()">
-                <i class="fa-solid fa-gear"></i>
-                <span class="dropdown-text">Settings</span>
-              </button>
-              <button class="dropdown-button logout" onclick="logout()">
-                <i class="fa-solid fa-right-from-bracket logout-icon"></i>
-                <span class="dropdown-text">Logout</span>
-              </button>
-            </div>
-            <div class="side-dropdown">
-              <button class="dropdown-button" onclick="toggleMode()">
-                <i class="fa-solid fa-moon dark-icon"></i>
-                <i class="fa-solid fa-bolt light-icon"></i>
-                <span class="dropdown-text mode-text">Dark Mode</span>
-              </button>
-              <button class="dropdown-button" onclick="goToAddress()">
-                <i class="fa-solid fa-house"></i>
-                <span class="dropdown-text">Your address</span>
-              </button>
-            </div>
           </div>
         </nav>
       </header>

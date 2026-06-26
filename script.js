@@ -1124,7 +1124,7 @@ function createRating(ratingDiv, starss) {
   }
 
   let ratingText = document.createElement("span");
-  ratingText.textContent = `${starss}`;
+  ratingText.textContent = `${Math.round(starss)}`;
   ratingText.className = "rating-text";
 
   ratingDiv.appendChild(ratingText);
@@ -1375,21 +1375,12 @@ async function createCartPage() {
       productTitle.className = "product-title cart-title";
       productTitle.textContent = cartProduct.name;
 
-      let productDesc = document.createElement("span");
-      productDesc.className = "product-description cart-title";
-      productDesc.style.width = "100%";
-      productDesc.textContent =
-        cartProduct.description.length > 25
-          ? `${cartProduct.description.slice(0, 25)}...`
-          : cartProduct.description;
-
       let productPrice = document.createElement("span");
       productPrice.className = "real-price";
       productPrice.style.display = "block";
       productPrice.style.margin = "10px";
       productPrice.textContent = `$${item.price}`;
       textDiv.appendChild(productTitle);
-      textDiv.appendChild(productDesc);
       textDiv.appendChild(productPrice);
 
       let cartActions = document.createElement("div");
@@ -1604,13 +1595,12 @@ function createOrdersPage() {
     orderId = document.createElement("th");
     orderId.className = "order-td";
     orderId.textContent = `${order._id}`;
-
     orderDate = document.createElement("th");
-    orderDate.className = "order-td";
+    orderPrice = document.createElement("th");
+    orderDate.className = "order-td mobile-d";
     orderDate.textContent = `${new Date(order.date).toDateString()}`;
 
-    orderPrice = document.createElement("th");
-    orderPrice.className = "order-td red";
+    orderPrice.className = "order-td red mobile-d";
     orderPrice.textContent = `$${order.payment}`;
 
     orderStatus = document.createElement("th");
@@ -1712,6 +1702,10 @@ function showOrderDetails(order) {
       cartProduct.description.length > 25
         ? `${cartProduct.description.slice(0, 25)}...`
         : cartProduct.description;
+
+    if (window.screen.width <= 870) {
+      productDesc.style.display = "none";
+    }
 
     let productPrice = document.createElement("span");
     productPrice.className = "real-price";
@@ -1900,37 +1894,20 @@ function goToSearch(search) {
 }
 
 function searchInputChange() {
-  let searchInput = document.getElementById("search");
-  searchInput.addEventListener("keydown", (e) => {
-    if (
-      e.key === "Enter" &&
-      searchInput.value !== null &&
-      searchInput.value !== undefined &&
-      searchInput.value !== ""
-    ) {
-      goToSearch(searchInput.value);
-    }
-  });
-}
+  let searchInput = document.getElementsByClassName("search");
 
-function search(search) {
-  let searchProducts = products.filter(
-    (item) => item.name.toLowerCase().startsWith(search.toLowerCase()) === true,
-  );
-  if (searchProducts.length !== 0) {
-    return searchProducts;
+  for (let i = 0; i < searchInput.length; i++) {
+    searchInput[i].addEventListener("keydown", (e) => {
+      if (
+        e.key === "Enter" &&
+        searchInput[i].value !== null &&
+        searchInput[i].value !== undefined &&
+        searchInput[i].value !== ""
+      ) {
+        goToSearch(searchInput[i].value);
+      }
+    });
   }
-
-  searchProducts = products.filter(
-    (item) =>
-      item.description.toLowerCase().startsWith(search.toLowerCase()) === true,
-  );
-
-  if (searchProducts.length !== 0) {
-    return searchProducts;
-  }
-
-  return [];
 }
 
 async function showSearch() {
@@ -1942,8 +1919,10 @@ async function showSearch() {
   }
 
   let searchProducts = await getSearchedProducts(SEARCH);
-  let searchInput = document.getElementById("search");
-  searchInput.value = `${SEARCH}`;
+  let searchInput = document.getElementsByClassName("search");
+  for (let i = 0; i < searchInput.length; i++) {
+    searchInput[i].value = `${SEARCH}`;
+  }
 
   let searchText = document.getElementsByClassName("search-text")[0];
   let productsDiv = document.getElementsByClassName("products")[0];
