@@ -1270,7 +1270,6 @@ async function showReview(product) {
       addUserReview();
     });
   } else {
-    addReview.style.display = "none";
   }
 
   let otherReviews = document.getElementsByClassName("others-reviews")[0];

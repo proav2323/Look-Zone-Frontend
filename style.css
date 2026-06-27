@@ -146,8 +146,7 @@ body {
 }
 
 .logo {
-  color: var(--dark-text-color);
-  font-size: 30px;
+  height: 45px;
 }
 
 .logo-text {
@@ -1681,6 +1680,9 @@ body {
   }
   .review-text {
     width: 95%;
+  }
+  .logo {
+    height: 55px;
   }
 }
 
